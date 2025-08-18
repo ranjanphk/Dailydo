@@ -1,0 +1,170 @@
+{
+  "fileName": "UX",
+  "textStyles": [
+    {
+      "name": "DM Sans Font Style/Heading",
+      "fontFamily": "DM Serif Text",
+      "fontWeight": "Regular",
+      "fontSize": 55,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "DM Sans Font Style/Sub Heading",
+      "fontFamily": "DM Serif Text",
+      "fontWeight": "Regular",
+      "fontSize": 40,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "DM Sans Font Style/Card Title",
+      "fontFamily": "DM Sans",
+      "fontWeight": "9pt Regular",
+      "fontSize": 32,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "DM Sans Font Style/Card Title Bod",
+      "fontFamily": "DM Sans",
+      "fontWeight": "Bold",
+      "fontSize": 32,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "DM Sans Font Style/Body Bold",
+      "fontFamily": "DM Sans",
+      "fontWeight": "Bold",
+      "fontSize": 18,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "DM Sans Font Style/Body Normal",
+      "fontFamily": "DM Sans",
+      "fontWeight": "Regular",
+      "fontSize": 18,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "DM Sans Font Style/Button Normal",
+      "fontFamily": "DM Sans",
+      "fontWeight": "Regular",
+      "fontSize": 18,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "DM Sans Font Style/Button Bold",
+      "fontFamily": "DM Sans",
+      "fontWeight": "Bold",
+      "fontSize": 18,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "DM Sans Font Style/Button Big",
+      "fontFamily": "DM Sans",
+      "fontWeight": "Regular",
+      "fontSize": 25,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "DM Sans Font Style/Button Big Bold",
+      "fontFamily": "DM Sans",
+      "fontWeight": "Bold",
+      "fontSize": 25,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "DM Sans Font Style/Indicators BOld",
+      "fontFamily": "DM Sans",
+      "fontWeight": "Bold",
+      "fontSize": 12,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "DM Sans Font Style/Indicator",
+      "fontFamily": "DM Sans",
+      "fontWeight": "Regular",
+      "fontSize": 12,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "DM Sans Font Style/norrmal",
+      "fontFamily": "DM Sans",
+      "fontWeight": "Bold",
+      "fontSize": 16,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "DM Sans Font Style/norrmal",
+      "fontFamily": "DM Sans",
+      "fontWeight": "Regular",
+      "fontSize": 16,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    },
+    {
+      "name": "DM Sans Font Style/Small Indicator",
+      "fontFamily": "DM Sans",
+      "fontWeight": "Regular",
+      "fontSize": 10,
+      "letterSpacing": {
+        "unit": "PERCENT",
+        "value": 0
+      },
+      "textCase": "ORIGINAL"
+    }
+  ]
+}

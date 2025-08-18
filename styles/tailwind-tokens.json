@@ -1,0 +1,59 @@
+{
+  "extend": {
+    "colors": {
+      "Brand-b-1": "rgba(134, 70, 244, 1)",
+      "Brand-b-2": "rgba(109, 40, 217, 1)",
+      "base-ba-0": "rgba(17, 25, 40, 1)",
+      "base-ba-0-2": "rgba(31, 42, 55, 1)",
+      "base-ba-0-3": "rgba(55, 65, 81, 1)",
+      "base-ba-0-4": "rgba(75, 85, 99, 1)",
+      "base-ba-0-5": "rgba(107, 114, 128, 1)",
+      "base-ba-0-6": "rgba(156, 163, 175, 1)",
+      "base-ba-0-7": "rgba(209, 213, 219, 1)",
+      "base-ba-0-8": "rgba(243, 244, 246, 1)",
+      "Alerts-A-Danger": "rgba(242, 48, 48, 1)",
+      "Alerts-A--Warning": "rgba(251, 191, 36, 1)",
+      "Alerts-A--Information": "rgba(11, 118, 183, 1)",
+      "Alerts-A--Success": "rgba(44, 214, 115, 1)",
+      "Alerts-A--Progress": "rgba(172, 239, 200, 1)",
+      "Alerts-A--Pending": "rgba(225, 88, 14, 1)",
+      "Alerts-A--NA": "rgba(136, 153, 168, 1)"
+    },
+    "spacing": {
+      "sm": "7px",
+      "ms": "14px",
+      "m": "21px",
+      "l": "28px",
+      "xl": "35px",
+      "xxl": "42px",
+      "xxxl": "56px",
+      "cell": "70px"
+    },
+    "fontFamily": {
+      "heading": [
+        "Georgia",
+        "sans-serif"
+      ],
+      "body": [
+        "Inter",
+        "sans-serif"
+      ]
+    },
+    "fontSize": {
+      "heading": "55px",
+      "sub-heading": "40px",
+      "card-title": "32px",
+      "card-title-bod": "32px",
+      "body-bold": "18px",
+      "body-normal": "18px",
+      "button-normal": "18px",
+      "button-bold": "18px",
+      "button-big": "25px",
+      "button-big-bold": "25px",
+      "indicators-bold": "12px",
+      "indicator": "12px",
+      "norrmal": "16px",
+      "small-indicator": "10px"
+    }
+  }
+}

@@ -11,7 +11,7 @@ export default function Home() {
       <h1 className="text-5xl font-extrabold text-indigo-700 tracking-tight">
         Heymate
       </h1>
-      <p className="mt-4 text-lg text-gray-600 max-w-xl">
+      <p className="mt-4 text-lg text-gray-600 max-w-xl text-a-danger">
         Your smart productivity companion. Manage tasks, track performance, and create estimates — all in one intuitive dashboard.
       </p>
 
