@@ -51,7 +51,7 @@ export default function Home() {
       </section>
 
       <footer className="mt-24 text-gray-400 text-sm">
-        © {new Date().getFullYear()} Heymate by Hoping Mind. All rights reserved.
+        © {new Date().getFullYear()} Heymate by BeyondUx. All rights reserved.
       </footer>
     </div>
   );
