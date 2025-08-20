@@ -1,4 +1,5 @@
-const tokens = require("../styles/talwind-tokens.json");
+const tokens = require("./styles/tailwind-tokens.json"); 
+
 
 module.exports = {
   content: [

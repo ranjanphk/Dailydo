@@ -1,13 +1,16 @@
 /* styles/globals.css */
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
-  /* 🎨 Colors from Colors.json */
+/* Custom variables */
+:root {
+  /* 🎨 Colors */
   --color-brand-primary: #7e22ce;
   --color-brand-secondary: #db2777;
   --color-brand-accent: #4ade80;
 
-  /* 📏 Sizes from Size.json */
+  /* 📏 Sizes */
   --size-sm: 7px;
   --size-ms: 14px;
   --size-m: 21px;
@@ -17,11 +20,11 @@
   --size-xxxl: 56px;
   --size-cell: 70px;
 
-  /* 🔠 Typography.json */
+  /* 🔠 Fonts */
   --font-heading: Georgia, serif;
   --font-body: Inter, sans-serif;
 
-  /* ✍️ Text Styles (textStyles.json) */
+  /* ✍️ Text Styles */
   --text-heading: 55px;
   --text-subheading: 40px;
   --text-card-title: 32px;
