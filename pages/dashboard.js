@@ -5,7 +5,6 @@ import MainContent from '../components/MainContent';
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { logout } from "../lib/auth";
 
 export default function Dashboard() {
   const { user, loading } = useAuth();
@@ -20,20 +19,26 @@ export default function Dashboard() {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="flex h-screen">
-      <Sidebar />
-      <div className="flex-1 flex flex-col">
-        <Topbar />
-        <MainContent />
-        <div className="text-center mb-6">
-          <h1 className="text-xl font-medium">Dashboard Coming soon, {user?.email}</h1>
-          <button
-            onClick={logout}
-            className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
-          >
-            Logout
-          </button>
-        </div>
+    <div className="flex h-screen bg-gray-100">
+      {/* Sidebar - vertically centered */}
+      <div className="w-20 flex flex-col items-center justify-center bg-slate-500 text-white fixed left-0 top-0 bottom-0">
+        <Sidebar />
+      </div>
+
+      {/* Main area */}
+      <div className="flex-1 flex flex-col ml-20">
+        {/* Topbar with avatar + logout dropdown */}
+        <Topbar user={user} />
+
+        {/* Main content */}
+        <main className="flex-1 overflow-y-auto p-6">
+          <MainContent />
+          <div className="text-center mt-6">
+            <h1 className="text-xl font-medium">
+              Dashboard Coming soon, {user?.email}
+            </h1>
+          </div>
+        </main>
       </div>
     </div>
   );
