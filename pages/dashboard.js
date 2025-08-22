@@ -33,12 +33,6 @@ export default function Dashboard() {
 
           <main className="flex-1 overflow-y-auto p-6">
             <MainContent />
-              <div className="text-center mt-6">
-                  <h1 className="text-xl font-medium">
-                    Dashboard Coming soon, {user?.email}
-                  </h1>
-          </div>
-
           {/* Task composer fixed at bottom */}
          <div className="absolute bottom-0 left-0 right-0 bg-white border-t shadow-md p-4 max-w-screen-md mx-auto">
             <TaskComposer user={user} />
