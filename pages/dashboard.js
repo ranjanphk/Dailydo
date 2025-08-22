@@ -1,15 +1,14 @@
-// pages/dashboard.js
 import Sidebar from '../components/Sidebar';
 import Topbar from '../components/Topbar';
 import TaskComposer from '../components/TaskComposer';
-import MainContent from '../components/MainContent';
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Dashboard() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -19,25 +18,41 @@ export default function Dashboard() {
 
   if (loading) return <p>Loading...</p>;
 
+  const addTask = (taskText) => {
+    setTasks((prev) => [...prev, { text: taskText, id: Date.now() }]);
+  };
+
   return (
     <div className="flex h-screen bg-gray-100">
-      {/* Sidebar - vertically centered */}
+      {/* Sidebar */}
       <div className="w-20 flex flex-col items-center justify-center bg-slate-500 text-white fixed left-0 top-0 bottom-0">
         <Sidebar />
       </div>
 
       {/* Main area */}
-      <div className="flex-1 flex flex-col ml-20">
-        {/* Topbar with avatar + logout dropdown */}
+      <div className="flex-1 flex flex-col ml-20 relative">
         <Topbar user={user} />
 
-          <main className="flex-1 overflow-y-auto p-6">
-            <MainContent />
-          {/* Task composer fixed at bottom */}
-         <div className="absolute bottom-0 left-0 right-0 bg-white border-t shadow-md p-4 max-w-screen-md mx-auto">
-            <TaskComposer user={user} />
-        </div>
+        {/* Scrollable content */}
+        <main className="flex-1 overflow-y-auto p-6 pb-28">
+          <h2 className="text-xl font-semibold mb-4">Your Tasks</h2>
+          {tasks.length === 0 && (
+            <p className="text-gray-500">No tasks yet. Add one below.</p>
+          )}
+          <ul className="space-y-2">
+            {tasks.map((task) => (
+              <li
+                key={task.id}
+                className="bg-white rounded shadow p-3 border"
+              >
+                {task.text}
+              </li>
+            ))}
+          </ul>
         </main>
+
+        {/* Composer bar at bottom */}
+        <TaskComposer user={user} onAddTask={addTask} />
       </div>
     </div>
   );
