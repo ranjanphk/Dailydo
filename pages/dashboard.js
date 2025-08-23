@@ -52,7 +52,9 @@ export default function Dashboard() {
         </main>
 
         {/* Composer bar at bottom */}
-        <TaskComposer user={user} onAddTask={addTask} />
+        <div className="flex justify-center">
+          <TaskComposer user={user} onAddTask={addTask} /></div>'
+        
       </div>
     </div>
   );

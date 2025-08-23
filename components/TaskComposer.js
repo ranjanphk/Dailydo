@@ -12,7 +12,7 @@ export default function TaskComposer({ user, onAddTask }) {
   };
 
   return (
-    <div className="fixed bottom-0 left-20 right-0 bg-white border-t shadow-md p-4 flex items-center gap-2">
+    <div className="justify-center fixed bottom-5 items-center bg-white border-t shadow-md p-4 flex gap-2 w-6/12">
       <textarea
         rows={1}
         value={input}
