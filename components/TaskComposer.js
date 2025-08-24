@@ -20,7 +20,7 @@ export default function TaskComposer({ user, onCreate }) {
   };
 
   return (
-    <div className="fixed bottom-0 left-20 right-0 bg-white border-t shadow-md">
+    <div className="fixed bottom-0 left-20 right-0 shadow-md">
       <div className="mx-auto max-w-6xl p-4 flex items-end gap-2">
         <textarea
           rows={1}
