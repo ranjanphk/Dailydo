@@ -21,7 +21,7 @@ export default function TaskTable({ tasks, onDelete, onChangeStatus }) {
       <table className="min-w-full border-separate border-spacing-y-2">
         <thead>
           <tr className="text-left text-sm text-gray-500">
-            <th className="py-2 px-3">Name</th>
+            <th className="py-2 px-3">Tasks</th>
             <th className="py-2 px-3">Status</th>
             <th className="py-2 px-3">Date / Time</th>
             <th className="py-2 px-3">Action</th>
