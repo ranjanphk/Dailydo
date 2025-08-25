@@ -9,7 +9,12 @@ const Topbar = ({ user, onProfileClick, logout }) => {
 
   return (
     <header className="flex justify-between items-center px-6 py-4 bg-white shadow-sm relative">
-      <h1 className="text-2xl font-bold text-indigo-600">Heymate</h1>
+              <h1
+          className="text-2xl font-bold text-indigo-600 cursor-pointer"
+          onClick={() => window.location.reload()}
+        >
+          Heymate
+            </h1>
 
       <div className="flex items-center gap-4">
         {/* Search Bar */}
