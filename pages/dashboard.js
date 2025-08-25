@@ -3,6 +3,7 @@ import Topbar from '../components/Topbar';
 import TaskTable from '../components/TaskTable';
 import TaskOverview from '../components/TaskOverview';
 import TaskComposer from '../components/TaskComposer';
+import Profile from '../components/Profile';
 
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/router";
@@ -18,6 +19,8 @@ export default function Dashboard() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [tasks, setTasks] = useState([]);
+  const [view, setView] = useState("tasks"); // "tasks" or "profile"
+  const [activeSection, setActiveSection] = useState("dashboard");
 
   useEffect(() => {
     if (!loading && !user) router.push("/login");
@@ -36,7 +39,6 @@ export default function Dashboard() {
             title: data.title || "",
             status: data.status || "In Progress",
             userId: data.userId,
-            // normalize createdAt
             createdAt: data.createdAt?.toDate
               ? data.createdAt.toDate()
               : new Date(),
@@ -72,36 +74,49 @@ export default function Dashboard() {
     await deleteDoc(doc(db, "tasks", task.id));
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (!user) return null;
+  const handleProfileSave = () => {
+    // Do any save logic here if needed
+    setView("tasks"); // Return to dashboard after save
+  };
+
 
   return (
     <div className="flex h-screen bg-gray-100">
       <div className="w-20 flex flex-col items-center justify-center bg-slate-500 text-white fixed left-0 top-0 bottom-0">
-        <Sidebar />
+        <Sidebar onTasksClick={() => setActiveSection("dashboard")} />
       </div>
 
       <div className="flex-1 flex flex-col ml-20">
-        <Topbar user={user} />
+        <Topbar user={user} onProfileClick={() => setView("profile")} />
 
         <main className="flex-1 overflow-y-auto p-6 pb-32">
-          <div className="mx-auto max-w-6xl flex gap-6">
-            <div className="flex-1">
-              <TaskTable
-                tasks={tasks}
-                onDelete={deleteTask}
-                onChangeStatus={changeStatus}
+          {view === "tasks" && (
+            <div className="mx-auto max-w-6xl flex gap-6">
+              <div className="flex-1">
+                <TaskTable
+                  tasks={tasks}
+                  onDelete={deleteTask}
+                  onChangeStatus={changeStatus}
+                />
+              </div>
+              <TaskOverview
+                completed={completed}
+                inProgress={inProgress}
+                pending={pending}
               />
             </div>
-            <TaskOverview
-              completed={completed}
-              inProgress={inProgress}
-              pending={pending}
-            />
-          </div>
+          )}
+
+          {view === "profile" && (
+            <div className="mx-auto max-w-2xl">
+              <Profile user={user} onSave={handleProfileSave} />
+            </div>
+          )}
         </main>
 
-        <TaskComposer user={user} onCreate={addTask} />
+        {view === "tasks" && (
+          <TaskComposer user={user} onCreate={addTask} />
+        )}
       </div>
     </div>
   );

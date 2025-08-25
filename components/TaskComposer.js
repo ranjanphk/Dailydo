@@ -20,23 +20,25 @@ export default function TaskComposer({ user, onCreate }) {
   };
 
   return (
-    <div className="fixed bottom-0 left-20 right-0 shadow-md">
-      <div className="mx-auto max-w-6xl p-4 flex items-end gap-2">
-        <textarea
-          rows={1}
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          onKeyDown={onKeyDown}
-          placeholder="Type a task and press Enter… (Shift+Enter for newline)"
-          className="flex-1 border rounded-xl px-4 py-3 resize-none focus:outline-none"
-        />
-        <button
-          onClick={send}
-          className="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700"
-        >
-          Add
-        </button>
-      </div>
+<div className="fixed bottom-0 left-20 right-0 shadow-md">
+  <div className="mx-auto w-1/2 p-4 flex items-end gap-2">
+    <div className="relative flex-1 vertical-align-middle">
+      <textarea
+        rows={1}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={onKeyDown}
+        placeholder="Type a task and press Enter… (Shift+Enter for newline)"
+        className="flex-1 border rounded-xl px-4 py-3 pr-16 resize-none focus:outline-none w-full"
+      />
+      <button
+        onClick={send}
+        className="absolute right-3 bg-blue-600 text-white hover:bg-blue-700 rounded-lg px-3 py-1 text-sm top-1/2 -translate-y-1/2"
+      >
+        Add
+      </button>
     </div>
+  </div>
+</div>
   );
 }

@@ -54,9 +54,7 @@ export default function TaskTable({ tasks, onDelete, onChangeStatus }) {
                 </select>
               </td>
               <td className="py-3 px-3 text-gray-700">
-                {t.createdAt && t.createdAt.toDate
-                  ? t.createdAt.toDate().toLocaleString()
-                  : "-"}
+                {t.createdAt ? t.createdAt.toLocaleString() : "-"}
               </td>
               <td className="py-3 px-3">
                 <div className="flex items-center gap-3 text-gray-600">
