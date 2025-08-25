@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 const statusColor = (s) =>
@@ -8,8 +9,12 @@ const statusColor = (s) =>
     : "text-blue-600";
 
 export default function TaskTable({ tasks, onDelete, onChangeStatus }) {
-  // Show only 6 tasks
-  const displayedTasks = tasks.slice(0, 6);
+  const [page, setPage] = useState(1);
+  const tasksPerPage = 6;
+
+  const totalPages = Math.ceil(tasks.length / tasksPerPage);
+  const startIndex = (page - 1) * tasksPerPage;
+  const displayedTasks = tasks.slice(startIndex, startIndex + tasksPerPage);
 
   return (
     <div className="bg-white rounded-xl shadow p-4 overflow-x-auto text-xs">
@@ -77,10 +82,32 @@ export default function TaskTable({ tasks, onDelete, onChangeStatus }) {
         </tbody>
       </table>
 
+      {/* Pagination Footer */}
       <div className="flex items-center justify-between text-sm text-gray-500 mt-4">
         <span>
           Showing {displayedTasks.length} of {tasks.length}
         </span>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="px-3 py-1 border rounded disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span>
+            Page {page} of {totalPages || 1}
+          </span>
+          <button
+            onClick={() =>
+              setPage((p) => (p < totalPages ? p + 1 : p))
+            }
+            disabled={page >= totalPages}
+            className="px-3 py-1 border rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );
