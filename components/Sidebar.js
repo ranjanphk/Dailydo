@@ -1,12 +1,24 @@
-import { LucideClipboardCheck, LucidePlus } from 'lucide-react';
+import { LucideChartBar, LucideClipboardCheck, LucideHome, LucidePlus } from 'lucide-react';
 
 const Sidebar = ({ onTasksClick }) => {
+
+  const navigate = (url) => {
+    window.location.href = url;
+  };  
+  
   return (
     <aside className="w-20 h-screen bg-white shadow-lg flex flex-col items-center justify-center gap-8">
       {/* Create */}
-      <button className="text-gray-600 hover:text-indigo-600 flex flex-col items-center">
-        <LucidePlus size={24} />
-        <span className="text-xs mt-1">Create</span>
+      <button 
+      
+      onClick={() => navigate('/dashboard')} // <-- click handler on button
+      
+      className="text-gray-600 hover:text-indigo-600 flex flex-col items-center">
+
+
+        <LucideHome size={24} />
+        <span className="text-xs mt-1">Dashboard
+        </span>
       </button>
 
       {/* Daily Task */}
