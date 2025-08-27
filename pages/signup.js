@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { signup } from "../lib/auth";
+import { motion } from "framer-motion";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
@@ -23,7 +24,17 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white to-indigo-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white to-indigo-50 px-4 gap-7 py-50 flex-col">
+
+        <motion.h1
+          className="text-6xl font-extrabold text-indigo-700 tracking-tight cursor-pointer"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          onClick={() => router.push('/')}
+          cursor="pointer"
+        >
+          Heymate
+        </motion.h1>
       <div className="bg-white shadow-md rounded-lg p-8 max-w-md w-/2">
         <button
           onClick={() => router.back()}

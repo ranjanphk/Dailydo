@@ -13,7 +13,7 @@ export default function Home() {
       {/* Hero Section */}
       <header className="flex flex-col items-center justify-center text-center py-24 px-6">
         <motion.h1
-          className="text-6xl font-extrabold text-indigo-700 tracking-tight"
+          className="text-6xl font-extrabold text-indigo-700 tracking-tight flex-col"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
