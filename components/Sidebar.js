@@ -7,7 +7,7 @@ const Sidebar = ({ onTasksClick }) => {
   };  
   
   return (
-    <aside className="w-20 h-1/2 fixed bg-white shadow-lg flex flex-col items-center justify-center gap-8 rounded-xl p-4">
+    <aside className="w-20 h-auto py-6 fixed bg-white shadow-lg flex flex-col items-center justify-center gap-8 rounded-xl p-4">
       {/* Create */}
       {/* <button 
       
