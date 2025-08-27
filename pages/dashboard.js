@@ -5,6 +5,7 @@ import TaskOverview from '../components/TaskOverview';
 import TaskComposer from '../components/TaskComposer';
 import Profile from '../components/Profile';
 
+
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
@@ -16,7 +17,7 @@ import {
 } from "firebase/firestore";
 
 export default function Dashboard() {
-  const { user, loading } = useAuth();
+  const { user, loading, logout } = useAuth();
   const router = useRouter();
   const [tasks, setTasks] = useState([]);
   const [view, setView] = useState("tasks"); // "tasks" or "profile"
@@ -87,7 +88,11 @@ export default function Dashboard() {
       </div>
 
       <div className="flex-1 flex flex-col ml-20">
-        <Topbar user={user} onProfileClick={() => setView("profile")} />
+        <Topbar
+          user={user}
+          onProfileClick={() => setView("profile")}
+          logout={logout}                 // <-- pass it down
+        />
 
         <main className="flex-1 overflow-y-auto p-6 pb-32">
           {view === "tasks" && (
