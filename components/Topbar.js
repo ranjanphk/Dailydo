@@ -38,7 +38,9 @@
               onClick={() => setMenuOpen((prev) => !prev)}
               className="w-9 h-9 flex items-center justify-center rounded-full bg-purple-500 text-white font-semibold focus:outline-none"
             >
-              {initial}
+                {user?.email ? user.email.charAt(0).toUpperCase() : "U"}
+
+
             </button>
 
             {menuOpen && (
@@ -48,6 +50,7 @@
                     setMenuOpen(false);
                     onProfileClick();
                   }}
+                  
                   className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 rounded-t-lg"
                 >
                   Profile
