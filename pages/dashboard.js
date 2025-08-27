@@ -4,7 +4,7 @@ import TaskTable from '../components/TaskTable';
 import TaskOverview from '../components/TaskOverview';
 import TaskComposer from '../components/TaskComposer';
 import Profile from '../components/Profile';
-
+import { where } from "firebase/firestore";
 
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/router";
@@ -28,28 +28,38 @@ export default function Dashboard() {
   }, [user, loading, router]);
 
   // Listen to tasks collection
-  useEffect(() => {
-    if (!user) return;
-    const q = query(collection(db, "tasks"), orderBy("createdAt", "desc"));
-    const unsub = onSnapshot(q, (snap) => {
-      setTasks(
-        snap.docs.map((d) => {
-          const data = d.data();
-          return {
-            id: d.id,
-            title: data.title || "",
-            status: data.status || "In Progress",
-            userId: data.userId,
-            createdAt: data.createdAt?.toDate
-              ? data.createdAt.toDate()
-              : new Date(),
-            avatarUrl: data.avatarUrl || null,
-          };
-        })
-      );
-    });
-    return unsub;
-  }, [user]);
+
+
+useEffect(() => {
+  if (!user) return;
+
+  const q = query(
+    collection(db, "tasks"),
+    where("userId", "==", user.uid),
+    orderBy("createdAt", "desc")
+  );
+
+  const unsub = onSnapshot(q, (snap) => {
+    setTasks(
+      snap.docs.map((d) => {
+        const data = d.data();
+        return {
+          id: d.id,
+          title: data.title || "",
+          status: data.status || "In Progress",
+          userId: data.userId,
+          createdAt: data.createdAt?.toDate
+            ? data.createdAt.toDate()
+            : new Date(),
+          avatarUrl: data.avatarUrl || null,
+        };
+      })
+    );
+  });
+
+  return unsub;
+}, [user]);
+
 
   const { completed, inProgress, pending } = useMemo(() => ({
     completed: tasks.filter(t => t.status === "Completed").length,
