@@ -1,4 +1,4 @@
-import { LucideChartBar, LucideClipboardCheck, LucideHome, LucidePlus } from 'lucide-react';
+import { LucideBookTemplate, LucideChartBar, LucideClipboardCheck, LucideFolder, LucideHome, LucidePlus } from 'lucide-react';
 
 const Sidebar = ({ onTasksClick }) => {
 
@@ -7,9 +7,9 @@ const Sidebar = ({ onTasksClick }) => {
   };  
   
   return (
-    <aside className="w-20 h-screen bg-white shadow-lg flex flex-col items-center justify-center gap-8">
+    <aside className="w-20 h-1/2 fixed bg-white shadow-lg flex flex-col items-center justify-center gap-8 rounded-xl p-4">
       {/* Create */}
-      <button 
+      {/* <button 
       
       onClick={() => navigate('/dashboard')} // <-- click handler on button
       
@@ -19,16 +19,33 @@ const Sidebar = ({ onTasksClick }) => {
         <LucideHome size={24} />
         <span className="text-xs mt-1">Dashboard
         </span>
-      </button>
+      </button> */}
 
       {/* Daily Task */}
       <button
         onClick={onTasksClick}
         className="text-white bg-indigo-500 p-3 rounded-xl flex flex-col items-center shadow-md hover:bg-indigo-600"
       >
-        <LucideClipboardCheck size={24} />
+        <LucideClipboardCheck size={16} />
         <span className="text-xs mt-1">Tasks</span>
       </button>
+       {/* Projects */}
+      <button
+        onClick={onTasksClick}
+        className="text-gray-600 hover:text-indigo-600 flex flex-col items-center"
+      >
+        <LucideFolder size={16} />
+        <span className="text-xs mt-1">Projects</span>
+      </button>
+             {/* Templates */}
+      <button
+        onClick={onTasksClick}
+        className="text-gray-600 hover:text-indigo-600 flex flex-col items-center"
+      >
+        <LucideBookTemplate size={16} />
+        <span className="text-xs mt-1">Templates</span>
+      </button>
+      
     </aside>
   );
 };

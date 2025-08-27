@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
 import { motion } from "framer-motion";
-import { CheckCircle, BarChart3, Calendar, Users } from "lucide-react";
+import { CheckCircle, BarChart3, Calendar, Users, ChartPie, ChartColumn, ChartNetwork, ChartNoAxesGantt, ChartLineIcon, ChartSpline } from "lucide-react";
+import { ChartPieIcon } from "@heroicons/react/24/solid";
 
 export default function Home() {
   const { user } = useAuth();
@@ -13,11 +14,16 @@ export default function Home() {
       {/* Hero Section */}
       <header className="flex flex-col items-center justify-center text-center py-24 px-6">
         <motion.h1
-          className="text-6xl font-extrabold text-indigo-700 tracking-tight flex-col"
+          className="text-6xl font-extrabold text-indigo-700 tracking-tight flex-horizontal gap-4 flex items-center justify-center"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          Heymate
+              <ChartPie
+                  size={48}
+                  strokeWidth={1.5} 
+                  className="text-indigo-600" 
+                />
+                    Heymate
         </motion.h1>
         <p className="mt-6 text-xl text-gray-600 max-w-2xl">
           Your smart productivity companion. Manage tasks, track performance, and create estimates — all in one intuitive dashboard.

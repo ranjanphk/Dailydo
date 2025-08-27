@@ -1,5 +1,6 @@
   import { useState } from "react";
   import { Search, Bell } from "lucide-react"; // Example icons, replace with yours
+  import { ChartPie } from "lucide-react";  
 
   const Topbar = ({ user, onProfileClick, logout }) => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -8,11 +9,16 @@
     const initial = user?.name ? user.name.charAt(0).toUpperCase() : "U";
 
     return (
-      <header className="flex justify-between items-center px-6 py-4 bg-white shadow-sm relative">
+      <header className="flex justify-between items-center px-6 py-4 bg-white shadow-sm relative w-screen">
                 <h1
-            className="text-2xl font-bold text-indigo-600 cursor-pointer"
+            className="text-2xl font-bold text-indigo-600 cursor-pointer flex items-center gap-2"
             onClick={() => window.location.reload()}
           >
+             <ChartPie
+                  size={24}
+                  strokeWidth={1.5} 
+                  className="text-indigo-600" 
+                />
             Heymate
               </h1>
 
@@ -39,8 +45,6 @@
               className="w-9 h-9 flex items-center justify-center rounded-full bg-purple-500 text-white font-semibold focus:outline-none"
             >
                 {user?.email ? user.email.charAt(0).toUpperCase() : "U"}
-
-
             </button>
 
             {menuOpen && (

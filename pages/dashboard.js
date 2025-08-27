@@ -91,13 +91,13 @@ useEffect(() => {
 
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <div className="w-20 flex flex-col items-center justify-center bg-slate-500 text-white fixed left-0 top-0 bottom-0">
+    <div className="flex h-screen bg-gray-100 w-screen">
+      <div className="w-20 flex flex-col items-center justify-center bg-slate-500 text-white absolute top-1/2 left-4">
         <Sidebar onTasksClick={() => setActiveSection("dashboard")} />
       </div>
 
-      <div className="flex-1 flex flex-col ml-20">
-        <Topbar
+      <div className="flex-1 flex flex-col w-screen">
+        <Topbar className="flex fixed top-0 w-screen"
           user={user}
           onProfileClick={() => setView("profile")}
           logout={logout}                 // <-- pass it down
