@@ -23,7 +23,7 @@ const Sidebar = ({ onTasksClick }) => {
 
       {/* Daily Task */}
       <button
-        onClick={onTasksClick}
+        onClick={() => navigate('/dashboard')}
         className="text-white bg-indigo-500 p-3 rounded-xl flex flex-col items-center shadow-md hover:bg-indigo-600"
       >
         <LucideClipboardCheck size={16} />
