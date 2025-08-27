@@ -48,9 +48,7 @@ useEffect(() => {
           title: data.title || "",
           status: data.status || "In Progress",
           userId: data.userId,
-          createdAt: data.createdAt?.toDate
-            ? data.createdAt.toDate()
-            : new Date(),
+          createdAt: data.createdAt?.toDate?.() || new Date(),
           avatarUrl: data.avatarUrl || null,
         };
       })
@@ -59,6 +57,7 @@ useEffect(() => {
 
   return unsub;
 }, [user]);
+  // Compute task counts
 
 
   const { completed, inProgress, pending } = useMemo(() => ({
