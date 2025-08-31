@@ -1,4 +1,4 @@
-import { LucideBookTemplate, LucideChartBar, LucideClipboardCheck, LucideFolder, LucideHome, LucidePlus } from 'lucide-react';
+import { LucideBookTemplate, LucideBriefcase, LucideChartBar, LucideClipboardCheck, LucideFolder, LucideHome, LucideNotebook, LucidePlus } from 'lucide-react';
 
 const Sidebar = ({ onTasksClick }) => {
 
@@ -32,9 +32,9 @@ const Sidebar = ({ onTasksClick }) => {
        {/* Projects */}
       <button
         onClick={onTasksClick}
-        className="text-gray-600 hover:text-indigo-600 flex flex-col items-center"
+        className="text-gray-600 hover:text-indigo-600 flex flex-col items-center w-8"
       >
-        <LucideFolder size={16} />
+        <LucideBriefcase size={16} />
         <span className="text-xs mt-1">Projects</span>
       </button>
              {/* Templates */}
@@ -42,7 +42,7 @@ const Sidebar = ({ onTasksClick }) => {
         onClick={onTasksClick}
         className="text-gray-600 hover:text-indigo-600 flex flex-col items-center"
       >
-        <LucideBookTemplate size={16} />
+        <LucideNotebook size={16} />
         <span className="text-xs mt-1">Templates</span>
       </button>
       
