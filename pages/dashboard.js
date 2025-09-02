@@ -66,6 +66,19 @@ useEffect(() => {
     pending: tasks.filter(t => t.status === "Pending").length,
   }), [tasks]);
 
+  //handleDrag
+  const handleReorder = (reorderedSlice, startIndex) => {
+    // Copy full tasks
+    const updated = [...tasks];
+
+    // Replace just the visible slice
+    for (let i = 0; i < reorderedSlice.length; i++) {
+      updated[startIndex + i] = reorderedSlice[i];
+    }
+
+    setTasks(updated); // 🔥 Update parent state
+  };
+
   const addTask = async (text) => {
     if (!user) return;
     await addDoc(collection(db, "tasks"), {
@@ -111,6 +124,7 @@ useEffect(() => {
                   tasks={tasks}
                   onDelete={deleteTask}
                   onChangeStatus={changeStatus}
+                  onReorder={handleReorder}  // <-- pass it down
                 />
               </div>
               <TaskOverview
