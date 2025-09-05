@@ -50,7 +50,7 @@ export default function Home() {
       {/* Features Section */}
       <section className="bg-white py-20 px-6">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
-          Why Choose Heymate?
+          Why Choose DailyDo?
         </h2>
         <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
           <FeatureCard icon={<CheckCircle className="text-indigo-600 w-8 h-8" />} title="Effortless Task Management" description="Stay on top of daily productivity with a simple, powerful task system." />
@@ -62,7 +62,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="mt-auto bg-indigo-900 text-gray-300 py-8 px-6 text-center">
-        <p>© {new Date().getFullYear()} Heymate by BeyondUX. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} DailyDo by BeyondUX. All rights reserved.</p>
         <div className="mt-4 flex justify-center gap-6 text-sm">
           <Link href="/privacy" className="hover:text-white">Privacy Policy</Link>
           <Link href="/terms" className="hover:text-white">Terms of Service</Link>
