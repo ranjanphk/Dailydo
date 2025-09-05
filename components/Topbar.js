@@ -14,11 +14,7 @@
             className="text-2xl font-bold text-indigo-600 cursor-pointer flex items-center gap-2"
             onClick={() => window.location.reload()}
           >
-             <ChartPie
-                  size={24}
-                  strokeWidth={1.5} 
-                  className="text-indigo-600" 
-                />
+
             DailyDo
               </h1>
 

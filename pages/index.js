@@ -18,11 +18,6 @@ export default function Home() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-              <ChartPie
-                  size={48}
-                  strokeWidth={1.5} 
-                  className="text-indigo-600" 
-                />
                     DailyDo
         </motion.h1>
         <p className="mt-6 text-xl text-gray-600 max-w-2xl">
