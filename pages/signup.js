@@ -33,7 +33,7 @@ export default function RequestInvitePage() {
         className="text-5xl font-extrabold text-indigo-700 cursor-pointer"
         onClick={() => router.push("/")}
       >
-        Heymate
+        DailyDo
       </h1>
 
       <div className="bg-white shadow-md rounded-lg p-8 max-w-md w-full">

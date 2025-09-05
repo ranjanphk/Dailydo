@@ -19,7 +19,7 @@
                   strokeWidth={1.5} 
                   className="text-indigo-600" 
                 />
-            Heymate
+            DailyDo
               </h1>
 
         <div className="flex items-center gap-4">

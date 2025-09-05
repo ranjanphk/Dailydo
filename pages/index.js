@@ -23,7 +23,7 @@ export default function Home() {
                   strokeWidth={1.5} 
                   className="text-indigo-600" 
                 />
-                    Heymate
+                    DailyDo
         </motion.h1>
         <p className="mt-6 text-xl text-gray-600 max-w-2xl">
           Your smart productivity companion. Manage tasks, track performance, and create estimates — all in one intuitive dashboard.

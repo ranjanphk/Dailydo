@@ -30,7 +30,7 @@ export default function LoginPage() {
           animate={{ opacity: 1, y: 0 }}
           onClick={() => router.push('/')}
         >
-          Heymate
+          DailyDo
         </motion.h1>
       <div className="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
         <button
