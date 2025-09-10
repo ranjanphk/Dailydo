@@ -4,7 +4,7 @@ import TaskTable from '../components/TaskTable';
 import TaskOverview from '../components/TaskOverview';
 import TaskComposer from '../components/TaskComposer';
 import Profile from '../components/Profile';
-import { where } from "firebase/firestore";
+import { where, writeBatch } from "firebase/firestore";
 
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/router";
@@ -28,64 +28,74 @@ export default function Dashboard() {
   }, [user, loading, router]);
 
   // Listen to tasks collection
+  useEffect(() => {
+    if (!user) return;
 
-
-useEffect(() => {
-  if (!user) return;
-
-  const q = query(
-    collection(db, "tasks"),
-    where("userId", "==", user.uid),
-    orderBy("createdAt", "desc")
-  );
-
-  const unsub = onSnapshot(q, (snap) => {
-    setTasks(
-      snap.docs.map((d) => {
-        const data = d.data();
-        return {
-          id: d.id,
-          title: data.title || "",
-          status: data.status || "In Progress",
-          userId: data.userId,
-          createdAt: data.createdAt?.toDate?.() || new Date(),
-          avatarUrl: data.avatarUrl || null,
-        };
-      })
+    const q = query(
+      collection(db, "tasks"),
+      where("userId", "==", user.uid),
+      orderBy("order", "asc") // ✅ ASC for natural order
     );
-  });
 
-  return unsub;
-}, [user]);
+    const unsub = onSnapshot(q, (snap) => {
+      setTasks(
+        snap.docs.map((d) => {
+          const data = d.data();
+          return {
+            id: d.id,
+            title: data.title || "",
+            status: data.status || "In Progress",
+            userId: data.userId,
+            createdAt: data.createdAt?.toDate?.() || new Date(),
+            avatarUrl: data.avatarUrl || null,
+            order: data.order ?? 0, // ✅ include order
+          };
+        })
+      );
+    });
+
+    return unsub;
+  }, [user]);
+
   // Compute task counts
-
-
   const { completed, inProgress, pending } = useMemo(() => ({
     completed: tasks.filter(t => t.status === "Completed").length,
     inProgress: tasks.filter(t => t.status === "In Progress").length,
     pending: tasks.filter(t => t.status === "Pending").length,
   }), [tasks]);
 
-  //handleDrag
-  const handleReorder = (reorderedSlice, startIndex) => {
-    // Copy full tasks
+  // handle drag reorder
+  const handleReorder = async (reorderedSlice, startIndex) => {
     const updated = [...tasks];
-
-    // Replace just the visible slice
     for (let i = 0; i < reorderedSlice.length; i++) {
       updated[startIndex + i] = reorderedSlice[i];
     }
+    setTasks(updated);
 
-    setTasks(updated); // 🔥 Update parent state
+    // 🔥 persist to Firestore
+    const batch = writeBatch(db);
+    updated.forEach((task, index) => {
+      if (task.order !== index) { // ✅ only update changed ones
+        const taskRef = doc(db, "tasks", task.id);
+        batch.update(taskRef, { order: index });
+      }
+    });
+    await batch.commit();
   };
 
+  // add task
   const addTask = async (text) => {
     if (!user) return;
+
+    // ✅ compute next order safely
+    const maxOrder = tasks.length > 0 ? Math.max(...tasks.map(t => t.order ?? 0)) : -1;
+
     await addDoc(collection(db, "tasks"), {
       title: text,
       status: "In Progress",
       userId: user.uid,
       createdAt: serverTimestamp(),
+      order: maxOrder + 1,
     });
   };
 
@@ -98,10 +108,8 @@ useEffect(() => {
   };
 
   const handleProfileSave = () => {
-    // Do any save logic here if needed
-    setView("tasks"); // Return to dashboard after save
+    setView("tasks");
   };
-
 
   return (
     <div className="flex h-screen bg-gray-100 w-screen">
@@ -110,10 +118,11 @@ useEffect(() => {
       </div>
 
       <div className="flex-1 flex flex-col w-screen">
-        <Topbar className="flex fixed top-0 w-screen"
+        <Topbar
+          className="flex fixed top-0 w-screen"
           user={user}
           onProfileClick={() => setView("profile")}
-          logout={logout}                 // <-- pass it down
+          logout={logout}
         />
 
         <main className="flex-1 overflow-y-auto p-6 pb-32">
@@ -124,7 +133,7 @@ useEffect(() => {
                   tasks={tasks}
                   onDelete={deleteTask}
                   onChangeStatus={changeStatus}
-                  onReorder={handleReorder}  // <-- pass it down
+                  onReorder={handleReorder}  // ✅ reorder works
                 />
               </div>
               <TaskOverview
