@@ -16,10 +16,14 @@ export default function TaskTable({ tasks = [], onDelete, onChangeStatus, onReor
   const [sortOrder, setSortOrder] = useState("asc");
   const tasksPerPage = 6;
 
-  // filter
-  const filteredTasks = tasks.filter((t) =>
-    (t.title || "").toLowerCase().includes(searchTerm.toLowerCase())
-  );
+
+// Debugging: check what your data looks like
+console.log("Tasks array:", tasks);
+
+const filteredTasks = tasks.filter((t) => {
+  const title = typeof t.title === "string" ? t.title : String(t.title ?? "");
+  return title.toLowerCase().includes((searchTerm ?? "").toLowerCase());
+});
 
   // sort
   const sortedTasks = [...filteredTasks].sort((a, b) => {
@@ -127,14 +131,14 @@ export default function TaskTable({ tasks = [], onDelete, onChangeStatus, onReor
                               src={
                                 t.avatarUrl ||
                                 `https://api.dicebear.com/8.x/initials/svg?seed=${encodeURIComponent(
-                                  t.title || "T"
+                                  typeof t.title === "string" ? t.title : JSON.stringify(t.title ?? "")
                                 )}`
                               }
                               className="w-8 h-8 rounded-full"
                               alt=""
                             />
                             <span className="font-medium text-xs text-gray-800">
-                              {t.title}
+                               {typeof t.title === "string" ? t.title : JSON.stringify(t.title ?? "")}
                             </span>
                           </div>
                         </td>

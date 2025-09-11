@@ -34,7 +34,7 @@ export default function Dashboard() {
     const q = query(
       collection(db, "tasks"),
       where("userId", "==", user.uid),
-      orderBy("order", "asc") // ✅ ASC for natural order
+      orderBy("order", "desc") // highest order → top
     );
 
     const unsub = onSnapshot(q, (snap) => {
@@ -74,12 +74,14 @@ export default function Dashboard() {
 
     // 🔥 persist to Firestore
     const batch = writeBatch(db);
-    updated.forEach((task, index) => {
-      if (task.order !== index) { // ✅ only update changed ones
-        const taskRef = doc(db, "tasks", task.id);
-        batch.update(taskRef, { order: index });
-      }
-    });
+    const newOrders = updated.length;
+      updated.forEach((task, index) => {
+        const newOrder = newOrders - index; // highest order → top
+        if (task.order !== newOrder) { // ✅ only update changed ones
+          const taskRef = doc(db, "tasks", task.id);
+          batch.update(taskRef, { order: newOrder });
+        }
+      });
     await batch.commit();
   };
 
