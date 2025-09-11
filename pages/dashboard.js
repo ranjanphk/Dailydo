@@ -116,10 +116,16 @@ export default function Dashboard() {
   };
 
   const updateTask = async (task) => {
+
+    if (!user) return;
+
+    // ✅ compute next order safely
+    const maxOrder = tasks.length > 0 ? Math.max(...tasks.map(t => t.order ?? 0)) : 0;
     await updateDoc(doc(db, "tasks", task.id), { 
       
       title: task.title,
-      createdAt: serverTimestamp()
+      createdAt: serverTimestamp(),
+      order:maxOrder +1,
 
     });
   
