@@ -9,7 +9,7 @@ const statusColor = (s) =>
     ? "text-orange-500"
     : "text-blue-600";
 
-export default function TaskTable({ tasks = [], onDelete, onChangeStatus, onReorder }) {
+export default function TaskTable({ tasks = [], onDelete, onChangeStatus, onReorder, onEdit }) {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState(null);
@@ -166,7 +166,12 @@ const filteredTasks = tasks.filter((t) => {
                               className="w-5 h-5 cursor-pointer hover:text-red-600"
                               onClick={() => onDelete?.(t)}
                             />
-                            <PencilSquareIcon className="w-5 h-5 opacity-50" />
+                            <PencilSquareIcon className="w-5 h-5 cursor-pointer hover:text-blue-600" 
+                            
+                            onClick={() => onEdit?.(t)}  // ✏️ edit works
+                            
+                            
+                            />
                           </div>
                         </td>
                       </tr>

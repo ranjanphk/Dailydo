@@ -8,13 +8,14 @@ import { where, writeBatch } from "firebase/firestore";
 
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 
 import { db } from "../lib/firebase";
 import {
   addDoc, collection, onSnapshot, orderBy, query,
   serverTimestamp, updateDoc, doc, deleteDoc
 } from "firebase/firestore";
+import { create } from 'framer-motion/client';
 
 export default function Dashboard() {
   const { user, loading, logout } = useAuth();
@@ -22,6 +23,7 @@ export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [view, setView] = useState("tasks"); // "tasks" or "profile"
   const [activeSection, setActiveSection] = useState("dashboard");
+  const [editingTask, setEditingTask] = useState(null);
 
   useEffect(() => {
     if (!loading && !user) router.push("/login");
@@ -85,6 +87,10 @@ export default function Dashboard() {
     await batch.commit();
   };
 
+  const handleEditTask = (task) => {
+    setEditingTask(task);
+  };
+
   // add task
   const addTask = async (text) => {
     if (!user) return;
@@ -97,7 +103,7 @@ export default function Dashboard() {
       status: "In Progress",
       userId: user.uid,
       createdAt: serverTimestamp(),
-      order: maxOrder + 1,
+      order: maxOrder + 1, //
     });
   };
 
@@ -108,6 +114,17 @@ export default function Dashboard() {
   const deleteTask = async (task) => {
     await deleteDoc(doc(db, "tasks", task.id));
   };
+
+  const updateTask = async (task) => {
+    await updateDoc(doc(db, "tasks", task.id), { 
+      
+      title: task.title,
+      createdAt: serverTimestamp()
+
+    });
+  
+    setEditingTask(null); // exit editing mode after update
+  }
 
   const handleProfileSave = () => {
     setView("tasks");
@@ -136,6 +153,7 @@ export default function Dashboard() {
                   onDelete={deleteTask}
                   onChangeStatus={changeStatus}
                   onReorder={handleReorder}  // ✅ reorder works
+                  onEdit={handleEditTask}  // ✏️ edit works
                 />
               </div>
               <TaskOverview
@@ -154,7 +172,11 @@ export default function Dashboard() {
         </main>
 
         {view === "tasks" && (
-          <TaskComposer user={user} onCreate={addTask} />
+          <TaskComposer user={user} 
+          onCreate={addTask} 
+          editingTask={editingTask}
+          onUpdate={updateTask}  
+          />
         )}
       </div>
     </div>
