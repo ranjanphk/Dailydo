@@ -1,6 +1,14 @@
+import { title } from "framer-motion/client";
 import { useEffect, useState, useRef } from "react";
 
-export default function TaskComposer({ user, onCreate, editingTask, onUpdate }) {
+export default function TaskComposer({ 
+  user, 
+  onCreate, 
+  editingTask, 
+  onUpdate,
+  type="task" // by default, can be "task" or "note"
+
+    }) {
   const [value, setValue] = useState("");
   const textareaRef = useRef(null);
 
@@ -27,13 +35,26 @@ useEffect(() => {
     if (!text) return;
     if (editingTask) {
       onUpdate?.({ ...editingTask, title: text });
-      return;
-    } else {
 
-    onCreate?.(text);    
+      return;
+
+    // if dectect project syntex "/p "
+    }
+
+   if (text .startsWith("/p ")){
+    const projectTitle = text.slice(3).trim();
+    if (projectTitle) {
+      onCreate?.({type: "project", title: projectTitle});
+    } else {
+    onCreate?.({type: "task", title: text});    
   };
     setValue("");
-};  
+    return;
+  }
+
+  onCreate?.({type, title: text});
+  setValue("");
+};
 
   const onKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -52,14 +73,16 @@ useEffect(() => {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={onKeyDown}
-        placeholder="Type a task and press Enter… (Shift+Enter for newline)"
+        placeholder={type === "project"
+          ?"Type a task and press Enter… (Shift+Enter for newline)"
+          : "Type a Project Name and press Enter… (Shift+Enter for newline)"}
         className="flex-1 border rounded-xl px-4 py-3 pr-16 focus:outline-none w-full shadow-lg resize-none overflow-hidden"
       />
       <button
         onClick={send}
         className="absolute right-3 bg-blue-600 text-white hover:bg-blue-700 rounded-lg px-3 py-1 text-sm top-1/2 -translate-y-1/2"
       >
-        {editingTask ? "Update" : "Add"}
+        {editingTask ? "Update" : type === "project" ? "Create Project": "Add"}
       </button>
     </div>
   </div>

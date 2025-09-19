@@ -4,7 +4,11 @@ import TaskTable from '../components/TaskTable';
 import TaskOverview from '../components/TaskOverview';
 import TaskComposer from '../components/TaskComposer';
 import Profile from '../components/Profile';
+import Projects from '../components/Projects';  
+import ProjectCard from '../components/ProjectCard';  
+import ProjectDetail from '../components/ProjectDetail';
 import { where, writeBatch } from "firebase/firestore";
+import { LucidePlus } from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/router";
@@ -21,9 +25,10 @@ export default function Dashboard() {
   const { user, loading, logout } = useAuth();
   const router = useRouter();
   const [tasks, setTasks] = useState([]);
-  const [view, setView] = useState("tasks"); // "tasks" or "profile"
-  const [activeSection, setActiveSection] = useState("dashboard");
+  const [activePage, setActivePage] = useState("tasks"); // "tasks", "profile", "projects"
   const [editingTask, setEditingTask] = useState(null);
+  const [projects, setProjects] = useState([]);
+
 
   useEffect(() => {
     if (!loading && !user) router.push("/login");
@@ -58,6 +63,30 @@ export default function Dashboard() {
 
     return unsub;
   }, [user]);
+
+
+
+  // Listen to projects collection
+ useEffect(() => {
+  if (!user) return;
+
+          const q = query(
+            collection(db, "projects"),
+            where("userId", "==", user.uid),
+            orderBy("createdAt", "desc")
+          );
+
+          const unsub = onSnapshot(q, (snap) => {
+            setProjects(
+              snap.docs.map((d) => ({
+                id: d.id,
+                ...d.data(),
+              }))
+            );
+          });
+
+          return unsub;
+        }, [user]);
 
   // Compute task counts
   const { completed, inProgress, pending } = useMemo(() => ({
@@ -107,6 +136,21 @@ export default function Dashboard() {
     });
   };
 
+// add project (skeleton function, implement as needed)
+const addProject = async (title) => {
+  if (!user) return;
+
+  await addDoc(collection(db, "projects"), {
+    title,
+    userId: user.uid,
+    createdAt: serverTimestamp(),
+    totaltasks: 0,
+    completedtasks: 0,
+  });
+}
+
+
+
   const changeStatus = async (task, next) => {
     await updateDoc(doc(db, "tasks", task.id), { status: next });
   };
@@ -132,26 +176,37 @@ export default function Dashboard() {
     setEditingTask(null); // exit editing mode after update
   }
 
-  const handleProfileSave = () => {
-    setView("tasks");
-  };
+ // ✅ Sidebar click handlers
+  const handleProfileClick = () => setActivePage("profile");
+  const handleProjectsClick = () => setActivePage("projects");
+  const handleTasksClick = () => setActivePage("tasks");
+  const handleProfileSave = (updatedUser) => {
+    // Implement profile save logic here
+    console.log("Profile saved:", updatedUser);
+    setActivePage("tasks"); // Go back to tasks after saving profile
+  }
+
+
 
   return (
     <div className="flex h-screen bg-gray-100 w-screen">
       <div className="w-20 flex flex-col items-center justify-center bg-slate-500 text-white absolute top-1/2 left-4">
-        <Sidebar onTasksClick={() => setActiveSection("dashboard")} />
+        <Sidebar 
+        activePage = {activePage}
+        onTasksClick={handleTasksClick}
+        onProjectsClick={handleProjectsClick} />
       </div>
 
       <div className="flex-1 flex flex-col w-screen">
         <Topbar
           className="flex fixed top-0 w-screen"
           user={user}
-          onProfileClick={() => setView("profile")}
+          onProfileClick={() => setActivePage("profile")}
           logout={logout}
         />
 
         <main className="flex-1 overflow-y-auto p-6 pb-32">
-          {view === "tasks" && (
+          {activePage === "tasks" && (
             <div className="mx-auto max-w-6xl flex gap-6">
               <div className="flex-1">
                 <TaskTable
@@ -170,20 +225,59 @@ export default function Dashboard() {
             </div>
           )}
 
-          {view === "profile" && (
+          {activePage === "profile" && (
             <div className="mx-auto max-w-2xl">
               <Profile user={user} onSave={handleProfileSave} />
             </div>
           )}
+
+          {activePage === "projects" && (
+            <div className="mx-auto max-w-6xl">
+              <div className="flex justify-between items-center mb-4">
+
+                <Projects projects={projects} />  
+            </div>
+            </div>
+          )}
+
+
+
+
+          {/* Project Detail Page */}
+          {activePage === "projectDetail" && (
+            <div className="mx-auto max-w-6xl">
+              <ProjectDetail
+                  project={activeProject}
+                  user={user}
+                  tasks={tasks.filter(t => t.projectId === activeProject.id)} // temporary filter
+                  onCreateTask={addTask}
+                  onUpdateTask={updateTask}
+                  onDeleteTask={deleteTask}
+                  onChangeStatus={changeStatus}
+                  onReorder={handleReorder}
+                  editingTask={editingTask}
+                  onEdit={handleEditTask}  // ✏️ edit works
+              />
+              </div>
+          )}
+
         </main>
 
-        {view === "tasks" && (
-          <TaskComposer user={user} 
-          onCreate={addTask} 
-          editingTask={editingTask}
-          onUpdate={updateTask}  
-          />
-        )}
+    {/* TaskComposer (always visible, floating bottom-center) */}
+    <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 w-full px-4">
+      <TaskComposer
+        user={user}
+        onCreate={(newItem) => {
+          if (newItem.type === "project") {
+            addProject(newItem.title);
+          } else {
+            addTask(newItem.title);
+          }
+        }}
+        editingTask={editingTask}
+        onUpdate={updateTask}
+      />
+    </div>
       </div>
     </div>
   );
