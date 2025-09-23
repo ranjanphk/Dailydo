@@ -1,3 +1,4 @@
+
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 export default function ProjectCard({ project, onSelect }) {
@@ -14,7 +15,14 @@ export default function ProjectCard({ project, onSelect }) {
   const COLORS = ["#22c55e", "#e5e7eb"]; // green + gray
 
   return (
-    <div className="bg-white rounded-xl shadow p-4 hover:shadow-md transition flex flex-col items-center justify-center gap-2 w-64">
+    <div className="bg-white rounded-xl shadow p-4 hover:shadow-md transition flex flex-col items-center justify-center gap-2 w-64"
+    
+    onClick={() => onSelect(project)}>
+
+        
+              
+      
+      
       {/* Donut Chart */}
       <div className="relative w-24 h-24">
         <ResponsiveContainer>

@@ -2,7 +2,7 @@
 import { PlusCircle } from "lucide-react";
 import ProjectCard from "../components/ProjectCard";
 
-export default function ProjectsPage({ projects }) {
+export default function Projects ({ projects, setActiveProject, setActivePage  }) {
   return (
     <div className="flex flex-col h-full">
       {/* Empty State */}
@@ -21,9 +21,16 @@ export default function ProjectsPage({ projects }) {
         </div>
       ) : (
         /* Projects Grid */
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 flex-1 overflow-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-6 flex-1 overflow-auto">
           {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+            <ProjectCard
+            key={project.id}
+            project={project}
+            onSelect={() => {
+              setActiveProject(project);    // save the project
+              setActivePage("projectDetail"); // switch page
+            }}
+          />
           ))}
         </div>
       )}

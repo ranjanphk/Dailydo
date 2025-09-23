@@ -32,14 +32,6 @@ export default function ProjectDetail({ project, user, tasks, onCreateTask, onUp
           pending={tasks.filter(t => t.status === "Pending").length}
         />
       </div>
-
-      {/* Composer */}
-      <TaskComposer
-        user={user}
-        onCreate={onCreateTask}
-        editingTask={editingTask}
-        onUpdate={onUpdateTask}
-      />
     </div>
   );
 }

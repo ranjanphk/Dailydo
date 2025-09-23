@@ -28,6 +28,7 @@ export default function Dashboard() {
   const [activePage, setActivePage] = useState("tasks"); // "tasks", "profile", "projects"
   const [editingTask, setEditingTask] = useState(null);
   const [projects, setProjects] = useState([]);
+  const [activeProject, setActiveProject] = useState(null);
 
 
   useEffect(() => {
@@ -235,7 +236,13 @@ const addProject = async (title) => {
             <div className="mx-auto max-w-6xl">
               <div className="flex justify-between items-center mb-4">
 
-                <Projects projects={projects} />  
+                <Projects 
+                  projects={projects} 
+                  setActiveProject={setActiveProject} 
+                  setActivePage={setActivePage}  
+                  
+                
+                />  
             </div>
             </div>
           )}
