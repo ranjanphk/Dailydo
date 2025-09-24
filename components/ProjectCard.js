@@ -1,11 +1,18 @@
-
+import { useMemo } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 export default function ProjectCard({ project, onSelect }) {
-  const { title, totalTasks, completedTasks } = project;
+  const { tasks = [], title } = project;
 
-  const pendingTasks = totalTasks - completedTasks;
-  const progress = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+  // Calculate totals reactively using useMemo
+  const { totalTasks, completedTasks, pendingTasks, progress, projectTask } = useMemo(() => {
+    const total = tasks.length;
+    const completed = tasks.filter(t => t.status === "Completed").length;
+    const pending = total - completed;
+    const prog = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+    return { totalTasks: total, completedTasks: completed, pendingTasks: pending, progress: prog };
+  }, [tasks]); // recalc when tasks array changes
 
   const data = [
     { name: "Completed", value: completedTasks },
@@ -15,14 +22,10 @@ export default function ProjectCard({ project, onSelect }) {
   const COLORS = ["#22c55e", "#e5e7eb"]; // green + gray
 
   return (
-    <div className="bg-white rounded-xl shadow p-4 hover:shadow-md transition flex flex-col items-center justify-center gap-2 w-64"
-    
-    onClick={() => onSelect(project)}>
-
-        
-              
-      
-      
+    <div
+      className="bg-white rounded-xl shadow p-4 hover:shadow-md transition flex flex-col items-center justify-center gap-2 w-64"
+      onClick={() => onSelect(project)}
+    >
       {/* Donut Chart */}
       <div className="relative w-24 h-24">
         <ResponsiveContainer>
@@ -34,6 +37,7 @@ export default function ProjectCard({ project, onSelect }) {
               outerRadius={45}
               paddingAngle={2}
               stroke="none"
+
             >
               {data.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index]} />
@@ -42,7 +46,6 @@ export default function ProjectCard({ project, onSelect }) {
           </PieChart>
         </ResponsiveContainer>
 
-        {/* % Label in the center */}
         <div className="absolute inset-0 flex items-center justify-center text-lg font-bold">
           {progress}%
         </div>

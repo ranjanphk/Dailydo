@@ -1,9 +1,24 @@
+import { useMemo } from "react";
 import TaskTable from "./TaskTable";
 import TaskOverview from "./TaskOverview";
-import TaskComposer from "./TaskComposer";
 
-export default function ProjectDetail({ project, user, tasks, onCreateTask, onUpdateTask, onDeleteTask, onChangeStatus, onReorder, editingTask }) {
+export default function ProjectDetail({
+  project,
+  user,
+  tasks,
+  onCreateTask,
+  onUpdateTask,
+  onDeleteTask,
+  onChangeStatus,
+  onReorder,
+  editingTask
+}) {
   if (!project) return <p className="text-gray-500">No project selected</p>;
+
+  const projectTasks = useMemo(() => {
+    if (!project || !tasks) return [];
+    return tasks.filter(t => String(t.projectId) === String(project.id));
+  }, [tasks, project]);
 
   return (
     <div className="mx-auto max-w-6xl flex flex-col gap-6">
@@ -17,7 +32,7 @@ export default function ProjectDetail({ project, user, tasks, onCreateTask, onUp
         {/* Left: Task Table */}
         <div className="flex-1">
           <TaskTable
-            tasks={tasks}
+            tasks={projectTasks}
             onDelete={onDeleteTask}
             onChangeStatus={onChangeStatus}
             onReorder={onReorder}
@@ -27,9 +42,9 @@ export default function ProjectDetail({ project, user, tasks, onCreateTask, onUp
 
         {/* Right: Overview */}
         <TaskOverview
-          completed={tasks.filter(t => t.status === "Completed").length}
-          inProgress={tasks.filter(t => t.status === "In Progress").length}
-          pending={tasks.filter(t => t.status === "Pending").length}
+          completed={projectTasks.filter(t => t.status === "Completed").length}
+          inProgress={projectTasks.filter(t => t.status === "In Progress").length}
+          pending={projectTasks.filter(t => t.status === "Pending").length}
         />
       </div>
     </div>
