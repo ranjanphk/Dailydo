@@ -42,6 +42,7 @@ export default function ProjectDetail({
             editingTask={editingTask}
             user={user}
             onUpdateTask={onUpdateTask}
+            handleEditTask={handleEditTask}
           />
         </div>
 

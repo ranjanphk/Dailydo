@@ -301,6 +301,7 @@ export default function Dashboard() {
                 onChangeStatus={changeStatus}
                 onReorder={handleReorder}
                 editingTask={editingTask}
+                handleEditTask={handleEditTask}
               />
             </div>
           )}
