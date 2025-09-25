@@ -1,6 +1,7 @@
 import Sidebar from '../components/Sidebar';
 import Topbar from '../components/Topbar';
 import TaskTable from '../components/TaskTable';
+import Overview from '../components/Overview';
 import TaskOverview from '../components/TaskOverview';
 import TaskComposer from '../components/TaskComposer';
 import Profile from '../components/Profile';
@@ -58,6 +59,35 @@ export default function Dashboard() {
   }, [user]);
 
 
+  // chart Data
+  const chartData = useMemo(() => {
+  const grouped = {};
+
+  tasks.forEach(task => {
+    if (!task.createdAt) return;
+
+    const dateKey = task.createdAt.toISOString().split("T")[0]; // YYYY-MM-DD
+
+    if (!grouped[dateKey]) {
+      grouped[dateKey] = { 
+        date: dateKey, 
+        completed: 0, 
+        inProgress: 0, 
+        pending: 0 
+      };
+    }
+
+    if (task.status === "Completed") grouped[dateKey].completed += 1;
+    else if (task.status === "In Progress") grouped[dateKey].inProgress += 1;
+    else if (task.status === "Pending") grouped[dateKey].pending += 1;
+  });
+
+  // return array sorted by date
+  return Object.values(grouped).sort((a, b) => new Date(a.date) - new Date(b.date));
+}, [tasks]);
+
+
+
   // Listen to projects
   useEffect(() => {
     if (!user) return;
@@ -106,6 +136,9 @@ export default function Dashboard() {
     await batch.commit();
   };
 
+// handleoverviewclick
+  
+
 
   // handleprojectdelete
 
@@ -126,8 +159,7 @@ export default function Dashboard() {
     alert("Failed to delete project");
   }
 };
-
-
+  // Edit task
 
   const handleEditTask = (task) => setEditingTask(task);
 
@@ -180,6 +212,7 @@ export default function Dashboard() {
   // Sidebar click handlers
   const handleProfileClick = () => setActivePage("profile");
   const handleProjectsClick = () => setActivePage("projects");
+  const handleOverviewClick = () => setActivePage("overview");
   const handleTasksClick = () => setActivePage("tasks");
   const handleProfileSave = (updatedUser) => {
     console.log("Profile saved:", updatedUser);
@@ -188,11 +221,12 @@ export default function Dashboard() {
 
   return (
     <div className="flex h-screen bg-gray-100 w-screen">
-      <div className="w-20 flex flex-col items-center justify-center bg-slate-500 text-white absolute top-1/2 left-4">
+      <div className="w-25 flex flex-col items-center justify-center bg-slate-500 text-white absolute top-1/2 left-16">
         <Sidebar 
           activePage={activePage}
           onTasksClick={handleTasksClick}
           onProjectsClick={handleProjectsClick} 
+          onOverviewClick={handleOverviewClick}
         />
       </div>
 
@@ -240,6 +274,18 @@ export default function Dashboard() {
                 setProjects={setProjects}
                 onDelete={(projectId, projectTasks) => handleDeleteProject(projectId, projectTasks)}
               />  
+            </div>
+          )}
+
+          {/* Overview Page */}
+          {activePage === "overview" && (
+            <div className="mx-auto max-w-6xl">
+              <Overview
+              setActivePage={setActivePage}
+              Overview={Overview}
+              chartData={chartData}
+              tasks={tasks}     
+              />
             </div>
           )}
 
