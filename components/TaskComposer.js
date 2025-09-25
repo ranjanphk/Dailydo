@@ -1,27 +1,28 @@
 import { useEffect, useState, useRef } from "react";
+import { useRouter } from "next/router";
 
 export default function TaskComposer({
   user,
   onCreate,
   onUpdate,
   editingTask,
-  setEditingTask, // ✅ pass from Dashboard
+  setEditingTask,
   currentProject,
+  projects,
   type = "task",
 }) {
   const [value, setValue] = useState("");
   const textareaRef = useRef(null);
+  const router = useRouter();
 
   // Prefill input when editing or in a project
-  useEffect(() => {
-    if (editingTask) {
-      setValue(editingTask.title);
-    } else if (currentProject?.title) {
-      setValue(`#${currentProject.title} `);
-    } else {
-      setValue("");
-    }
-  }, [editingTask, currentProject]);
+ useEffect(() => {
+  if (editingTask) {
+    setValue(editingTask.title);
+  } else {
+    setValue(""); // ✅ no #project prefill
+  }
+}, [editingTask, currentProject]);
 
   // Auto-height
   useEffect(() => {
@@ -31,35 +32,67 @@ export default function TaskComposer({
     }
   }, [value]);
 
+  // Clear when navigating away
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setValue("");
+      setEditingTask?.(null);
+    };
+    router.events.on("routeChangeStart", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+    };
+  }, [router, setEditingTask]);
+
   if (!user) return null;
 
-  const send = () => {
-    const text = value.trim();
-    if (!text) return;
+const send = () => {
+  const text = value.trim();
+  if (!text) return;
 
-    // Update existing task
-    if (editingTask) {
-      onUpdate?.({ ...editingTask, title: text });
-      setEditingTask?.(null);
-      setValue(currentProject ? `#${currentProject.title} ` : "");
-      return;
-    }
+  // 1. Update existing
+  if (editingTask) {
+    onUpdate?.({ ...editingTask, title: text });
+    setEditingTask?.(null);
+    setValue("");
+    return;
+  }
 
-    // Create project with /p
-    if (text.startsWith("/p ")) {
-      const projectTitle = text.slice(3).trim();
-      if (projectTitle) onCreate?.({ type: "project", title: projectTitle });
-      setValue(currentProject ? `#${currentProject.title} ` : "");
-      return;
-    }
+  // 2. Create Project with /p
+  if (text.startsWith("/p ")) {
+    const projectTitle = text.slice(3).trim();
+    if (projectTitle) onCreate?.({ type: "project", title: projectTitle });
+    setValue("");
+    return;
+  }
 
-    // Determine projectId
-    const projectId = currentProject?.id || null;
+  // 3. If inside a project → force projectId
+  if (currentProject) {
+    onCreate?.({ type, title: text.replace(/^#\w+\s+/, ""), projectId: currentProject.id });
+    setValue("");
+    return;
+  }
 
-    // Create new task
-    onCreate?.({ type, title: text, projectId });
-    setValue(currentProject ? `#${currentProject.title} ` : "");
-  };
+  // 4. If outside project → parse #Project
+  const match = text.match(/^#(\w+)\s+(.*)$/);
+  if (match) {
+    const [, projectName, taskText] = match;
+    const project = projects.find(
+      (p) => p.title.toLowerCase() === projectName.toLowerCase()
+    );
+    onCreate?.({
+      type,
+      title: taskText,
+      projectId: project?.id || null,
+    });
+  } else {
+    // General task
+    onCreate?.({ type, title: text, projectId: null });
+  }
+
+  setValue("");
+};
+
 
   const onKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -86,12 +119,35 @@ export default function TaskComposer({
             className="flex-1 border rounded-xl px-4 py-3 pr-16 focus:outline-none w-full shadow-lg resize-none overflow-hidden relative z-10"
           />
 
-            <button
-              onClick={send}
-              className="absolute right-3 bg-blue-600 text-white hover:bg-blue-700 rounded-lg px-3 py-1 text-sm top-1/2 -translate-y-1/2 z-20"
-            >
-              {editingTask ? "Update" : type === "project" ? "Create Project" : "Add"}
-            </button>
+          {/* Buttons */}
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-2 z-20">
+            {editingTask ? (
+              <>
+                <button
+                  onClick={send}
+                  className="bg-blue-600 text-white hover:bg-blue-700 rounded-lg px-3 py-1 text-sm"
+                >
+                  Update
+                </button>
+                <button
+                  onClick={() => {
+                    setEditingTask(null);
+                    setValue(currentProject ? `#${currentProject.title} ` : "");
+                  }}
+                  className="bg-gray-300 text-gray-800 rounded-lg px-3 py-1 text-sm"
+                >
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={send}
+                className="bg-blue-600 text-white hover:bg-blue-700 rounded-lg px-3 py-1 text-sm"
+              >
+                {type === "project" ? "Create Project" : "Add"}
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

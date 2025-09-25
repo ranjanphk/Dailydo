@@ -57,6 +57,7 @@ export default function Dashboard() {
     return unsub;
   }, [user]);
 
+
   // Listen to projects
   useEffect(() => {
     if (!user) return;
@@ -249,6 +250,7 @@ export default function Dashboard() {
             editingTask={editingTask}
             onUpdate={updateTask}
             onCancelEdit={() => setEditingTask(null)}
+            setEditingTask={setEditingTask}
           />
         </div>
       </div>

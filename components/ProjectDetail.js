@@ -11,7 +11,8 @@ export default function ProjectDetail({
   onDeleteTask,
   onChangeStatus,
   onReorder,
-  editingTask
+  editingTask,
+  handleEditTask
 }) {
   if (!project) return <p className="text-gray-500">No project selected</p>;
 
@@ -36,7 +37,11 @@ export default function ProjectDetail({
             onDelete={onDeleteTask}
             onChangeStatus={onChangeStatus}
             onReorder={onReorder}
-            onEdit={onUpdateTask}
+            onEdit={handleEditTask}
+            onCreateTask={(task) => onCreateTask({ ...task, projectId: project.id })}
+            editingTask={editingTask}
+            user={user}
+            onUpdateTask={onUpdateTask}
           />
         </div>
 
