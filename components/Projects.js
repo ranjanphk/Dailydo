@@ -2,7 +2,10 @@
 import { PlusCircle } from "lucide-react";
 import ProjectCard from "../components/ProjectCard";
 
-export default function Projects({ projects, setActiveProject, tasks, setActivePage }) {
+
+export default function Projects({ projects, setActiveProject, tasks, setActivePage, onDelete }) {
+
+
   return (
     <div className="flex flex-col h-full">
       {/* Empty State */}
@@ -26,6 +29,7 @@ export default function Projects({ projects, setActiveProject, tasks, setActiveP
             // 👇 define projectTasks inside map, so no scope issues
             const projectTasks = tasks.filter(
               (t) => String(t.projectId) === String(project.id)
+              
             );
 
             return (
@@ -34,9 +38,12 @@ export default function Projects({ projects, setActiveProject, tasks, setActiveP
                 project={{ ...project, tasks: projectTasks }} // 👈 safe
                 onSelect={() => {
                   setActiveProject(project)
-                  setActivePage("projectDetail")        
+                  setActivePage("projectDetail")   
+                  
+                  
                 
                 }}
+                onDelete={(projectId, projectTasks) => onDelete(projectId, projectTasks)}
 
               />
             );

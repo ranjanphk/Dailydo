@@ -106,6 +106,29 @@ export default function Dashboard() {
     await batch.commit();
   };
 
+
+  // handleprojectdelete
+
+  const handleDeleteProject = async (projectId, projectTasks) => {
+  if (projectTasks.length > 0) {
+    alert("Cannot delete a project with tasks!");
+    return;
+  }
+
+  try {
+    // Delete project document
+    await deleteDoc(doc(db, "projects", projectId));
+
+    // Update local state
+    setProjects(prev => prev.filter(p => p.id !== projectId));
+  } catch (error) {
+    console.error("Error deleting project:", error);
+    alert("Failed to delete project");
+  }
+};
+
+
+
   const handleEditTask = (task) => setEditingTask(task);
 
   // Add task
@@ -214,6 +237,8 @@ export default function Dashboard() {
                 setActiveProject={setActiveProject} 
                 setActivePage={setActivePage}  
                 tasks={tasks}
+                setProjects={setProjects}
+                onDelete={(projectId, projectTasks) => handleDeleteProject(projectId, projectTasks)}
               />  
             </div>
           )}

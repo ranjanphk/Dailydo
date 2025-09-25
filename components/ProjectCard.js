@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { Trash2 } from "lucide-react";
 
-export default function ProjectCard({ project, onSelect }) {
+export default function ProjectCard({ project, onSelect, onDelete }) {
   const { tasks = [], title } = project;
 
   // Calculate totals reactively using useMemo
@@ -22,10 +23,28 @@ export default function ProjectCard({ project, onSelect }) {
   const COLORS = ["#22c55e", "#e5e7eb"]; // green + gray
 
   return (
+
+
     <div
-      className="bg-white rounded-xl shadow p-4 hover:shadow-md transition flex flex-col items-center justify-center gap-2 w-64"
+      className="bg-white rounded-xl shadow p-4 hover:shadow-md transition flex flex-col items-center justify-center gap-2 w-64 overflow-hidden"
       onClick={() => onSelect(project)}
     >
+
+      <div className="flex top-2 right-2 float-right text-red-500 hover:text-red-700 w-full place-items-center flex-row justify-end">
+        {tasks.length === 0 && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete?.(project.id, tasks); // parent handles Firestore
+            }}
+          >
+            <Trash2 size={18} />
+          </button>
+           )}
+          </div>
+       
+
+
       {/* Donut Chart */}
       <div className="relative w-24 h-24">
         <ResponsiveContainer>
@@ -45,7 +64,6 @@ export default function ProjectCard({ project, onSelect }) {
             </Pie>
           </PieChart>
         </ResponsiveContainer>
-
         <div className="absolute inset-0 flex items-center justify-center text-lg font-bold">
           {progress}%
         </div>
