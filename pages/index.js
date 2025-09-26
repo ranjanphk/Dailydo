@@ -5,7 +5,6 @@ import { useAuth } from "../context/AuthContext";
 import { motion } from "framer-motion";
 import { CheckCircle, BarChart3, Calendar, Users, Instagram, Linkedin, Twitter } from "lucide-react";
 
-
 export default function Home() {
   const { user } = useAuth();
 
@@ -23,7 +22,29 @@ export default function Home() {
         <p className="mt-6 text-xl text-gray-600 max-w-2xl">
           Your smart productivity companion. Manage tasks, track performance, and create estimates — all in one intuitive dashboard.
         </p>
-        <div className="mt-8 flex justify-center gap-6">
+        <div className="mt-8 flex flex-wrap justify-center gap-4">
+          {user ? (
+            <Link href="/dashboard">
+              <button className="px-8 py-4 bg-indigo-600 text-white rounded-2xl shadow-lg hover:bg-indigo-700 transition font-medium">
+                Go to Dashboard
+              </button>
+            </Link>
+          ) : (
+            <>
+              <Link href="/signup">
+                <button className="px-8 py-4 bg-indigo-600 text-white rounded-2xl shadow-lg hover:bg-indigo-700 transition font-medium">
+                  Get Started Free
+                </button>
+              </Link>
+              <Link href="/login">
+                <button className="px-8 py-4 border border-indigo-600 text-indigo-600 rounded-2xl hover:bg-indigo-50 transition font-medium">
+                  Login
+                </button>
+              </Link>
+            </>
+          )}
+        </div>
+        <div className="mt-12 w-full max-w-4xl flex justify-center gap-8">
           {/* Instagram */}
           <a 
             href="https://www.instagram.com/heydailydo/" 
@@ -75,7 +96,7 @@ export default function Home() {
         <div className="mt-4 flex justify-center gap-6 text-sm">
           <Link href="/privacy" className="hover:text-white">Privacy Policy</Link>
           <Link href="/terms" className="hover:text-white">Terms of Service</Link>
-          <Link href="mailto:ranjanuxd@gmail.com" className="hover:text-white">Contact</Link>
+          <Link href="/contact" className="hover:text-white">Contact</Link>
         </div>
       </footer>
     </div>
