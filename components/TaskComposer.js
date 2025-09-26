@@ -114,10 +114,22 @@ const send = () => {
             placeholder={
               type === "project"
                 ? "Type a Project Name and press Enter… (Shift+Enter for newline)"
-                : "Type a task and press Enter… (Shift+Enter for newline)"
+                : "Type a Task and press Enter…"
             }
             className="flex-1 border rounded-xl px-4 py-3 pr-16 focus:outline-none w-full shadow-lg resize-none overflow-hidden relative z-10"
           />
+
+                    
+              {/* ✅ Hints go here */}
+              <div className="absolute left-2 -bottom-5 text-xs text-gray-500">
+                {value.startsWith("/p") ? (
+                  <span>💡 Press Enter to create a new project</span>
+                ) : value.startsWith("#") ? (
+                  <span>💡 Type a project name after <code>#</code> to assign task</span>
+                ) : (
+                  <span>💡 Hint: Use <code>/p</code> <b>ProjectTitle</b> to create a project, or <code><b>#Project</b> Task</code> to assign</span>
+                )}
+              </div>
 
           {/* Buttons */}
           <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-2 z-20">
@@ -138,7 +150,7 @@ const send = () => {
                 >
                   Cancel
                 </button>
-              </>
+              </> 
             ) : (
               <button
                 onClick={send}
@@ -149,6 +161,7 @@ const send = () => {
             )}
           </div>
         </div>
+        
       </div>
     </div>
   );
