@@ -221,7 +221,7 @@ export default function Dashboard() {
 
   return (
     <div className="flex h-screen bg-gray-100 w-screen">
-      <div className="w-25 flex flex-col items-center justify-center bg-slate-500 text-white absolute top-1/2 left-16">
+      <div className="w-24 flex flex-col items-center justify-center bg-slate-500 text-white absolute top-1/2 left-8">
         <Sidebar 
           activePage={activePage}
           onTasksClick={handleTasksClick}

@@ -3,7 +3,7 @@ import { LucideBookTemplate, LucideBriefcase, LucideChartBar, LucideClipboardChe
 const Sidebar = ({activePage, onTasksClick, onProjectsClick, onOverviewClick }) => {
   
   return (
-    <aside className="w-25 h-auto py-6 fixed bg-white shadow-lg flex flex-col items-center justify-center gap-8 rounded-xl p-4">
+    <aside className="w-24 h-auto py-6 fixed bg-white shadow-lg flex flex-col items-center justify-center gap-8 rounded-xl p-4">
 
 
       {/* Daily Task */}
