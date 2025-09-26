@@ -1,27 +1,35 @@
+// pages/signup.js
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { signupWithEmail, loginWithGoogle } from "../lib/auth";
 
-export default function RequestInvitePage() {
+export default function SignupPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [sent, setSent] = useState(false);
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const submit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
+
     try {
-      const r = await fetch("/api/request-invite", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, name }),
-      });
+      await signupWithEmail(email, password, name);
+      router.push("/"); // ✅ redirect after signup
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      const data = await r.json();
-      if (!r.ok) throw new Error(data.error || "Failed to request invite");
-
-      setSent(true);
+  const handleGoogleSignup = async () => {
+    try {
+      await loginWithGoogle();
+      router.push("/"); // ✅ redirect after google signup
     } catch (err) {
       setError(err.message);
     }
@@ -44,57 +52,58 @@ export default function RequestInvitePage() {
           ← Back
         </button>
 
-        {!sent ? (
-          <>
-            <h2 className="text-2xl font-bold text-indigo-700 mb-6 text-center">
-              Request an Invite
-            </h2>
-            {error && (
-              <div className="mb-4 text-red-600 text-sm text-center">{error}</div>
-            )}
+        <h2 className="text-2xl font-bold text-indigo-700 mb-6 text-center">
+          Sign Up
+        </h2>
 
-            <form onSubmit={submit} className="space-y-4">
-              <input
-                type="text"
-                placeholder="Your name (optional)"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-              <input
-                type="email"
-                placeholder="Your email"
-                value={email}
-                required
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-              <button
-                type="submit"
-                className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition"
-              >
-                Request Invite
-              </button>
-            </form>
-          </>
-        ) : (
-          <div className="text-center">
-            <h2 className="text-2xl font-semibold text-indigo-700 mb-2">
-              Request sent ✅
-            </h2>
-            <p className="text-gray-600">
-              Your request has been submitted. An admin will review it soon.
-            </p>
-            <button
-              onClick={() => router.push("/")}
-              className="mt-6 px-6 py-2 border rounded-lg text-indigo-600"
-            >
-              Go Home
-            </button>
-          </div>
+        {error && (
+          <div className="mb-4 text-red-600 text-sm text-center">{error}</div>
         )}
+
+        <form onSubmit={submit} className="space-y-4">
+          <input
+            type="text"
+            placeholder="Your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+          <input
+            type="email"
+            placeholder="Your email"
+            value={email}
+            required
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+          <input
+            type="password"
+            placeholder="Your password"
+            value={password}
+            required
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition"
+          >
+            {loading ? "Signing up..." : "Sign Up"}
+          </button>
+        </form>
+
+        <div className="mt-6 text-center">
+          <p className="text-gray-500 mb-2">Or continue with</p>
+          <button
+            onClick={handleGoogleSignup}
+            className="w-full border border-gray-300 py-2 rounded-md hover:bg-gray-50 transition"
+          >
+            Google
+          </button>
+        </div>
       </div>
     </div>
   );
 }
-// signup.js --- IGNORE ---

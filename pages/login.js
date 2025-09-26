@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { login } from "../lib/auth";
+import { loginWithEmail, loginWithGoogle } from "../lib/auth"; // adjust your auth imports
 import { motion } from "framer-motion";
 
 export default function LoginPage() {
@@ -14,7 +14,17 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     try {
-      await login(email, password);
+      await loginWithEmail(email, password);
+      router.push("/dashboard");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setError("");
+    try {
+      await loginWithGoogle();
       router.push("/dashboard");
     } catch (err) {
       setError(err.message);
@@ -23,15 +33,15 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white to-indigo-50 px-4 py-50 flex-col gap-7">
+      <motion.h1
+        className="text-6xl font-extrabold text-indigo-700 tracking-tight cursor-pointer"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        onClick={() => router.push('/')}
+      >
+        DailyDo
+      </motion.h1>
 
-        <motion.h1
-          className="text-6xl font-extrabold text-indigo-700 tracking-tight cursor-pointer"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          onClick={() => router.push('/')}
-        >
-          DailyDo
-        </motion.h1>
       <div className="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
         <button
           onClick={() => router.back()}
@@ -79,6 +89,18 @@ export default function LoginPage() {
             Login
           </button>
         </form>
+
+        <div className="mt-4 flex items-center justify-center gap-2">
+          <span className="text-gray-400">or</span>
+        </div>
+
+        <button
+          onClick={handleGoogleLogin}
+          className="w-full mt-4 bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition flex items-center justify-center gap-2"
+        >
+          <lucide-google size={16} />
+          Login with Google
+        </button>
 
         <p className="mt-6 text-center text-sm text-gray-600">
           Don’t have an account?{" "}
