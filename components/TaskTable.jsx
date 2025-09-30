@@ -137,7 +137,7 @@ const filteredTasks = tasks.filter((t) => {
                               className="w-8 h-8 rounded-full"
                               alt=""
                             />
-                            <span className="font-medium text-xs text-gray-800">
+                            <span className="font-medium text-xs text-gray-800 break-words max-w-xs">
                                {typeof t.title === "string" ? t.title : JSON.stringify(t.title ?? "")}
                             </span>
                           </div>
