@@ -1,13 +1,23 @@
+// pages/_app.js
 import { ThemeProvider } from "next-themes";
-import '../styles/globals.css';
-import { AuthProvider } from '../context/AuthContext'; // ✅ Import AuthProvider
+import { AuthProvider } from "../context/AuthContext";
+import { useRouter } from "next/router";
+import "../styles/globals.css";
 
 export default function App({ Component, pageProps }) {
+  const router = useRouter();
+  const noThemeRoutes = ["/", "/login", "/signup"]; // public pages
+  const isNoThemePage = noThemeRoutes.includes(router.pathname);
+
   return (
-    <ThemeProvider attribute="class">
-      <AuthProvider>
+    <AuthProvider>
+      {isNoThemePage ? (
         <Component {...pageProps} />
-      </AuthProvider>
-    </ThemeProvider>
+      ) : (
+        <ThemeProvider attribute="class">
+          <Component {...pageProps} />
+        </ThemeProvider>
+      )}
+    </AuthProvider>
   );
 }

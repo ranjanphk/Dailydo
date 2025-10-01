@@ -1,5 +1,4 @@
 // pages/index.js
-
 import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
 import { motion } from "framer-motion";
@@ -13,15 +12,16 @@ export default function Home() {
       {/* Hero Section */}
       <header className="flex flex-col items-center justify-center text-center py-24 px-6">
         <motion.h1
-          className="text-6xl font-extrabold text-indigo-700 tracking-tight flex-horizontal gap-4 flex items-center justify-center"
+          className="text-6xl font-extrabold text-indigo-700 tracking-tight flex items-center justify-center"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-                    DailyDo
+          DailyDo
         </motion.h1>
-        <p className="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-2xl">
+        <p className="mt-6 text-xl text-gray-700 max-w-2xl">
           Your smart productivity companion. Manage tasks, track performance, and create estimates — all in one intuitive dashboard.
         </p>
+
         <div className="mt-8 flex flex-wrap justify-center gap-4">
           {user ? (
             <Link href="/dashboard">
@@ -37,49 +37,31 @@ export default function Home() {
                 </button>
               </Link>
               <Link href="/login">
-                <button className="px-8 py-4 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-indigo-600 text-indigo-600 rounded-2xl hover:bg-indigo-50 transition font-medium">
+                <button className="px-8 py-4 border border-gray-300 text-indigo-600 rounded-2xl hover:bg-indigo-50 transition font-medium">
                   Login
                 </button>
               </Link>
             </>
           )}
         </div>
-        <div className="mt-12 w-full max-w-4xl flex justify-center gap-8">
-          {/* Instagram */}
-          <a 
-            href="https://www.instagram.com/heydailydo/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-gray-500 dark:text-gray-100 hover:text-gray-800 dark:text-gray-100 transition"
-          >
-            <Instagram className="w-6 h-6" />
-          </a>
 
-          {/* LinkedIn */}
-          <a 
-            href="https://www.linkedin.com/company/heydailydo" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-gray-500 dark:text-gray-100 hover:text-gray-800 dark:text-gray-100 transition"
-          >
-            <Linkedin className="w-6 h-6" />
+        {/* Social Links */}
+        <div className="mt-12 w-full max-w-4xl flex justify-center gap-8 text-gray-500">
+          <a href="https://www.instagram.com/heydailydo/" target="_blank" rel="noopener noreferrer">
+            <Instagram className="w-6 h-6 hover:text-indigo-600" />
           </a>
-
-          {/* Twitter */}
-          <a 
-            href="https://twitter.com/heydailydo" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-gray-500 dark:text-gray-100 hover:text-gray-800 dark:text-gray-100 transition"
-          >
-            <Twitter className="w-6 h-6" />
+          <a href="https://www.linkedin.com/company/heydailydo" target="_blank" rel="noopener noreferrer">
+            <Linkedin className="w-6 h-6 hover:text-indigo-600" />
+          </a>
+          <a href="https://twitter.com/heydailydo" target="_blank" rel="noopener noreferrer">
+            <Twitter className="w-6 h-6 hover:text-indigo-600" />
           </a>
         </div>
       </header>
 
-      {/* Features Section */}
-      <section className="bg-white dark:bg-gray-900 py-20 px-6">
-        <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-gray-100 mb-12">
+      {/* Features */}
+      <section className="bg-white py-20 px-6">
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
           Why Choose DailyDo?
         </h2>
         <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
@@ -91,7 +73,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="mt-auto bg-indigo-900 text-gray-300 py-8 px-6 text-center">
+      <footer className="mt-auto bg-indigo-900 text-gray-200 py-8 px-6 text-center">
         <p>© {new Date().getFullYear()} DailyDo by BeyondUX. All rights reserved.</p>
         <div className="mt-4 flex justify-center gap-6 text-sm">
           <Link href="/privacy" className="hover:text-white">Privacy Policy</Link>
@@ -110,8 +92,8 @@ function FeatureCard({ icon, title, description }) {
       whileHover={{ scale: 1.05 }}
     >
       {icon}
-      <h3 className="mt-4 text-lg font-semibold text-gray-800 dark:text-gray-100">{title}</h3>
-      <p className="mt-2 text-gray-600 dark:text-gray-300 text-sm">{description}</p>
+      <h3 className="mt-4 text-lg font-semibold text-gray-800">{title}</h3>
+      <p className="mt-2 text-gray-600 text-sm">{description}</p>
     </motion.div>
   );
 }

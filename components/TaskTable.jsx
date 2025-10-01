@@ -92,7 +92,7 @@ const filteredTasks = tasks.filter((t) => {
               {...provided.droppableProps}
             >
               <thead>
-                <tr className="text-left text-gray-500 dark:text-gray-100">
+                <tr className="text-left text-gray-500 dark:text-gray-400">
                   <th className="py-2 px-3">Task Name</th>
                   <th
                     className="py-2 px-3 cursor-pointer"
@@ -155,7 +155,7 @@ const filteredTasks = tasks.filter((t) => {
                             <option value="Pending">Pending</option>
                           </select>
                         </td>
-                        <td className="py-3 px-3 text-gray-800 dark:text-gray-100">
+                        <td className="py-3 px-3 text-gray-800 dark:text-gray-400">
                           {t.createdAt
                             ? new Date(t.createdAt).toLocaleString()
                             : "-"}
