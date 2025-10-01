@@ -136,7 +136,6 @@ export default function Dashboard() {
     await batch.commit();
   };
 
-// handleoverviewclick
   
 
 
@@ -232,11 +231,27 @@ export default function Dashboard() {
 
       <div className="flex-1 flex flex-col w-screen">
         <Topbar
-          className="flex fixed top-0 w-screen"
-          user={user}
-          onProfileClick={() => setActivePage("profile")}
-          logout={logout}
-        />
+              user={user}
+              onProfileClick={() => setActivePage("profile")}
+              logout={logout}
+              tasks={tasks}
+              projects={projects}
+              onSelectItem={(item) => {
+                if (item.type === "project") {
+                  // Show project detail
+                  const project = projects.find(p => p.id === item.id);
+                  setActiveProject(project);
+                  setActivePage("projectDetail");
+                } else if (item.type === "task") {
+                  // Option 1: Highlight task in TaskTable
+                  // Option 2: Navigate to project of task
+                  const taskProject = projects.find(p => p.id === item.projectId);
+                  setActiveProject(taskProject || null);
+                  setActivePage("projectDetail"); // show project page with tasks
+                  setEditingTask(tasks.find(t => t.id === item.id)); // optional: highlight/edit task
+                }
+              }}
+            />
 
         <main className="flex-1 overflow-y-auto p-6 pb-32">
           {activePage === "tasks" && (
@@ -289,22 +304,24 @@ export default function Dashboard() {
             </div>
           )}
 
-          {activePage === "projectDetail" && (
-            <div className="mx-auto max-w-6xl">
-              <ProjectDetail
-                project={activeProject}
-                user={user}
-                tasks={tasks} // ✅ pass all tasks
-                onCreateTask={addTask}
-                onUpdateTask={updateTask}
-                onDeleteTask={deleteTask}
-                onChangeStatus={changeStatus}
-                onReorder={handleReorder}
-                editingTask={editingTask}
-                handleEditTask={handleEditTask}
-              />
-            </div>
-          )}
+            {activePage === "projectDetail" && activeProject && (
+              <div className="mx-auto max-w-6xl">
+                <ProjectDetail
+                  key={activeProject.id}   // ✅ Force re-mount on project change
+                  project={activeProject}
+                  user={user}
+                  tasks={tasks.filter(t => t.projectId === activeProject.id)} // show only tasks of active project
+                  onCreateTask={addTask}
+                  onUpdateTask={updateTask}
+                  onDeleteTask={deleteTask}
+                  onChangeStatus={changeStatus}
+                  onReorder={handleReorder}
+                  editingTask={editingTask}
+                  handleEditTask={handleEditTask}
+                />
+              </div>
+            )}
+
         </main>
 
         {/* TaskComposer */}
