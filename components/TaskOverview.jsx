@@ -19,16 +19,16 @@ export default function TaskOverview({ completed, inProgress, pending }) {
   const COLORS = ["#22c55e", "#3b82f6", "#f97316"]; // green, blue, orange
 
   const Stat = ({ label, value, cls }) => (
-    <div className="bg-white rounded-lg shadow border px-4 py-3 text-center">
+    <div className="bg-white dark:bg-gray-900 rounded-lg shadow border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 px-4 py-3 text-center">
       <div className={`text-lg font-semibold ${cls}`}>
         {String(value).padStart(2, "0")}
       </div>
-      <div className="text-xs text-gray-500">{label}</div>
+      <div className="text-xs text-gray-500 dark:text-gray-100">{label}</div>
     </div>
   );
 
   return (
-    <div className="bg-white shadow p-5 w-96 justify-center">
+    <div className="bg-white dark:bg-gray-900 shadow p-5 w-96 justify-center">
       <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
         <span>✓</span> Daily Task
       </h3>

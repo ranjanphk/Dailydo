@@ -6,7 +6,7 @@ export default function TermsOfServicePage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-800">
+    <div className="min-h-screen bg-gray-50 text-gray-800 dark:text-gray-100">
       {/* Header */}
       <div className="bg-blue-600 text-white py-6 shadow">
         <h1 className="text-3xl font-bold text-center">Terms of Service</h1>
@@ -14,7 +14,7 @@ export default function TermsOfServicePage() {
 
       {/* Content */}
       <div className="max-w-4xl mx-auto px-6 py-10 space-y-6">
-        <p className="text-gray-600"><strong>Effective Date:</strong> 26-09-2025</p>
+        <p className="text-gray-600 dark:text-gray-300"><strong>Effective Date:</strong> 26-09-2025</p>
 
         <p>
           Welcome to DailyDO (“we,” “our,” or “us”). By accessing or using our app, website, or services (collectively, the “Services”), you agree to comply with these Terms of Service (“Terms”). 

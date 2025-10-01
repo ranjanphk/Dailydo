@@ -6,7 +6,7 @@ export default function PrivacyPolicyPage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-800">
+    <div className="min-h-screen bg-gray-50 text-gray-800 dark:text-gray-100">
       {/* Header */}
       <div className="bg-blue-600 text-white py-6 shadow">
         <h1 className="text-3xl font-bold text-center">Privacy Policy</h1>
@@ -14,7 +14,7 @@ export default function PrivacyPolicyPage() {
 
       {/* Content */}
       <div className="max-w-4xl mx-auto px-6 py-10 space-y-6">
-        <p className="text-gray-600"><strong>Effective Date:</strong> 26-09-2025</p>
+        <p className="text-gray-600 dark:text-gray-300"><strong>Effective Date:</strong> 26-09-2025</p>
 
         <p>
           DailyDO (“we,” “our,” or “us”) respects your privacy and is committed to protecting your personal information. 

@@ -89,7 +89,7 @@ const monthlyData = useMemo(() => {
   const chartData = viewMode === "weekly" ? weeklyData : monthlyData;
 
   return (
-    <div className="bg-white rounded-xl shadow p-6 w-full h-full">
+    <div className="bg-white dark:bg-gray-900 rounded-xl shadow p-6 w-full h-full">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold flex items-center gap-2">
           📊 {viewMode === "weekly" ? "Weekly" : "Monthly"} Overview

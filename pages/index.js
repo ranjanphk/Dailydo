@@ -19,7 +19,7 @@ export default function Home() {
         >
                     DailyDo
         </motion.h1>
-        <p className="mt-6 text-xl text-gray-600 max-w-2xl">
+        <p className="mt-6 text-xl text-gray-600 dark:text-gray-300 max-w-2xl">
           Your smart productivity companion. Manage tasks, track performance, and create estimates — all in one intuitive dashboard.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-4">
@@ -37,7 +37,7 @@ export default function Home() {
                 </button>
               </Link>
               <Link href="/login">
-                <button className="px-8 py-4 border border-indigo-600 text-indigo-600 rounded-2xl hover:bg-indigo-50 transition font-medium">
+                <button className="px-8 py-4 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-indigo-600 text-indigo-600 rounded-2xl hover:bg-indigo-50 transition font-medium">
                   Login
                 </button>
               </Link>
@@ -50,7 +50,7 @@ export default function Home() {
             href="https://www.instagram.com/heydailydo/" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-gray-500 hover:text-gray-700 transition"
+            className="text-gray-500 dark:text-gray-100 hover:text-gray-800 dark:text-gray-100 transition"
           >
             <Instagram className="w-6 h-6" />
           </a>
@@ -60,7 +60,7 @@ export default function Home() {
             href="https://www.linkedin.com/company/heydailydo" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-gray-500 hover:text-gray-700 transition"
+            className="text-gray-500 dark:text-gray-100 hover:text-gray-800 dark:text-gray-100 transition"
           >
             <Linkedin className="w-6 h-6" />
           </a>
@@ -70,7 +70,7 @@ export default function Home() {
             href="https://twitter.com/heydailydo" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-gray-500 hover:text-gray-700 transition"
+            className="text-gray-500 dark:text-gray-100 hover:text-gray-800 dark:text-gray-100 transition"
           >
             <Twitter className="w-6 h-6" />
           </a>
@@ -78,8 +78,8 @@ export default function Home() {
       </header>
 
       {/* Features Section */}
-      <section className="bg-white py-20 px-6">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
+      <section className="bg-white dark:bg-gray-900 py-20 px-6">
+        <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-gray-100 mb-12">
           Why Choose DailyDo?
         </h2>
         <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
@@ -110,8 +110,8 @@ function FeatureCard({ icon, title, description }) {
       whileHover={{ scale: 1.05 }}
     >
       {icon}
-      <h3 className="mt-4 text-lg font-semibold text-gray-800">{title}</h3>
-      <p className="mt-2 text-gray-600 text-sm">{description}</p>
+      <h3 className="mt-4 text-lg font-semibold text-gray-800 dark:text-gray-100">{title}</h3>
+      <p className="mt-2 text-gray-600 dark:text-gray-300 text-sm">{description}</p>
     </motion.div>
   );
 }

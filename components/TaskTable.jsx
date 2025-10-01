@@ -68,7 +68,7 @@ const filteredTasks = tasks.filter((t) => {
   };
 
   return (
-    <div className="bg-white p-4 overflow-x-auto text-xs">
+    <div className="bg-white dark:bg-gray-900 p-4 overflow-x-auto text-xs">
       {/* Search Bar */}
       <div className="flex items-center justify-between mb-4">
         <input
@@ -79,7 +79,7 @@ const filteredTasks = tasks.filter((t) => {
             setSearchTerm(e.target.value);
             setPage(1);
           }}
-          className="border rounded px-3 py-1 text-sm w-64 focus:outline-none focus:ring"
+          className="border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 rounded px-3 py-1 text-sm w-64 focus:outline-none focus:ring"
         />
       </div>
 
@@ -87,12 +87,12 @@ const filteredTasks = tasks.filter((t) => {
         <Droppable droppableId="taskTable">
           {(provided) => (
             <table
-              className="min-w-full border-separate text-xs border-spacing-y-2"
+              className="min-w-full border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-separate text-xs border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-spacing-y-2"
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
               <thead>
-                <tr className="text-left text-gray-500">
+                <tr className="text-left text-gray-500 dark:text-gray-100">
                   <th className="py-2 px-3">Task Name</th>
                   <th
                     className="py-2 px-3 cursor-pointer"
@@ -123,7 +123,7 @@ const filteredTasks = tasks.filter((t) => {
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        className="bg-white hover:bg-gray-50 rounded-lg"
+                        className="bg-white dark:bg-gray-900 hover:bg-gray-50 rounded-lg"
                       >
                         <td className="py-3 px-3">
                           <div className="flex items-center gap-3">
@@ -137,7 +137,7 @@ const filteredTasks = tasks.filter((t) => {
                               className="w-8 h-8 rounded-full"
                               alt=""
                             />
-                            <span className="font-medium text-xs text-gray-800 break-words max-w-xs">
+                            <span className="font-medium text-xs text-gray-800 dark:text-gray-100 break-words max-w-xs">
                                {typeof t.title === "string" ? t.title : JSON.stringify(t.title ?? "")}
                             </span>
                           </div>
@@ -155,13 +155,13 @@ const filteredTasks = tasks.filter((t) => {
                             <option value="Pending">Pending</option>
                           </select>
                         </td>
-                        <td className="py-3 px-3 text-gray-700">
+                        <td className="py-3 px-3 text-gray-800 dark:text-gray-100">
                           {t.createdAt
                             ? new Date(t.createdAt).toLocaleString()
                             : "-"}
                         </td>
                         <td className="py-3 px-3">
-                          <div className="flex items-center gap-3 text-gray-600">
+                          <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300">
                             <TrashIcon
                               className="w-5 h-5 cursor-pointer hover:text-red-600"
                               onClick={() => onDelete?.(t)}
@@ -181,7 +181,7 @@ const filteredTasks = tasks.filter((t) => {
                 {provided.placeholder}
                 {displayedTasks.length === 0 && (
                   <tr>
-                    <td colSpan={4} className="py-8 text-center text-gray-500">
+                    <td colSpan={4} className="py-8 text-center text-gray-500 dark:text-gray-100">
                       No tasks found.
                     </td>
                   </tr>
@@ -193,7 +193,7 @@ const filteredTasks = tasks.filter((t) => {
       </DragDropContext>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between text-sm text-gray-500 mt-4">
+      <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-100 mt-4">
         <span>
           Showing {displayedTasks.length} of {sortedTasks.length}
         </span>
@@ -201,7 +201,7 @@ const filteredTasks = tasks.filter((t) => {
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="px-3 py-1 border rounded disabled:opacity-50"
+            className="px-3 py-1 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 rounded disabled:opacity-50"
           >
             Previous
           </button>
@@ -211,7 +211,7 @@ const filteredTasks = tasks.filter((t) => {
           <button
             onClick={() => setPage((p) => (p < totalPages ? p + 1 : p))}
             disabled={page >= totalPages}
-            className="px-3 py-1 border rounded disabled:opacity-50"
+            className="px-3 py-1 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 rounded disabled:opacity-50"
           >
             Next
           </button>

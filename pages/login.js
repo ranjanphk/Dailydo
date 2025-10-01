@@ -42,7 +42,7 @@ export default function LoginPage() {
         DailyDo
       </motion.h1>
 
-      <div className="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
+      <div className="bg-white dark:bg-gray-900 shadow-md rounded-lg p-8 max-w-md w-full">
         <button
           onClick={() => router.back()}
           className="mb-4 text-indigo-600 hover:underline text-sm"
@@ -65,7 +65,7 @@ export default function LoginPage() {
             value={email}
             required
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
           <input
             type="password"
@@ -73,7 +73,7 @@ export default function LoginPage() {
             value={password}
             required
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
 
           <div className="flex justify-end text-sm">
@@ -102,7 +102,7 @@ export default function LoginPage() {
           Login with Google
         </button>
 
-        <p className="mt-6 text-center text-sm text-gray-600">
+        <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-300">
           Don’t have an account?{" "}
           <a
             href="/signup"

@@ -220,7 +220,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100 w-screen">
+    <div className="flex h-screen bg-gray-100 dark:bg-gray-800 w-screen">
       <div className="w-24 flex flex-col items-center justify-center bg-slate-500 text-white absolute top-1/2 left-8">
         <Sidebar 
           activePage={activePage}
@@ -240,7 +240,7 @@ export default function Dashboard() {
 
         <main className="flex-1 overflow-y-auto p-6 pb-32">
           {activePage === "tasks" && (
-            <div className="mx-auto max-w-6xl flex bg-white rounded-md overflow-hidden shadow">
+            <div className="mx-auto max-w-6xl flex bg-white dark:bg-gray-900 rounded-md overflow-hidden shadow">
               <div className="flex-1">
                 <TaskTable
                   tasks={tasks}

@@ -18,7 +18,7 @@ export default function ProjectDetail({
   editingTask,
   handleEditTask
 }) {
-  if (!project) return <p className="text-gray-500">No project selected</p>;
+  if (!project) return <p className="text-gray-500 dark:text-gray-100">No project selected</p>;
 
   const projectTasks = useMemo(() => {
     if (!project || !tasks) return [];
@@ -45,7 +45,7 @@ export default function ProjectDetail({
       value={title}
       onChange={(e) => setTitle(e.target.value)}
       onKeyDown={(e) => e.key === "Enter" && handleSave()}
-      className="rounded px-2 py-1 text-sm font-semibold border-0"
+      className="rounded px-2 py-1 text-sm font-semibold border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-0"
       autoFocus
     />
   ) : (
@@ -55,7 +55,7 @@ export default function ProjectDetail({
   {!isEditing && (
     <button
       onClick={() => setIsEditing(true)}
-      className="text-gray-500 hover:text-gray-700"
+      className="text-gray-500 dark:text-gray-100 hover:text-gray-800 dark:text-gray-100"
     >
       <Pencil size={18} />
     </button>
@@ -71,10 +71,10 @@ export default function ProjectDetail({
   )}
 </div>
 
-        <p className="text-gray-500">{project.description}</p>
+        <p className="text-gray-500 dark:text-gray-100">{project.description}</p>
       </div>
 
-      <div className="flex bg-white rounded-md overflow-hidden shadow">
+      <div className="flex bg-white dark:bg-gray-900 rounded-md overflow-hidden shadow">
         {/* Left: Task Table */}
         <div className="flex-1">
           <TaskTable

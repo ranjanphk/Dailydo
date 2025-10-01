@@ -44,7 +44,7 @@ export default function SignupPage() {
         DailyDo
       </h1>
 
-      <div className="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
+      <div className="bg-white dark:bg-gray-900 shadow-md rounded-lg p-8 max-w-md w-full">
         <button
           onClick={() => router.back()}
           className="mb-4 text-indigo-600 hover:underline text-sm"
@@ -66,7 +66,7 @@ export default function SignupPage() {
             placeholder="Your name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
           <input
             type="email"
@@ -74,7 +74,7 @@ export default function SignupPage() {
             value={email}
             required
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
           <input
             type="password"
@@ -82,7 +82,7 @@ export default function SignupPage() {
             value={password}
             required
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
 
           <button
@@ -95,10 +95,10 @@ export default function SignupPage() {
         </form>
 
         <div className="mt-6 text-center">
-          <p className="text-gray-500 mb-2">Or continue with</p>
+          <p className="text-gray-500 dark:text-gray-100 mb-2">Or continue with</p>
           <button
             onClick={handleGoogleSignup}
-            className="w-full border border-gray-300 py-2 rounded-md hover:bg-gray-50 transition"
+            className="w-full border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-gray-300 py-2 rounded-md hover:bg-gray-50 transition"
           >
             Google
           </button>

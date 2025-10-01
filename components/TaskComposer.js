@@ -116,12 +116,12 @@ const send = () => {
                 ? "Type a Project Name and press Enter… (Shift+Enter for newline)"
                 : "Type a Task and press Enter…"
             }
-            className="flex-1 border rounded-xl px-4 py-3 pr-16 focus:outline-none w-full shadow-lg resize-none overflow-hidden relative z-10"
+            className="flex-1 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 rounded-xl px-4 py-3 pr-16 focus:outline-none w-full shadow-lg resize-none overflow-hidden relative z-10"
           />
 
                     
               {/* ✅ Hints go here */}
-              <div className="absolute left-2 -bottom-5 text-xs text-gray-500">
+              <div className="absolute left-2 -bottom-5 text-xs text-gray-500 dark:text-gray-100">
                 {value.startsWith("/p") ? (
                   <span>💡 Press Enter to create a new project</span>
                 ) : value.startsWith("#") ? (
@@ -146,7 +146,7 @@ const send = () => {
                     setEditingTask(null);
                     setValue(currentProject ? `#${currentProject.title} ` : "");
                   }}
-                  className="bg-gray-300 text-gray-800 rounded-lg px-3 py-1 text-sm"
+                  className="bg-gray-300 text-gray-800 dark:text-gray-100 rounded-lg px-3 py-1 text-sm"
                 >
                   Cancel
                 </button>

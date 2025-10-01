@@ -61,7 +61,7 @@ export default function Profile() {
           <label className="block text-sm font-medium mb-1">Name</label>
           <input
             type="text"
-            className="w-full border rounded p-2"
+            className="w-full border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 rounded p-2"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -71,7 +71,7 @@ export default function Profile() {
           <label className="block text-sm font-medium mb-1">Phone</label>
           <input
             type="text"
-            className="w-full border rounded p-2"
+            className="w-full border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 rounded p-2"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />

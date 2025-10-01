@@ -26,7 +26,7 @@ export default function ProjectCard({ project, onSelect, onDelete }) {
 
 
     <div
-      className="bg-white rounded-xl shadow p-4 hover:shadow-md transition flex flex-col items-center justify-center gap-2 w-64 overflow-hidden"
+      className="bg-white dark:bg-gray-900 rounded-xl shadow p-4 hover:shadow-md transition flex flex-col items-center justify-center gap-2 w-64 overflow-hidden"
       onClick={() => onSelect(project)}
     >
 
@@ -70,10 +70,10 @@ export default function ProjectCard({ project, onSelect, onDelete }) {
       </div>
 
       {/* Title */}
-      <h2 className="text-md font-semibold text-gray-800">{title}</h2>
+      <h2 className="text-md font-semibold text-gray-800 dark:text-gray-100">{title}</h2>
 
       {/* Task count */}
-      <p className="text-sm text-gray-500">
+      <p className="text-sm text-gray-500 dark:text-gray-100">
         {completedTasks}/{totalTasks} tasks
       </p>
     </div>

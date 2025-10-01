@@ -1,15 +1,17 @@
   import { useState } from "react";
   import { Search, Bell } from "lucide-react"; // Example icons, replace with yours
   import { ChartPie } from "lucide-react";  
+  import { useTheme } from "next-themes";
 
   const Topbar = ({ user, onProfileClick, logout }) => {
+    const { theme, setTheme } = useTheme();
     const [menuOpen, setMenuOpen] = useState(false);
 
     // Get first letter of user's name or fallback
     const initial = user?.name ? user.name.charAt(0).toUpperCase() : "U";
 
     return (
-      <header className="flex justify-between items-center px-6 py-4 bg-white shadow-sm relative w-screen">
+      <header className="flex justify-between items-center px-6 py-4 bg-white dark:bg-gray-900 shadow-sm relative w-screen">
                 <h1
             className="text-2xl font-bold text-indigo-600 cursor-pointer flex items-center gap-2"
             onClick={() => window.location.reload()}
@@ -23,15 +25,23 @@
           <input
             type="text"
             placeholder="Search..."
-            className="border rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-400"
           />
-          <button className="p-2 hover:bg-gray-100 rounded">
-            <Search className="w-5 h-5 text-gray-600" />
+          <button className="p-2 hover:bg-gray-100 dark:bg-gray-800 rounded">
+            <Search className="w-5 h-5 text-gray-600 dark:text-gray-300" />
           </button>
 
+          {/* Theme Toggle */
+              <button
+                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                  className="px-3 py-1 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 dark:text-gray-100"
+                >
+                  {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
+          </button>}
+
           {/* Notifications */}
-          <button className="p-2 hover:bg-gray-100 rounded">
-            <Bell className="w-5 h-5 text-gray-600" />
+          <button className="p-2 hover:bg-gray-100 dark:bg-gray-800 rounded">
+            <Bell className="w-5 h-5 text-gray-600 dark:text-gray-300" />
           </button>
 
           {/* Profile Dropdown */}
@@ -43,21 +53,22 @@
                 {user?.email ? user.email.charAt(0).toUpperCase() : "U"}
             </button>
 
+
             {menuOpen && (
-              <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg">
+              <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-gray-200 rounded-lg shadow-lg">
                 <button
                   onClick={() => {
                     setMenuOpen(false);
                     onProfileClick();
                   }}
                   
-                  className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 rounded-t-lg"
+                  className="w-full px-4 py-2 text-left text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:bg-gray-800 rounded-t-lg"
                 >
                   Profile
                 </button>
                 <button
                   onClick={logout}
-                  className="w-full px-4 py-2 text-left text-red-600 hover:bg-gray-100 rounded-b-lg"
+                  className="w-full px-4 py-2 text-left text-red-600 hover:bg-gray-100 dark:bg-gray-800 rounded-b-lg"
                 >
                   Logout
                 </button>

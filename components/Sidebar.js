@@ -3,13 +3,13 @@ import { LucideBookTemplate, LucideBriefcase, LucideChartBar, LucideClipboardChe
 const Sidebar = ({activePage, onTasksClick, onProjectsClick, onOverviewClick }) => {
   
   return (
-    <aside className="w-24 h-auto py-6 fixed bg-white shadow-lg flex flex-col items-center justify-center gap-8 rounded-xl p-4">
+    <aside className="w-24 h-auto py-6 fixed bg-white dark:bg-gray-900 shadow-lg flex flex-col items-center justify-center gap-8 rounded-xl p-4">
 
 
       {/* Daily Task */}
       <button
         onClick={onTasksClick}
-        className={`text-gray-600 hover:text-indigo-600 flex flex-col items-center w-8 cursor-pointer
+        className={`text-gray-600 dark:text-gray-300 hover:text-indigo-600 flex flex-col items-center w-8 cursor-pointer
         ${activePage === 'tasks' ? 'hover:text-white text-white bg-indigo-500 p-3 w-full rounded-xl flex flex-col items-center shadow-md hover:bg-indigo-600' : ''}`}
       >
         <LucideClipboardCheck size={16} />
@@ -18,7 +18,7 @@ const Sidebar = ({activePage, onTasksClick, onProjectsClick, onOverviewClick }) 
        {/* Projects */}
       <button
         onClick={onProjectsClick}
-        className={`text-gray-600 hover:text-indigo-600 flex flex-col items-center w-8 cursor-pointer
+        className={`text-gray-600 dark:text-gray-300 hover:text-indigo-600 flex flex-col items-center w-8 cursor-pointer
         ${activePage === 'projects' ? 'hover:text-white text-white bg-indigo-500 p-3 w-full rounded-xl flex flex-col items-center shadow-md hover:bg-indigo-600' : ''}`}
       >
         <LucideBriefcase size={16} />
@@ -30,7 +30,7 @@ const Sidebar = ({activePage, onTasksClick, onProjectsClick, onOverviewClick }) 
 
       <button
         onClick={onOverviewClick}
-        className={`text-gray-600 hover:text-indigo-600 flex flex-col items-center w-8 cursor-pointer
+        className={`text-gray-600 dark:text-gray-300 hover:text-indigo-600 flex flex-col items-center w-8 cursor-pointer
         ${activePage === 'overview' ? 'hover:text-white text-white bg-indigo-500 p-3 w-full rounded-xl flex flex-col items-center shadow-md hover:bg-indigo-600' : ''}`}
       >
         <LucideChartBar size={16} />
