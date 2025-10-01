@@ -116,7 +116,7 @@ const send = () => {
                 ? "Type a Project Name and press Enter… (Shift+Enter for newline)"
                 : "Type a Task and press Enter…"
             }
-            className="flex-1 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 rounded-xl px-4 py-3 pr-16 focus:outline-none w-full shadow-lg resize-none overflow-hidden relative z-10"
+            className="flex-1 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 rounded-xl px-4 py-3 pr-16 w-full shadow-lg resize-none overflow-hidden relative z-10"
           />
 
                     

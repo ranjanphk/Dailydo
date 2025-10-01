@@ -79,7 +79,7 @@ const filteredTasks = tasks.filter((t) => {
             setSearchTerm(e.target.value);
             setPage(1);
           }}
-          className="border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 rounded px-3 py-1 text-sm w-64 focus:outline-none focus:ring"
+          className=" dark:border-gray-800 border border-gray-300 dark:border-gray-800-gray-200 rounded px-3 py-1 text-sm w-64 focus:outline-none focus:ring"
         />
       </div>
 
@@ -87,7 +87,7 @@ const filteredTasks = tasks.filter((t) => {
         <Droppable droppableId="taskTable">
           {(provided) => (
             <table
-              className="min-w-full border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-separate text-xs border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-spacing-y-2"
+              className="min-w-full dark:border-gray-800-gray-200-separate text-xs dark:border-gray-800 border border-gray-300 dark:border-gray-800-gray-200-spacing-y-2"
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
@@ -193,7 +193,7 @@ const filteredTasks = tasks.filter((t) => {
       </DragDropContext>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-100 mt-4">
+      <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mt-4">
         <span>
           Showing {displayedTasks.length} of {sortedTasks.length}
         </span>

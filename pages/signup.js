@@ -66,7 +66,7 @@ export default function SignupPage() {
             placeholder="Your name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full border-gray-800-gray-200 border-gray-800 border border-gray-800-gray-200-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
           <input
             type="email"
@@ -74,7 +74,7 @@ export default function SignupPage() {
             value={email}
             required
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full border-gray-800-gray-200 border-gray-800 border border-gray-800-gray-200-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
           <input
             type="password"
@@ -82,7 +82,7 @@ export default function SignupPage() {
             value={password}
             required
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full border-gray-800-gray-200 border-gray-800 border border-gray-800-gray-200-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
 
           <button
@@ -98,7 +98,7 @@ export default function SignupPage() {
           <p className="text-gray-500 dark:text-gray-100 mb-2">Or continue with</p>
           <button
             onClick={handleGoogleSignup}
-            className="w-full border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-gray-300 py-2 rounded-md hover:bg-gray-50 transition"
+            className="w-full border-gray-800-gray-200 border-gray-800 border border-gray-800-gray-200-gray-300 py-2 rounded-md hover:bg-gray-50 transition"
           >
             Google
           </button>

@@ -19,11 +19,11 @@ export default function TaskOverview({ completed, inProgress, pending }) {
   const COLORS = ["#22c55e", "#3b82f6", "#f97316"]; // green, blue, orange
 
   const Stat = ({ label, value, cls }) => (
-    <div className="bg-white dark:bg-gray-900 rounded-lg shadow border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 px-4 py-3 text-center">
+    <div className="bg-white dark:bg-gray-900 rounded-lg shadow dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 px-4 py-3 text-center">
       <div className={`text-lg font-semibold ${cls}`}>
         {String(value).padStart(2, "0")}
       </div>
-      <div className="text-xs text-gray-500 dark:text-gray-100">{label}</div>
+      <div className="text-xs text-gray-500 dark:text-gray-400">{label}</div>
     </div>
   );
 
@@ -42,7 +42,7 @@ export default function TaskOverview({ completed, inProgress, pending }) {
       <Chart data={data} colors={COLORS} />
 
       {lastUpdate && (
-        <p className="text-xs text-gray-400 text-center mt-2">
+        <p className="text-xs text-gray-300 text-center mt-2">
           Last Update: {lastUpdate}
         </p>
       )}

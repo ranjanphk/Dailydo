@@ -25,7 +25,7 @@
           <input
             type="text"
             placeholder="Search..."
-            className="border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="dark:border-gray-800 border border-gray-300 dark:border-gray-800-gray-200 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-400"
           />
           <button className="p-2 hover:bg-gray-100 dark:bg-gray-800 rounded">
             <Search className="w-5 h-5 text-gray-600 dark:text-gray-300" />
@@ -34,7 +34,7 @@
           {/* Theme Toggle */
               <button
                   onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                  className="px-3 py-1 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 dark:text-gray-100"
+                  className="px-3 py-1 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
                 >
                   {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
           </button>}

@@ -45,7 +45,7 @@ export default function ProjectDetail({
       value={title}
       onChange={(e) => setTitle(e.target.value)}
       onKeyDown={(e) => e.key === "Enter" && handleSave()}
-      className="rounded px-2 py-1 text-sm font-semibold border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-0"
+      className="rounded px-2 py-1 text-sm font-semibold  dark:border-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-800-gray-200-0"
       autoFocus
     />
   ) : (
@@ -55,7 +55,7 @@ export default function ProjectDetail({
   {!isEditing && (
     <button
       onClick={() => setIsEditing(true)}
-      className="text-gray-500 dark:text-gray-100 hover:text-gray-800 dark:text-gray-100"
+      className="text-gray-500 dark:text-gray-100 hover:text-gray-800"
     >
       <Pencil size={18} />
     </button>
