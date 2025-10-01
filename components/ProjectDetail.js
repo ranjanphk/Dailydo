@@ -74,7 +74,7 @@ export default function ProjectDetail({
         <p className="text-gray-500">{project.description}</p>
       </div>
 
-      <div className="flex gap-6">
+      <div className="flex bg-white rounded-md overflow-hidden shadow">
         {/* Left: Task Table */}
         <div className="flex-1">
           <TaskTable

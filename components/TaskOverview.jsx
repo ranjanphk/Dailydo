@@ -28,7 +28,7 @@ export default function TaskOverview({ completed, inProgress, pending }) {
   );
 
   return (
-    <div className="bg-white rounded-xl shadow p-5 w-96 justify-center">
+    <div className="bg-white shadow p-5 w-96 justify-center">
       <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
         <span>✓</span> Daily Task
       </h3>

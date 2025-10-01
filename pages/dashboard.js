@@ -240,7 +240,7 @@ export default function Dashboard() {
 
         <main className="flex-1 overflow-y-auto p-6 pb-32">
           {activePage === "tasks" && (
-            <div className="mx-auto max-w-6xl flex gap-6">
+            <div className="mx-auto max-w-6xl flex bg-white rounded-md overflow-hidden shadow">
               <div className="flex-1">
                 <TaskTable
                   tasks={tasks}

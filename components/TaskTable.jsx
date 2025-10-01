@@ -68,7 +68,7 @@ const filteredTasks = tasks.filter((t) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow p-4 overflow-x-auto text-xs">
+    <div className="bg-white p-4 overflow-x-auto text-xs">
       {/* Search Bar */}
       <div className="flex items-center justify-between mb-4">
         <input
