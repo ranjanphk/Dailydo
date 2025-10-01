@@ -6,7 +6,7 @@ import "../styles/globals.css";
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
-  const noThemeRoutes = ["/", "/login", "/signup"]; // public pages
+  const noThemeRoutes = ["/", "/login", "/signup", "/logout"]; // public pages
   const isNoThemePage = noThemeRoutes.includes(router.pathname);
 
   return (

@@ -201,7 +201,7 @@ const filteredTasks = tasks.filter((t) => {
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="px-3 py-1 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 rounded disabled:opacity-50"
+            className="px-3 py-1 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 rounded disabled:opacity-50"
           >
             Previous
           </button>
@@ -211,7 +211,7 @@ const filteredTasks = tasks.filter((t) => {
           <button
             onClick={() => setPage((p) => (p < totalPages ? p + 1 : p))}
             disabled={page >= totalPages}
-            className="px-3 py-1 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 rounded disabled:opacity-50"
+            className="px-3 py-1 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 rounded disabled:opacity-50"
           >
             Next
           </button>

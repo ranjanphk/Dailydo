@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import { useRouter } from "next/router";
 import { loginWithEmail, loginWithGoogle } from "../lib/auth"; // adjust your auth imports
 import { motion } from "framer-motion";
+import { useTheme } from "next-themes";
+import { useEffect } from "react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { setTheme } = useTheme();
 
   const router = useRouter();
 
@@ -20,6 +23,10 @@ export default function LoginPage() {
       setError(err.message);
     }
   };
+
+    useEffect(() => {
+    setTheme("light"); // force light mode
+  }, [setTheme]);
 
   const handleGoogleLogin = async () => {
     setError("");
@@ -65,7 +72,7 @@ export default function LoginPage() {
             value={email}
             required
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full dark:border-gray-800-gray-200 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
           <input
             type="password"
@@ -73,7 +80,7 @@ export default function LoginPage() {
             value={password}
             required
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full dark:border-gray-800-gray-200 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
 
           <div className="flex justify-end text-sm">
