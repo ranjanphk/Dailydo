@@ -1,9 +1,16 @@
 // pages/terms-of-service.js
 import React from "react";
 import { useRouter } from "next/router";
+import { useTheme } from "next-themes";
 
 export default function TermsOfServicePage() {
   const router = useRouter();
+  const { setTheme } = useTheme();
+
+  // Force light theme on this page
+  React.useEffect(() => {
+    setTheme("light");
+  }, [setTheme]);
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 dark:text-gray-100">
