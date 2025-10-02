@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { Search } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 const statusColor = (s) =>
@@ -70,7 +71,9 @@ const filteredTasks = tasks.filter((t) => {
   return (
     <div className="bg-white dark:bg-gray-900 p-4 overflow-x-auto text-xs">
       {/* Search Bar */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 relative">
+        <Search className="w-4 h-4 text-gray-600 dark:text-gray-50 absolute left-2 top-1/2 transform -translate-y-1/2" />
+
         <input
           type="text"
           placeholder="Search tasks..."
@@ -79,7 +82,7 @@ const filteredTasks = tasks.filter((t) => {
             setSearchTerm(e.target.value);
             setPage(1);
           }}
-          className=" dark:border-gray-800 border border-gray-300 dark:border-gray-800-gray-200 rounded px-3 py-1 text-sm w-64 focus:outline-none focus:ring"
+          className=" dark:border-gray-800 border border-gray-300 bg-gray-100 dark:bg-gray-800 dark:border-gray-800-gray-200 rounded px-3 py-2 pl-8 text-sm w-64 focus:outline-none focus:ring"
         />
       </div>
 

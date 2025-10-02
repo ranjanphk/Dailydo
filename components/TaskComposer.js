@@ -116,7 +116,7 @@ const send = () => {
                 ? "Type a Project Name and press Enter… (Shift+Enter for newline)"
                 : "Type a Task and press Enter…"
             }
-            className="flex-1 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 rounded-xl px-4 py-3 pr-16 w-full shadow-lg resize-none overflow-hidden relative z-10"
+            className="flex-1 bg-green-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 rounded-xl px-4 py-4 pr-16 w-full shadow-lg resize-none overflow-hidden relative z-10"
           />
 
                     
@@ -146,7 +146,7 @@ const send = () => {
                     setEditingTask(null);
                     setValue(currentProject ? `#${currentProject.title} ` : "");
                   }}
-                  className="bg-gray-300 text-gray-800 dark:text-gray-100 rounded-lg px-3 py-1 text-sm"
+                  className="bg-gray-600 text-gray-800 dark:text-gray-100 rounded-lg px-3 py-1 text-sm"
                 >
                   Cancel
                 </button>

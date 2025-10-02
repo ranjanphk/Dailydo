@@ -39,13 +39,14 @@ const Topbar = ({ user, onProfileClick, logout, projects = [], tasks = [], onSel
       <div className="flex items-center gap-4">
         {/* Search */}
         <div className="relative">
+          <Search className="w-4 h-4 text-gray-800 dark:text-gray-300 absolute left-2 top-1/2 transform -translate-y-1/2 z-10" />
           <input
             type="text"
             placeholder="Search projects or tasks..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            icon={<Search className="w-4 h-4 text-gray-400 absolute left-2 top-1/2 transform -translate-y-1/2" />}
             className="border dark:border-gray-800 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 w-64 pl-8 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+
           />
 
           {results.length > 0 && (
