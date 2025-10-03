@@ -116,12 +116,20 @@ const send = () => {
                 ? "Type a Project Name and press Enter… (Shift+Enter for newline)"
                 : "Type a Task and press Enter…"
             }
-            className="flex-1 bg-green-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 rounded-xl px-4 py-4 pr-16 w-full shadow-lg resize-none overflow-hidden relative z-10"
-          />
+            className={`
+                  w-full px-4 py-4 pr-32 rounded-xl border border-gray-100 dark:border-gray-800
+                  bg-white dark:bg-gray-900 shadow-lg resize-none overflow-hidden
+                  focus:outline-none focus:ring-2 focus:ring-indigo-400
+                  text-gray-900 dark:text-gray-100
+                  flex
+                  ${editingTask ? "pr-48" : "pr-32"}  /* adjust right padding based on buttons */
+                `}
+          >
 
+          </textarea>
                     
               {/* ✅ Hints go here */}
-              <div className="absolute left-2 -bottom-5 text-xs text-gray-500 dark:text-gray-100">
+              <div className="absolute left-2 -bottom-7 text-xs text-gray-500 dark:text-gray-100">
                 {value.startsWith("/p") ? (
                   <span>💡 Press Enter to create a new project</span>
                 ) : value.startsWith("#") ? (
@@ -137,7 +145,11 @@ const send = () => {
               <>
                 <button
                   onClick={send}
-                  className="bg-blue-600 text-white hover:bg-blue-700 rounded-lg px-3 py-1 text-sm"
+                  className=" text-white rounded-lg px-3 py-1 text-sm
+                  from-indigo-600 to-purple-600 bg-gradient-to-r 
+                   hover:from-indigo-700 hover:to-purple-700 focus:ring-4
+                    focus:ring-indigo-300 dark:focus:ring-indigo-800                  
+                  "
                 >
                   Update
                 </button>
@@ -146,7 +158,7 @@ const send = () => {
                     setEditingTask(null);
                     setValue(currentProject ? `#${currentProject.title} ` : "");
                   }}
-                  className="bg-gray-600 text-gray-800 dark:text-gray-100 rounded-lg px-3 py-1 text-sm"
+                  className="bg-gray-600 text-gray-100 dark:text-gray-100 rounded-lg px-5 py-2 text-sm"
                 >
                   Cancel
                 </button>
@@ -154,9 +166,14 @@ const send = () => {
             ) : (
               <button
                 onClick={send}
-                className="bg-blue-600 text-white hover:bg-blue-700 rounded-lg px-3 py-1 text-sm"
+                className=" text-white rounded-lg px-5 py-2 text-sm
+                  from-indigo-600 to-purple-600 bg-gradient-to-r 
+                   hover:from-indigo-700 hover:to-purple-700 focus:ring-4
+                    focus:ring-indigo-300 dark:focus:ring-indigo-800 flex items-center gap-1
+                "
               >
                 {type === "project" ? "Create Project" : "Add"}
+                <i class="fa-solid fa-plus px-2"></i>
               </button>
             )}
           </div>

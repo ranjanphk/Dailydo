@@ -100,7 +100,7 @@ const monthlyData = useMemo(() => {
           <button
             onClick={() => setViewMode("weekly")}
             className={`px-3 py-1 rounded ${
-              viewMode === "weekly" ? "bg-blue-500 text-white" : "bg-gray-200"
+              viewMode === "weekly" ? "bg-blue-500 text-gray-100" : "bg-gray-200 text-gray-800"
             }`}
           >
             Weekly
@@ -108,7 +108,7 @@ const monthlyData = useMemo(() => {
           <button
             onClick={() => setViewMode("monthly")}
             className={`px-3 py-1 rounded ${
-              viewMode === "monthly" ? "bg-blue-500 text-white" : "bg-gray-200"
+              viewMode === "monthly" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"
             }`}
           >
             Monthly
