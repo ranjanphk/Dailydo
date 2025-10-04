@@ -32,8 +32,8 @@ export default function Overview({ tasks }) {
     }
 
     tasks.forEach((task) => {
-      if (!task.createdAt) return;
-      const key = task.createdAt.toISOString().split("T")[0];
+      if (!task.createdAt) return;     
+      const key = new Date(task.createdAt).toISOString().split("T")[0];
       if (grouped[key]) {
         if (task.status === "Completed") grouped[key].completed += 1;
         else if (task.status === "In Progress") grouped[key].inProgress += 1;
@@ -47,7 +47,6 @@ export default function Overview({ tasks }) {
 // 🔹 Monthly Data (current month only, by week)
 const monthlyData = useMemo(() => {
   const grouped = {};
-
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
@@ -70,7 +69,7 @@ const monthlyData = useMemo(() => {
   // Count tasks for the current month
   tasks.forEach((task) => {
     if (!task.createdAt) return;
-    const d = task.createdAt;
+    const d = new Date(task.createdAt);
     if (d.getFullYear() !== year || d.getMonth() !== month) return;
 
     const weekOfMonth = Math.ceil(d.getDate() / 7);

@@ -148,10 +148,11 @@ const send = () => {
                   className=" text-white rounded-lg px-3 py-1 text-sm
                   from-indigo-600 to-purple-600 bg-gradient-to-r 
                    hover:from-indigo-700 hover:to-purple-700 focus:ring-4
-                    focus:ring-indigo-300 dark:focus:ring-indigo-800                  
+                    focus:ring-indigo-300 dark:focus:ring-indigo-800 flex items-center gap-1                
                   "
                 >
                   Update
+                 <i class="fa-solid fa-arrow-up px-1"></i>
                 </button>
                 <button
                   onClick={() => {

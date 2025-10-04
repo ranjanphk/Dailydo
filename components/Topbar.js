@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Search, Bell } from "lucide-react";
 import { useTheme } from "next-themes";
 
-const Topbar = ({ user, onProfileClick, logout, projects = [], tasks = [], onSelectItem }) => {
+const Topbar = ({ user, onProfileClick, logout, projects, Image = [], tasks = [], onSelectItem }) => {
   const { theme, setTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -32,8 +32,14 @@ const Topbar = ({ user, onProfileClick, logout, projects = [], tasks = [], onSel
 
   return (
     <header className="flex justify-between items-center px-6 py-4 bg-white dark:bg-gray-900 shadow-sm relative w-screen">
+      
       <h1 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-transparent bg-clip-text cursor-pointer" 
-      onClick={() => window.location.reload()}>
+      onClick={() => window.location.reload()}
+
+      >
+        
+        
+
         DailyDo
       </h1>
 
