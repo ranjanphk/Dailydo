@@ -102,7 +102,7 @@ const send = () => {
   };
 
   return (
-    <div className="fixed bottom-0 left-20 right-0">
+    <div className="fixed bottom-0 left-0 right-0">
       <div className="mx-auto w-1/2 p-4 flex items-end gap-2">
         <div className="relative flex-1 vertical-align-middle">
           <textarea
@@ -129,7 +129,7 @@ const send = () => {
           </textarea>
                     
               {/* ✅ Hints go here */}
-              <div className="absolute left-2 -bottom-7 text-xs text-gray-500 dark:text-gray-100">
+              <div className="absolute left-2 -bottom-7 text-xs text-gray-500 dark:text-gray-400 items-center">
                 {value.startsWith("/p") ? (
                   <span>💡 Press Enter to create a new project</span>
                 ) : value.startsWith("#") ? (
