@@ -40,10 +40,9 @@ export default function App({ Component, pageProps }) {
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="DailyDo - Smart Task Management" />
-      <meta
-        name="twitter:description"
-        content="Organize tasks, track projects, and boost productivity with DailyDo."
-      />
+      <meta name="twitter:description" content="Organize tasks, track projects, and boost productivity with DailyDo." />
+      <meta name="twitter:image" content="https://heydailydo.com/og-image.png" />
+      <meta name="twitter:url" content="https://heydailydo.com" />
       <meta
         name="twitter:image"
         content="https://heydailydo.com/og-image.png"
