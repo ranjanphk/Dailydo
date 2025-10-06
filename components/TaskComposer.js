@@ -84,7 +84,7 @@ const send = () => {
   const match = text.match(/^#(\w+)\s+(.*)$/);
   if (match) {
     const [, projectName, taskText] = match;
-    const project = projects.find(
+    const project = projects?.find(
       (p) => p.title.toLowerCase() === projectName.toLowerCase()
     );
     onCreate?.({

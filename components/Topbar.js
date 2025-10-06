@@ -50,10 +50,11 @@ const Topbar = ({ user, onProfileClick, logout, projects, tasks = [], onSelectIt
   return (
     <header className="flex justify-between items-center px-6 py-4 bg-white dark:bg-gray-900 shadow-sm relative w-screen">
       <h1
-        className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-transparent bg-clip-text cursor-pointer"
+        className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-transparent bg-clip-text cursor-pointer leading-4"
         onClick={() => window.location.reload()}
       >
-        DailyDo
+        DailyDo <br/>
+        <span className="text-xs font-normal text-gray-500 dark:text-gray-400 ml-2">v1.0</span>
       </h1>
 
       <div className="flex items-center gap-4">

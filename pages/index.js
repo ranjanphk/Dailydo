@@ -24,12 +24,13 @@ export default function Home() {
         </div>
 
         <motion.h1
-          className="text-5xl md:text-7xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-transparent bg-clip-text"
+          className="text-5xl md:text-7xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-transparent bg-clip-text leading-0"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          DailyDo
+          DailyDo <br className="leading-10"/>
+          <span className="text-xs font-medium text-gray-500 dark:text-gray-400 ml-2 tracking-wider">v1.0</span>
         </motion.h1>
 
         <p className="mt-6 text-lg md:text-xl text-gray-700 max-w-2xl leading-relaxed">
