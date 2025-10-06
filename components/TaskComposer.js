@@ -24,6 +24,13 @@ export default function TaskComposer({
   }
 }, [editingTask, currentProject]);
 
+// Clear task input when leaving a project view
+useEffect(() => {
+  if (!currentProject) {
+    setValue("");  // reset the composer input
+  }
+}, [currentProject]);
+
   // Auto-height
   useEffect(() => {
     if (textareaRef.current) {

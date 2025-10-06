@@ -210,9 +210,18 @@ export default function Dashboard() {
 
   // Sidebar click handlers
   const handleProfileClick = () => setActivePage("profile");
-  const handleProjectsClick = () => setActivePage("projects");
-  const handleOverviewClick = () => setActivePage("overview");
-  const handleTasksClick = () => setActivePage("tasks");
+  const handleProjectsClick = () => {
+  setActiveProject(null);
+  setActivePage("projects");
+    };
+    const handleOverviewClick = () => {
+      setActiveProject(null);
+      setActivePage("overview");
+    };
+    const handleTasksClick = () => {
+      setActiveProject(null); // ✅ clears current project
+      setActivePage("tasks");
+    };
   const handleProfileSave = (updatedUser) => {
     console.log("Profile saved:", updatedUser);
     setActivePage("tasks");
@@ -237,20 +246,20 @@ export default function Dashboard() {
               tasks={tasks}
               projects={projects}
               onSelectItem={(item) => {
-                if (item.type === "project") {
-                  // Show project detail
-                  const project = projects.find(p => p.id === item.id);
-                  setActiveProject(project);
-                  setActivePage("projectDetail");
-                } else if (item.type === "task") {
-                  // Option 1: Highlight task in TaskTable
-                  // Option 2: Navigate to project of task
-                  const taskProject = projects.find(p => p.id === item.projectId);
-                  setActiveProject(taskProject || null);
-                  setActivePage("projectDetail"); // show project page with tasks
-                  setEditingTask(tasks.find(t => t.id === item.id)); // optional: highlight/edit task
-                }
-              }}
+                  if (item.type === "project") {
+                    const project = projects.find(p => p.id === item.id);
+                    setActiveProject(null); // ✅ clear first to avoid stale ID
+                    setTimeout(() => {
+                      setActiveProject(project);
+                      setActivePage("projectDetail");
+                    }, 0);
+                  } else if (item.type === "task") {
+                    const taskProject = projects.find(p => p.id === item.projectId);
+                    setActiveProject(taskProject || null);
+                    setActivePage("projectDetail");
+                    setEditingTask(tasks.find(t => t.id === item.id));
+                  }
+                }}
             />
 
         <main className="flex-1 overflow-y-auto p-6 pb-32">
