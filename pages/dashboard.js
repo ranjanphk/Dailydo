@@ -22,6 +22,7 @@ export default function Dashboard() {
   const [editingTask, setEditingTask] = useState(null);
   const [projects, setProjects] = useState([]);
   const [activeProject, setActiveProject] = useState(null);
+  const { name } = user || {};
 
   useEffect(() => {
     if (!loading && !user) router.push("/login");
@@ -227,6 +228,9 @@ export default function Dashboard() {
     setActivePage("tasks");
   };
 
+  
+
+
   return (
     <div className="flex h-screen bg-gray-100 dark:bg-gray-800 w-screen">
       <div className="w-24 flex flex-col items-center justify-center bg-slate-500 text-white absolute top-1/2 left-8">
@@ -278,13 +282,19 @@ export default function Dashboard() {
                 completed={completed}
                 inProgress={inProgress}
                 pending={pending}
+                name={name}
+                user={user}
+                tasks={tasks}
               />
             </div>
           )}
 
           {activePage === "profile" && (
             <div className="mx-auto max-w-2xl">
-              <Profile user={user} onSave={handleProfileSave} />
+              <Profile 
+              user={user} 
+              name={user?.name}
+              onSave={handleProfileSave} />
             </div>
           )}
 

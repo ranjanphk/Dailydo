@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { db } from "../lib/firebase";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
-export default function Profile() {
+export default function Profile({name: initialName, phone: initialPhone}) {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [name, setName] = useState("");
@@ -61,7 +61,7 @@ export default function Profile() {
           <label className="block text-sm font-medium mb-1">Name</label>
           <input
             type="text"
-            className="w-full border border-gray-100 dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 rounded p-2"
+            className="w-ful dark:border-gray-800 border border-gray-100 dark:border-gray-800-gray-200 rounded p-2"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
