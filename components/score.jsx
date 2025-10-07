@@ -17,7 +17,11 @@ export default function DailyScoreModal({ isOpen, onClose, completed, inProgress
 
   const handleShare = async () => {
     if (!popupRef.current) return;
-    const canvas = await html2canvas(popupRef.current);
+    const canvas = await html2canvas(popupRef.current, {
+      height:350,
+      scale:2,
+
+      });
     const image = canvas.toDataURL("image/png");
     const link = document.createElement("a");
     link.href = image;
@@ -35,13 +39,15 @@ export default function DailyScoreModal({ isOpen, onClose, completed, inProgress
         className="dark:bg-gray-800 h-auto"
         
       >
+         
 
         <h2 className="text-lg font-semibold mb-2">Daily Progress</h2>
         <p className="text-sm text-gray-500 mb-2">
           {username ? `${username}'s` : "Your"} task summary today
         </p>
+        
 
-        <PieChart width={280} height={220} className="mx-auto px-3 py-6 h-auto rounded-sm mb-3">
+        <PieChart width={280} height={240} className="mx-auto px-3 py-3 h-auto rounded-sm -mb-4">
           <Pie
             data={data}
             cx="50%"
@@ -57,7 +63,7 @@ export default function DailyScoreModal({ isOpen, onClose, completed, inProgress
           <Tooltip/>
           <Legend
                 content={({ payload }) => (
-                    <ul className="flex justify-center gap-4 text-xs py-4">
+                    <ul className="flex justify-center gap-4 text-xs py-2">
                     {payload.map((entry, index) => (
                         <li key={`item-${index}`} className="flex items-center gap-1">
                        
@@ -78,9 +84,13 @@ export default function DailyScoreModal({ isOpen, onClose, completed, inProgress
                     </ul>
                 )}
                 />
+                
         </PieChart>
+        <span className="text-[10px] tracking-wide text-indigo-600 dark:text-gray-50 -mt-14">
+          Track your progress with <b>DailyDo</b>
+        </span>
 
-
+               
 
       </motion.div>
 
@@ -99,6 +109,7 @@ export default function DailyScoreModal({ isOpen, onClose, completed, inProgress
                 </button>
   
                 </div>
+                
 
           </div>
     </div>
