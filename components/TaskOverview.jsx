@@ -49,7 +49,10 @@ export default function TaskOverview({ completed, inProgress, pending, name, }) 
 
       <div className="mb-4 flex-row items-center grid">
 
-        <Chart data={data} colors={COLORS} />
+        <Chart data={data} colors={COLORS} 
+        
+        
+        />
       </div>
 
       {/* Daily Score Modal */}

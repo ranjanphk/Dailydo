@@ -27,24 +27,26 @@ export default function DailyScoreModal({ isOpen, onClose, completed, inProgress
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 w-96 shadow-lg text-center relative">
       <motion.div
         ref={popupRef}
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="bg-white dark:bg-gray-800 rounded-2xl p-6 w-96 shadow-lg text-center relative"
+        className="dark:bg-gray-800 h-auto"
+        
       >
 
         <h2 className="text-lg font-semibold mb-2">Daily Progress</h2>
-        <p className="text-sm text-gray-500 mb-4">
+        <p className="text-sm text-gray-500 mb-2">
           {username ? `${username}'s` : "Your"} task summary today
         </p>
 
-        <PieChart width={280} height={220} className="mx-auto px-3">
+        <PieChart width={280} height={220} className="mx-auto px-3 py-6 h-auto rounded-sm mb-3">
           <Pie
             data={data}
             cx="50%"
             cy="50%"
-            outerRadius={80}
+            outerRadius={70}
             dataKey="value"
             label
           >
@@ -55,14 +57,22 @@ export default function DailyScoreModal({ isOpen, onClose, completed, inProgress
           <Tooltip/>
           <Legend
                 content={({ payload }) => (
-                    <ul className="flex justify-center gap-4 text-xs py-2">
+                    <ul className="flex justify-center gap-4 text-xs py-4">
                     {payload.map((entry, index) => (
                         <li key={`item-${index}`} className="flex items-center gap-1">
-                        <span
+                       
+                        <span className="text-gray-700 dark:text-gray-300 text-center
+                        ">
+                          
+                           <span
                             className="w-3 h-3 rounded-full inline-block"
                             style={{ backgroundColor: entry.color }}
-                        ></span>
-                        <span className="text-gray-700 dark:text-gray-300">{entry.value}</span>
+                        >
+
+
+                        </span><br/>
+                          
+                          {entry.value}</span>
                         </li>
                     ))}
                     </ul>
@@ -70,7 +80,11 @@ export default function DailyScoreModal({ isOpen, onClose, completed, inProgress
                 />
         </PieChart>
 
-                <div className="mt-6 flex flex-row justify-center items-center gap-4 text-sm">
+
+
+      </motion.div>
+
+              <div className="mt-6 flex flex-row justify-center items-center gap-4 text-sm">
                 <button
                     onClick={handleShare}
                     className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
@@ -83,9 +97,10 @@ export default function DailyScoreModal({ isOpen, onClose, completed, inProgress
                 >
                     Close
                 </button>
+  
                 </div>
 
-      </motion.div>
+          </div>
     </div>
   );
 }
