@@ -16,7 +16,7 @@ export default function ProjectDetail({
   onChangeStatus,
   onReorder,
   editingTask,
-  handleEditTask
+  handleEditTask,
 }) {
   if (!project) return <p className="text-gray-500 dark:text-gray-100">No project selected</p>;
 
@@ -88,6 +88,7 @@ export default function ProjectDetail({
             user={user}
             onUpdateTask={onUpdateTask}
             handleEditTask={handleEditTask}
+            hideProjectTag={true}
           />
         </div>
 

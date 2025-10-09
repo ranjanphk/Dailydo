@@ -87,7 +87,9 @@ export default function Dashboard() {
   return Object.values(grouped).sort((a, b) => new Date(a.date) - new Date(b.date));
 }, [tasks]);
 
+// projjectTag
 
+ 
 
   // Listen to projects
   useEffect(() => {
@@ -137,7 +139,13 @@ export default function Dashboard() {
     await batch.commit();
   };
 
-  
+  // handle projectclick
+      const handleProjectClick = (project) => {
+        console.log("Project clicked:", project);
+        setActiveProject(project);          // ✅ actually set the project
+        setActivePage("projectDetail");     // ✅ navigate to project detail
+      };
+
 
 
   // handleprojectdelete
@@ -211,9 +219,12 @@ export default function Dashboard() {
 
   // Sidebar click handlers
   const handleProfileClick = () => setActivePage("profile");
+
+
   const handleProjectsClick = () => {
   setActiveProject(null);
   setActivePage("projects");
+  
     };
     const handleOverviewClick = () => {
       setActiveProject(null);
@@ -270,13 +281,22 @@ export default function Dashboard() {
           {activePage === "tasks" && (
             <div className="mx-auto max-w-6xl flex bg-white dark:bg-gray-900 rounded-md overflow-hidden shadow">
               <div className="flex-1">
-                <TaskTable
-                  tasks={tasks}
-                  onDelete={deleteTask}
-                  onChangeStatus={changeStatus}
-                  onReorder={handleReorder}
-                  onEdit={handleEditTask}
-                />
+                      <TaskTable
+                        tasks={tasks}
+                        projects={projects}          // ✅ pass projects
+                        onDelete={deleteTask}
+                        onChangeStatus={changeStatus}
+                        onReorder={handleReorder}
+                        onEdit={handleEditTask}
+                        onProjectClick={(projectId) => {
+                          const project = projects.find(p => p.id === projectId);
+                          if (project) {
+                            setActiveProject(project);
+                            setActivePage("projectDetail");
+                          }
+                        }}
+                        hideProjectTag={false}
+                      />
               </div>
               <TaskOverview
                 completed={completed}
@@ -307,6 +327,7 @@ export default function Dashboard() {
                 tasks={tasks}
                 setProjects={setProjects}
                 onDelete={(projectId, projectTasks) => handleDeleteProject(projectId, projectTasks)}
+                onProjectClick={handleProjectClick}
               />  
             </div>
           )}
@@ -337,6 +358,10 @@ export default function Dashboard() {
                   onReorder={handleReorder}
                   editingTask={editingTask}
                   handleEditTask={handleEditTask}
+                  hideProjectTag={true}
+                  projects={projects}
+
+
                 />
               </div>
             )}

@@ -11,7 +11,16 @@ const statusColor = (s) =>
     ? "text-orange-500"
     : "text-blue-600";
 
-export default function TaskTable({ tasks = [], onDelete, onChangeStatus, onReorder, onEdit, title }) {
+export default function TaskTable({ 
+  tasks = [], 
+  onDelete, 
+  onChangeStatus, 
+  onReorder, 
+  onEdit,
+  onProjectClick,
+  projects = [],
+  hideProjectTag = false, // new prop
+}) {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState(null);
@@ -142,10 +151,24 @@ const filteredTasks = tasks.filter((t) => {
                               className="w-8 h-8 rounded-full"
                               alt=""
                             />
+                            <div className="flex-col flex grid-1">
                             <span className="font-medium text-xs text-gray-800 dark:text-gray-100 break-words max-w-xs">
-                               {typeof t.title === "string" ? t.title : JSON.stringify(t.title ?? "")}
-                               {title}
+                               {typeof t.title === "string" ? t.title : JSON.stringify(t.title ?? "")}  
                             </span>
+
+                          {/* Project Tag here */}
+                            {!hideProjectTag && t.projectId && (
+                                  <span
+                                    className="text-blue-600 w-fit dark:text-blue-400 text-[10px] font-medium bg-blue-100 dark:bg-blue-900/40 px-2 py-1 rounded cursor-pointer hover:bg-blue-200 dark:hover:bg-blue-800 transition"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      onProjectClick?.(t.projectId);
+                                    }}
+                                  >
+                                    #{projects?.find(p => p.id === t.projectId)?.title || "Project"}
+                                  </span>
+                                )}
+                            </div>
                           </div>
                         </td>
                         <td className="py-3 px-3">
