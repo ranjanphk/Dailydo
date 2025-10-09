@@ -2,6 +2,7 @@ import { useState } from "react";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { Search } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { Title } from "chart.js";
 
 const statusColor = (s) =>
   s === "Completed"
@@ -10,12 +11,13 @@ const statusColor = (s) =>
     ? "text-orange-500"
     : "text-blue-600";
 
-export default function TaskTable({ tasks = [], onDelete, onChangeStatus, onReorder, onEdit }) {
+export default function TaskTable({ tasks = [], onDelete, onChangeStatus, onReorder, onEdit, title }) {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
   const tasksPerPage = 6;
+  
 
 
 // Debugging: check what your data looks like
@@ -142,6 +144,7 @@ const filteredTasks = tasks.filter((t) => {
                             />
                             <span className="font-medium text-xs text-gray-800 dark:text-gray-100 break-words max-w-xs">
                                {typeof t.title === "string" ? t.title : JSON.stringify(t.title ?? "")}
+                               {title}
                             </span>
                           </div>
                         </td>

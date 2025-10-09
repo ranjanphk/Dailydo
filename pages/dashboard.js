@@ -170,7 +170,7 @@ export default function Dashboard() {
 
     await addDoc(collection(db, "tasks"), {
       title: text,
-      status: "In Progress",
+      status: "Pending",
       userId: user.uid,
       createdAt: serverTimestamp(),
       order: maxOrder + 1,
