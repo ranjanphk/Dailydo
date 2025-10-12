@@ -18,7 +18,7 @@ export default function DailyScoreModal({ isOpen, onClose, completed, inProgress
   const handleShare = async () => {
     if (!popupRef.current) return;
     const canvas = await html2canvas(popupRef.current, {
-      height:350,
+      height:360,
       scale:2,
 
       });

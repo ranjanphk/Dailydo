@@ -14,6 +14,13 @@ export default function History({
   handleEditTask,
   setActivePage,
 }) {
+
+  // change status
+    const changeStatus = async (task, next) => {
+      await updateDoc(doc(db, "tasks", task.id), { status: next });
+    };
+
+
   // ✅ Filter completed tasks only
   const completedTasks = useMemo(
     () => tasks.filter((t) => t.status === "Completed"),
@@ -37,7 +44,7 @@ export default function History({
             tasks={completedTasks}
             projects={projects}
             onDelete={onDeleteTask}
-            onChangeStatus={onChangeStatus}
+            onChangeStatus={changeStatus}
             onReorder={onReorder}
             onEdit={handleEditTask}
             onProjectClick={(projectId) => {
