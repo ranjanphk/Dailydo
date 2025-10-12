@@ -1,3 +1,5 @@
+// Component Import
+
 import Sidebar from '../components/Sidebar';
 import Topbar from '../components/Topbar';
 import TaskTable from '../components/TaskTable';
@@ -7,6 +9,10 @@ import TaskComposer from '../components/TaskComposer';
 import Profile from '../components/Profile';
 import Projects from '../components/Projects';  
 import ProjectDetail from '../components/ProjectDetail';
+import History from '../components/History';
+
+// Function Import
+
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
@@ -23,6 +29,7 @@ export default function Dashboard() {
   const [projects, setProjects] = useState([]);
   const [activeProject, setActiveProject] = useState(null);
   const { name } = user || {};
+  const [history] = useState([]);
 
   useEffect(() => {
     if (!loading && !user) router.push("/login");
@@ -148,7 +155,6 @@ export default function Dashboard() {
       };
 
 
-
   // handleprojectdelete
 
   const handleDeleteProject = async (projectId, projectTasks) => {
@@ -221,24 +227,32 @@ export default function Dashboard() {
   // Sidebar click handlers
   const handleProfileClick = () => setActivePage("profile");
 
-
   const handleProjectsClick = () => {
   setActiveProject(null);
   setActivePage("projects");
   
     };
-    const handleOverviewClick = () => {
+  const handleOverviewClick = () => {
       setActiveProject(null);
       setActivePage("overview");
     };
-    const handleTasksClick = () => {
+  const handleTasksClick = () => {
       setActiveProject(null); // ✅ clears current project
       setActivePage("tasks");
     };
+
+    const handleHistoryClick = () => {
+      setActiveProject(null); // goes to completed Page
+      setActivePage("history"); // navigate to history
+    };
+
+// Save function
+
   const handleProfileSave = (updatedUser) => {
     console.log("Profile saved:", updatedUser);
     setActivePage("tasks");
   };
+  
 
   
 
@@ -251,6 +265,7 @@ export default function Dashboard() {
           onTasksClick={handleTasksClick}
           onProjectsClick={handleProjectsClick} 
           onOverviewClick={handleOverviewClick}
+          onHistoryClick={handleHistoryClick}
         />
       </div>
 
@@ -279,11 +294,14 @@ export default function Dashboard() {
             />
 
         <main className="flex-1 overflow-y-auto p-6 pb-32">
+ 
           {activePage === "tasks" && (
             <div className="mx-auto max-w-6xl flex bg-white dark:bg-gray-900 rounded-md overflow-hidden shadow">
               <div className="flex-1">
                       <TaskTable
-                        tasks={tasks.filter(t => t.status !== "No Status")}
+                        tasks={tasks.filter(
+                            (t) => t.status !== "No Status" && t.status !== "Completed" // ✅ hide completed too
+                          )}
                         projects={projects}          // ✅ pass projects
                         onDelete={deleteTask}
                         onChangeStatus={changeStatus}
@@ -366,6 +384,21 @@ export default function Dashboard() {
                 />
               </div>
             )}
+
+              {activePage === "history" && (
+              <div className="mx-auto max-w-6xl">
+                <History
+                  tasks={tasks.filter(t => t.status === "Completed")} // ✅ only completed tasks
+                  setActivePage={setActivePage} // ✅ allows navigation back
+                />
+              </div>
+            )}
+
+
+
+
+
+          
 
         </main>
 
