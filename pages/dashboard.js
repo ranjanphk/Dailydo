@@ -81,6 +81,7 @@ export default function Dashboard() {
     if (task.status === "Completed") grouped[dateKey].completed += 1;
     else if (task.status === "In Progress") grouped[dateKey].inProgress += 1;
     else if (task.status === "Pending") grouped[dateKey].pending += 1;
+    else if (task.status === "No Status") grouped[dateKey].nostatus += 1;
   });
 
   // return array sorted by date
@@ -282,7 +283,7 @@ export default function Dashboard() {
             <div className="mx-auto max-w-6xl flex bg-white dark:bg-gray-900 rounded-md overflow-hidden shadow">
               <div className="flex-1">
                       <TaskTable
-                        tasks={tasks}
+                        tasks={tasks.filter(t => t.status !== "No Status")}
                         projects={projects}          // ✅ pass projects
                         onDelete={deleteTask}
                         onChangeStatus={changeStatus}
