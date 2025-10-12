@@ -182,6 +182,7 @@ const filteredTasks = tasks.filter((t) => {
                             <option value="Completed">Completed</option>
                             <option value="In Progress">In Progress</option>
                             <option value="Pending">Pending</option>
+                             <option value="No Status">No Status</option>
                           </select>
                         </td>
                         <td className="py-3 px-3 text-gray-800 dark:text-gray-400">
