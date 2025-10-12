@@ -27,16 +27,7 @@ export default function History({
 
   return (
     <div className="mx-auto max-w-6xl flex flex-col gap-6">
-      {/* Header
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-semibold">Completed Tasks</h1>
-        <button
-          onClick={() => setActivePage("tasks")}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md"
-        >
-          ← Back
-        </button>
-      </div> */}
+
 
       {/* Main Content */}
       <div className="flex bg-white dark:bg-gray-900 rounded-md overflow-hidden shadow">
@@ -59,14 +50,6 @@ export default function History({
           />
         </div>
 
-        {/* Right: Overview */}
-        <TaskOverview
-          completed={completed}
-          inProgress={inProgress}
-          pending={pending}
-          user={user}
-          tasks={completedTasks}
-        />
       </div>
 
       {/* Empty State */}
