@@ -20,6 +20,7 @@ export default function DailyScoreModal({ isOpen, onClose, completed, inProgress
     const canvas = await html2canvas(popupRef.current, {
       height:360,
       scale:2,
+      backgroundColor: "#1e293b",
 
       });
     const image = canvas.toDataURL("image/png");
