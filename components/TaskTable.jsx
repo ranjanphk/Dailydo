@@ -11,9 +11,9 @@ export default function TaskTable({
   onDelete, 
   onChangeStatus, 
   onReorder, 
-  onEdit,
   onProjectClick,
   projects = [],
+  allowEdit = true,
   hideProjectTag = false, // new prop
 }) {
   const [page, setPage] = useState(1);
@@ -213,12 +213,14 @@ const filteredTasks = tasks.filter((t) => {
                               className="w-5 h-5 cursor-pointer hover:text-red-600"
                               onClick={() => onDelete?.(t)}
                             />
-                            <PencilSquareIcon className="w-5 h-5 cursor-pointer hover:text-blue-600" 
+                            {allowEdit && (
+                              <PencilSquareIcon className="w-5 h-5 cursor-pointer hover:text-blue-600" 
                             
                             onClick={() => onEdit?.(t)}  // ✏️ edit works
                             
                             
-                            />
+                            
+                            />)}
                           </div>
                         </td>
                       </tr>

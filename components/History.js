@@ -3,6 +3,7 @@ import TaskTable from "./TaskTable";
 import TaskOverview from "./TaskOverview";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../lib/firebase";
+import { deleteDoc } from 'firebase/firestore';
 
 export default function History({
   user,
@@ -11,7 +12,7 @@ export default function History({
   onDelete,
   onChangeStatus,
   onReorder,
-  handleEditTask,
+  onEdit = true,
   setActivePage,
 }) {
 
@@ -20,6 +21,11 @@ export default function History({
       await updateDoc(doc(db, "tasks", task.id), { status: next });
     };
 
+   //delete task
+
+  const deleteTask = async (task) => {
+    await deleteDoc(doc(db, "tasks", task.id));
+  };
 
   // ✅ Filter completed tasks only
   const completedTasks = useMemo(
@@ -46,7 +52,7 @@ export default function History({
             onDelete={deleteTask}
             onChangeStatus={changeStatus}
             onReorder={onReorder}
-            onEdit={handleEditTask}
+            allowEdit={false}
             onProjectClick={(projectId) => {
               const project = projects.find((p) => p.id === projectId);
               if (project) {

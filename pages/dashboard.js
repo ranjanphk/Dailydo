@@ -390,6 +390,7 @@ export default function Dashboard() {
                 <History
                   tasks={tasks.filter(t => t.status === "Completed")} // ✅ only completed tasks
                   setActivePage={setActivePage} // ✅ allows navigation back
+                  projects={projects}
                 />
               </div>
             )}
