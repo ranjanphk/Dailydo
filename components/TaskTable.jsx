@@ -3,13 +3,8 @@ import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { Search } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { Title } from "chart.js";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select"
 
-const statusColor = (s) =>
-  s === "Completed"
-    ? "text-green-600"
-    : s === "Pending"
-    ? "text-orange-500"
-    : "text-blue-600";
 
 export default function TaskTable({ 
   tasks = [], 
@@ -27,6 +22,16 @@ export default function TaskTable({
   const [sortOrder, setSortOrder] = useState("asc");
   const tasksPerPage = 6;
   
+
+// status colors 
+
+const statusColors = {
+  "Completed": "text-green-600 dark:-text-green-600",
+  "In Progress": "text-blue-500 dark:text-blue-500",
+  "Pending": "text-red-500 dark:text-red-500",
+  "No Status": "text-gray-400",
+};
+
 
 
 // Debugging: check what your data looks like
@@ -171,20 +176,32 @@ const filteredTasks = tasks.filter((t) => {
                             </div>
                           </div>
                         </td>
-                        <td className="py-3 px-3">
-                          <select
-                            value={t.status}
-                            onChange={(e) => onChangeStatus?.(t, e.target.value)}
-                            className={`bg-transparent font-medium ${statusColor(
-                              t.status
-                            )} focus:outline-none`}
-                          >
-                            <option value="Completed">Completed</option>
-                            <option value="In Progress">In Progress</option>
-                            <option value="Pending">Pending</option>
-                             <option value="No Status">No Status</option>
-                          </select>
-                        </td>
+                          <td className="py-3 px-3">
+                                          <Select
+                                            value={t.status}
+                                            onValueChange={(value) => onChangeStatus?.(t, value)}
+                                          >
+                                            <SelectTrigger
+                                              className={`w-full bg-100 dark:bg-gray-800
+                                                  focus:ring-gray-300 dark:focus:ring-gray-600
+                                              
+                                                  dark:text-gray-50 ${statusColors[t.status] || ""}`}
+                                            >
+                                              <SelectValue
+                                                placeholder="Select status"
+                                                className={t.status ? statusColors[t.status] : "text-gray-400 dark:focus:outline-none"}
+                                              />
+                                            </SelectTrigger>
+
+                                            <SelectContent className="bg-white text-black dark:bg-slate-800 dark:text-white">
+                                              <SelectItem value="Completed" className="text-green-600">Completed</SelectItem>
+                                              <SelectItem value="In Progress" className="text-yellow-500">In Progress</SelectItem>
+                                              <SelectItem value="Pending" className="text-red-500">Pending</SelectItem>
+                                              <SelectItem value="No Status" className="text-gray-400">No Status</SelectItem>
+                                            </SelectContent>
+                                          </Select>
+
+                          </td>
                         <td className="py-3 px-3 text-gray-800 dark:text-gray-400">
                           {t.createdAt
                             ? new Date(t.createdAt).toLocaleString()

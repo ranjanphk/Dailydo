@@ -8,7 +8,7 @@ export default function History({
   user,
   tasks = [],
   projects = [],
-  onDeleteTask,
+  onDelete,
   onChangeStatus,
   onReorder,
   handleEditTask,
@@ -43,7 +43,7 @@ export default function History({
           <TaskTable
             tasks={completedTasks}
             projects={projects}
-            onDelete={onDeleteTask}
+            onDelete={deleteTask}
             onChangeStatus={changeStatus}
             onReorder={onReorder}
             onEdit={handleEditTask}
