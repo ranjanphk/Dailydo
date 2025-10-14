@@ -129,23 +129,22 @@ export default function Dashboard() {
   }), [tasks]);
 
   // Reorder
-  const handleReorder = async (reorderedSlice, startIndex) => {
-    const updated = [...tasks];
-    for (let i = 0; i < reorderedSlice.length; i++) {
-      updated[startIndex + i] = reorderedSlice[i];
-    }
-    setTasks(updated);
+const handleReorder = async (newTasks) => {
+  setTasks(newTasks);
 
-    const batch = writeBatch(db);
-    const newOrders = updated.length;
-    updated.forEach((task, index) => {
-      const newOrder = newOrders - index;
-      if (task.order !== newOrder) {
-        batch.update(doc(db, "tasks", task.id), { order: newOrder });
-      }
-    });
-    await batch.commit();
-  };
+  const batch = writeBatch(db);
+  const total = newTasks.length;
+
+  newTasks.forEach((task, index) => {
+    const newOrder = total - index;
+    if (task.order !== newOrder) {
+      batch.update(doc(db, "tasks", task.id), { order: newOrder });
+    }
+  });
+
+  await batch.commit();
+};
+
 
   // handle projectclick
       const handleProjectClick = (project) => {

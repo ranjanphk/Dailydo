@@ -68,22 +68,16 @@ const filteredTasks = tasks.filter((t) => {
   };
 
   // drag & drop
-  const handleDragEnd = (result) => {
-    if (!result.destination) return;
+const handleDragEnd = (result) => {
+  if (!result.destination) return;
 
-    // reorder the current page
-    const reordered = Array.from(displayedTasks);
-    const [moved] = reordered.splice(result.source.index, 1);
-    reordered.splice(result.destination.index, 0, moved);
+  const newTasks = Array.from(sortedTasks);
+  const [moved] = newTasks.splice(result.source.index + startIndex, 1);
+  newTasks.splice(result.destination.index + startIndex, 0, moved);
 
-    onReorder?.(reordered, startIndex);
+  onReorder?.(newTasks);
+};
 
-    // Update parent with new order relative to global index
-    onReorder?.(
-      [...sortedTasks.slice(0, startIndex), ...reordered, ...sortedTasks.slice(startIndex + tasksPerPage)],
-      startIndex
-    );
-  };
 
   return (
     <div className="bg-white dark:bg-gray-900 p-4 overflow-x-auto text-xs">
