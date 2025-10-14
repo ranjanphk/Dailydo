@@ -128,6 +128,9 @@ export default function Home() {
           <Link href="mailto:ranjanuxd@gmail.com">
             <span className="hover:text-white cursor-pointer">Contact</span>
           </Link>
+          <Link href="/sale/page">
+            <span className="hover:text-white cursor-pointer">Buy DailyDo</span>
+          </Link>
         </div>
       </footer>
     </div>
