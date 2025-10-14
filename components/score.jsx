@@ -17,12 +17,17 @@ export default function DailyScoreModal({ isOpen, onClose, completed, inProgress
 
   const handleShare = async () => {
     if (!popupRef.current) return;
+
+     // Detect dark mode
+  const isDark = document.documentElement.classList.contains("dark")
+
     const canvas = await html2canvas(popupRef.current, {
       height:360,
       scale:2,
-      backgroundColor: "#1e293b",
+      backgroundColor: isDark ? "#1f2937" : "#f3f4f6", // Tailwind bg-gray-100 = #f3f4f6
 
       });
+    const dataUrl = canvas.toDataURL("image/png");
     const image = canvas.toDataURL("image/png");
     const link = document.createElement("a");
     link.href = image;

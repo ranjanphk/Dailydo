@@ -15,6 +15,7 @@ export default function TaskTable({
   projects = [],
   allowEdit = true,
   hideProjectTag = false, // new prop
+  onEdit
 }) {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
