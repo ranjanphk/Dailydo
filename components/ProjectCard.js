@@ -70,7 +70,7 @@ export default function ProjectCard({ project, onSelect, onDelete }) {
       </div>
 
       {/* Title */}
-      <h2 className="text-md font-semibold text-gray-800 dark:text-gray-100">{title}</h2>
+      <h2 className="text-md font-semibold text-gray-800 dark:text-gray-100 flex text-center mx-auto">{title}</h2>
 
       {/* Task count */}
       <p className="text-sm text-gray-500 dark:text-gray-100">

@@ -46,7 +46,7 @@ const Sidebar = ({activePage, onTasksClick, onProjectsClick, onOverviewClick, on
         ${activePage === 'history' ? 'hover:text-white text-white bg-indigo-500 p-3 w-full rounded-xl flex flex-col items-center shadow-md hover:bg-indigo-600' : ''}`}
       >
         <LucideHistory size={16} />
-        <span className="text-xs mt-1">Completed</span>
+        <span className="text-xs mt-1">Trash</span>
       </button>
 
       
