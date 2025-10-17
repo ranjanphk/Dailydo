@@ -2,9 +2,28 @@ import { useRef } from "react";
 import html2canvas from "html2canvas";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 export default function DailyScoreModal({ isOpen, onClose, completed, inProgress, pending, username }) {
   const popupRef = useRef(null);
+  const [lastUpdate, setLastUpdate] = useState("");
+
+  // 🕒 Set Last Updated when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      const now = new Date();
+      const formatted = `${now.toLocaleDateString("en-IN", {
+        weekday: "short",
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      })} · ${now.toLocaleTimeString("en-IN", {
+        hour: "2-digit",
+        minute: "2-digit",
+      })}`;
+      setLastUpdate(formatted);
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -14,6 +33,10 @@ export default function DailyScoreModal({ isOpen, onClose, completed, inProgress
     { name: "In Progress", value: inProgress },
     { name: "Pending", value: pending },
   ];
+
+  
+  
+
 
   const handleShare = async () => {
     if (!popupRef.current) return;
@@ -51,6 +74,11 @@ export default function DailyScoreModal({ isOpen, onClose, completed, inProgress
         <p className="text-sm text-gray-500 mb-2">
           {username ? `${username}'s` : "Your"} task summary today
         </p>
+              {lastUpdate && (
+        <span className="text-xs text-gray-400 dark:text-gray-400 py-2 text-center mt-2 text-center items-center">
+         {lastUpdate}
+        </span>
+      )}
         
 
         <PieChart width={280} height={240} className="mx-auto px-3 py-3 h-auto rounded-sm -mb-4">
@@ -95,6 +123,9 @@ export default function DailyScoreModal({ isOpen, onClose, completed, inProgress
         <span className="text-[10px] tracking-wide text-indigo-600 dark:text-gray-50 -mt-14">
           Track your progress with <b>DailyDo</b>
         </span>
+        {/* Last Update */}
+
+
 
                
 
