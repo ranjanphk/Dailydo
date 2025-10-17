@@ -190,7 +190,7 @@ const handleDragEnd = (result) => {
 
                                             <SelectContent className="bg-white text-black dark:bg-slate-800 dark:text-white">
                                               <SelectItem value="Completed" className="text-green-600">Completed</SelectItem>
-                                              <SelectItem value="In Progress" className="text-yellow-500">In Progress</SelectItem>
+                                              <SelectItem value="In Progress" className="text-blue-500">In Progress</SelectItem>
                                               <SelectItem value="Pending" className="text-red-500">Pending</SelectItem>
                                               <SelectItem value="No Status" className="text-gray-400">No Status</SelectItem>
                                             </SelectContent>
