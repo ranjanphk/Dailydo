@@ -75,7 +75,7 @@ export default function DailyScoreModal({ isOpen, onClose, completed, inProgress
           {username ? `${username}'s` : "Your"} task summary today
         </p>
               {lastUpdate && (
-        <span className="text-xs text-gray-400 dark:text-gray-400 py-2 text-center mt-2 text-center items-center">
+        <span className="text-xs text-gray-400 dark:text-gray-400 py-2 mt-2 text-center items-center">
          {lastUpdate}
         </span>
       )}
