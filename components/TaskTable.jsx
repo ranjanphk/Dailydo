@@ -229,7 +229,7 @@ export default function TaskTable({
                             <td className="py-3 px-3 text-gray-800 dark:text-gray-400">
                               {t.status === 'Later' && t.workDate ? (
                                 <div className="flex items-center gap-1 justify-center">
-                                  <span className="whitespace-nowrap">
+                                  <span className="whitespace-nowrap text-orange-500">
                                     {new Date(t.workDate).toLocaleDateString('en-IN', {
                                       day: '2-digit',
                                       month: 'short',
