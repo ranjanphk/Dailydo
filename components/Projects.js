@@ -10,7 +10,7 @@ export default function Projects({ projects, setActiveProject, tasks, setActiveP
         <div className="flex flex-col items-center justify-center flex-1 text-center">
           <div
             className="
-          bg-gray-50 rounded-2xl dark:bg-gray-900 border-2
+          bg-gray-50 rounded-2xl dark:bg-gray-900
           dark:border-gray-800-gray-200 
           dark:border-gray-800-gray-200-dashed dark:border-gray-800 border 
           border-gray-100 dark:border-gray-800-gray-200-gray-300 
