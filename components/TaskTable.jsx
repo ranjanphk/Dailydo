@@ -4,10 +4,14 @@ import { Search } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { Title } from "chart.js";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select"
+import { Dayjs } from "dayjs";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../lib/firebase";
 
 
 export default function TaskTable({ 
   tasks = [], 
+  setTasks,
   onDelete, 
   onChangeStatus, 
   onReorder, 
@@ -15,14 +19,18 @@ export default function TaskTable({
   projects = [],
   allowEdit = true,
   hideProjectTag = false, // new prop
-  onEdit
+  onEdit,
+
 }) {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
   const tasksPerPage = 6;
-  
+  const [showDateModal, setShowDateModal] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [selectedDate, setSelectedDate] = useState("");
+
 
 // status colors 
 
@@ -38,10 +46,10 @@ const statusColors = {
 // Debugging: check what your data looks like
 console.log("Tasks array:", tasks);
 
-const filteredTasks = tasks.filter((t) => {
-  const title = typeof t.title === "string" ? t.title : String(t.title ?? "");
-  return title.toLowerCase().includes((searchTerm ?? "").toLowerCase());
-});
+const filteredTasks = tasks.filter(t =>
+  t.title.toLowerCase().includes(searchTerm.toLowerCase())
+);
+
 
   // sort
   const sortedTasks = [...filteredTasks].sort((a, b) => {
@@ -66,6 +74,27 @@ const filteredTasks = tasks.filter((t) => {
       setSortOrder("asc");
     }
   };
+
+
+  // handle workdate
+
+ const handleDateConfirm = async (date, task) => {
+  if (!task || !date) return;
+
+  try {
+    await updateDoc(doc(db, "tasks", task.id), {
+      status: "Later",
+      workDate: new Date(date)
+    });
+
+    // No need to call setTasks here!
+    setShowDateModal(false); // close popup
+  } catch (error) {
+    console.error("Error updating task:", error);
+  }
+};
+
+
 
   // drag & drop
 const handleDragEnd = (result) => {
@@ -119,7 +148,7 @@ const handleDragEnd = (result) => {
                     className="py-2 px-3 cursor-pointer"
                     onClick={() => handleSort("createdAt")}
                   >
-                    Date / Time{" "}
+                    Work / Created date{" "}
                     {sortBy === "createdAt"
                       ? sortOrder === "asc"
                         ? "↑"
@@ -167,15 +196,24 @@ const handleDragEnd = (result) => {
                                   >
                                     #{projects?.find(p => p.id === t.projectId)?.title || "Project"}
                                   </span>
-                                )}
+                                )}  
                             </div>
                           </div>
                         </td>
                           <td className="py-3 px-3">
-                                          <Select
-                                            value={t.status}
-                                            onValueChange={(value) => onChangeStatus?.(t, value)}
-                                          >
+                                         <Select
+                                                    value={t.status}
+                                                    onValueChange={(value) => {
+                                                      if (value === "Later") {
+                                                        setShowDateModal(true);    // Show the popup
+                                                        setSelectedTask(t);        // Store the task being edited
+                                                        setSelectedDate("");       // Reset date
+                                                      } else {
+                                                        onChangeStatus?.(t, value); // normal status change
+                                                      }
+                                                    }}
+                                                  >
+
                                             <SelectTrigger
                                               className={`w-full bg-100 dark:bg-gray-800
                                                   focus:ring-gray-300 dark:focus:ring-gray-600
@@ -193,15 +231,32 @@ const handleDragEnd = (result) => {
                                               <SelectItem value="In Progress" className="text-blue-500">In Progress</SelectItem>
                                               <SelectItem value="Pending" className="text-red-500">Pending</SelectItem>
                                               <SelectItem value="No Status" className="text-gray-400">No Status</SelectItem>
+                                              <SelectItem value="Later" className="text-gray-400">Later</SelectItem>
                                             </SelectContent>
                                           </Select>
 
                           </td>
-                        <td className="py-3 px-3 text-gray-800 dark:text-gray-400">
-                          {t.createdAt
-                            ? new Date(t.createdAt).toLocaleString()
-                            : "-"}
-                        </td>
+                                             <td
+                                                 className={`py-3 px-3 ${
+                                                  t.status === "Later" ? "text-orange-500" : "text-gray-800 dark:text-gray-400"
+                                                }`}
+                                              >
+                                                {t.status === "Later" && t.workDate
+                                                  ? new Date(t.workDate).toLocaleDateString("en-IN", {
+                                                      day: "2-digit",
+                                                      month: "short",
+                                                      year: "numeric",
+                                                    })
+                                                  : t.createdAt
+                                                  ? new Date(t.createdAt).toLocaleDateString("en-IN", {
+                                                        day: "2-digit",
+                                                        month: "short",
+                                                        year: "numeric",
+                                                      })
+                                                : "-"}
+                                              </td>
+
+
                         <td className="py-3 px-3">
                           <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300">
                             <TrashIcon
@@ -222,6 +277,41 @@ const handleDragEnd = (result) => {
                     )}
                   </Draggable>
                 ))}
+
+              {/*date popp */}
+              {showDateModal && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+    <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-2xl w-[90%] max-w-sm">
+      <h3 className="text-lg font-semibold mb-3 text-center">
+        Select a date for this task
+      </h3>
+      <input
+        type="date"
+        value={selectedDate}
+        onChange={(e) => setSelectedDate(e.target.value)}
+        className="border p-2 rounded w-full mb-4 dark:bg-gray-800"
+      />
+      <div className="flex justify-end gap-3">
+        <button
+          onClick={() => setShowDateModal(false)}
+          className="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={() => handleDateConfirm(selectedDate, selectedTask)}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+
+
+
                 {provided.placeholder}
                 {displayedTasks.length === 0 && (
                   <tr>

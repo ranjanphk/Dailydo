@@ -29,7 +29,9 @@ export default function Dashboard() {
   const [projects, setProjects] = useState([]);
   const [activeProject, setActiveProject] = useState(null);
   const { name } = user || {};
-  const [history] = useState([]);
+
+
+
 
   useEffect(() => {
     if (!loading && !user) router.push("/login");
@@ -55,6 +57,7 @@ export default function Dashboard() {
             status: data.status || "In Progress",
             userId: data.userId,
             createdAt: data.createdAt?.toDate?.() || new Date(),
+            workDate: data.workDate?.toDate?.() || null,
             avatarUrl: data.avatarUrl || null,
             order: data.order ?? 0,
             projectId: data.projectId || null,
@@ -66,6 +69,24 @@ export default function Dashboard() {
     return unsub;
   }, [user]);
 
+  useEffect(() => {
+  if (!user) return;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // ignore time
+
+  tasks.forEach(async (task) => {
+    if (task.status === "Later" && task.workDate) {
+      const taskDate = new Date(task.workDate);
+      taskDate.setHours(0, 0, 0, 0);
+
+      if (taskDate <= today) {
+        // Update task to Pending
+        await updateDoc(doc(db, "tasks", task.id), { status: "Pending" });
+      }
+    }
+  });
+}, [tasks, user]);
 
   // chart Data
   const chartData = useMemo(() => {
@@ -89,6 +110,7 @@ export default function Dashboard() {
     else if (task.status === "In Progress") grouped[dateKey].inProgress += 1;
     else if (task.status === "Pending") grouped[dateKey].pending += 1;
     else if (task.status === "No Status") grouped[dateKey].nostatus += 1;
+    else if (task.status === "Later") grouped[dateKey].later += 1;
   });
 
   // return array sorted by date
@@ -187,6 +209,7 @@ const handleReorder = async (newTasks) => {
       status: "Pending",
       userId: user.uid,
       createdAt: serverTimestamp(),
+      workDate: workDate,
       order: maxOrder + 1,
       projectId: projectId || null,
     });
@@ -299,11 +322,16 @@ const handleReorder = async (newTasks) => {
               <div className="flex-1">
                       <TaskTable
                         tasks={tasks.filter(
-                            (t) => t.status !== "No Status" && t.status !== "Completed" // ✅ hide completed too
+                            (t) => t.status !== "No Status" && t.status !== "Completed" && t.status !== "Later" // ✅ hide completed too
                           )}
+                        setTasks={setTasks} 
                         projects={projects}          // ✅ pass projects
                         onDelete={deleteTask}
-                        onChangeStatus={changeStatus}
+                        onChangeStatus={(task, newStatus) => {
+                              setTasks(prev =>
+                                prev.map(t => (t.id === task.id ? { ...t, status: newStatus } : t))
+                              );
+                            }}
                         onReorder={handleReorder}
                         onEdit={handleEditTask}
                         onProjectClick={(projectId) => {
@@ -314,6 +342,7 @@ const handleReorder = async (newTasks) => {
                           }
                         }}
                         hideProjectTag={false}
+                        
                       />
               </div>
               <TaskOverview
