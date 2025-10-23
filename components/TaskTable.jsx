@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { PencilSquareIcon, TrashIcon, CalendarIcon } from '@heroicons/react/24/outline';
 import { Search } from 'lucide-react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { Title } from 'chart.js';
@@ -226,25 +226,41 @@ export default function TaskTable({
                             </SelectContent>
                           </Select>
                         </td>
-                        <td
-                          className={`py-3 px-3 ${
-                            t.status === 'Later' ? 'text-orange-500' : 'text-gray-800 dark:text-gray-400'
-                          }`}
-                        >
-                          {t.status === 'Later' && t.workDate
-                            ? new Date(t.workDate).toLocaleDateString('en-IN', {
-                                day: '2-digit',
-                                month: 'short',
-                                year: 'numeric',
-                              })
-                            : t.createdAt
-                              ? new Date(t.createdAt).toLocaleDateString('en-IN', {
-                                  day: '2-digit',
-                                  month: 'short',
-                                  year: 'numeric',
-                                })
-                              : '-'}
-                        </td>
+                            <td className="py-3 px-3 text-gray-800 dark:text-gray-400">
+                              {t.status === 'Later' && t.workDate ? (
+                                <div className="flex items-center gap-1 justify-center">
+                                  <span className="whitespace-nowrap">
+                                    {new Date(t.workDate).toLocaleDateString('en-IN', {
+                                      day: '2-digit',
+                                      month: 'short',
+                                      year: 'numeric',
+                                    })}
+                                  </span>
+                                  <CalendarIcon
+                                    className="w-4 h-4 text-orange-500 cursor-pointer hover:text-orange-600"
+                                    onClick={() => {
+                                      setSelectedTask(t);
+                                      setSelectedDate(
+                                        t.workDate ? new Date(t.workDate).toISOString().split('T')[0] : ''
+                                      );
+                                      setShowDateModal(true);
+                                    }}
+                                  />
+                                </div>
+                              ) : t.createdAt ? (
+                                <span className="whitespace-nowrap flex items-center justify-center">
+                                  {new Date(t.createdAt).toLocaleDateString('en-IN', {
+                                    day: '2-digit',
+                                    month: 'short',
+                                    year: 'numeric',
+                                  })}
+                                </span>
+                              ) : (
+                                '-'
+                              )}
+                            </td>
+
+
 
                         <td className="py-3 px-3">
                           <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300">
