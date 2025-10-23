@@ -1,14 +1,8 @@
 // pages/index.js
-import Link from "next/link";
-import { useAuth } from "../context/AuthContext";
-import { motion } from "framer-motion";
-import {
-  CheckCircle,
-  BarChart3,
-  Calendar,
-  Users,
-
-} from "lucide-react";
+import Link from 'next/link';
+import { useAuth } from '../context/AuthContext';
+import { motion } from 'framer-motion';
+import { CheckCircle, BarChart3, Calendar, Users } from 'lucide-react';
 
 export default function Home() {
   const { user } = useAuth();
@@ -29,14 +23,13 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          DailyDo <br className="leading-10"/>
+          DailyDo <br className="leading-10" />
           <span className="text-xs font-medium text-gray-500 dark:text-gray-400 ml-2 tracking-wider">v1.0</span>
         </motion.h1>
 
         <p className="mt-6 text-lg md:text-xl text-gray-700 max-w-2xl leading-relaxed">
-          The <span className="font-semibold text-indigo-600">smarter way</span>{" "}
-          to manage tasks, track performance, and plan your time — all in one
-          elegant dashboard.
+          The <span className="font-semibold text-indigo-600">smarter way</span> to manage tasks, track performance, and
+          plan your time — all in one elegant dashboard.
         </p>
 
         {/* CTA Buttons */}
@@ -63,34 +56,32 @@ export default function Home() {
           )}
         </div>
 
-         {/* Social Media Icons */}
-          <div className="mt-10 flex justify-center space-x-6">
-            <a
-              href="https://www.linkhttps://www.linkedin.com/company/heydailydo"
-              className="p-3 rounded-full bg-gradient-to-tr from-blue-500 to-blue-600 text-white shadow-lg hover:scale-110 transition-transform"
-            >
-              <i className="fab fa-linkedin-in text-lg"></i>
-            </a>
-            <a
-              href="https://www.instagram.com/heydailydo/"
-              className="p-3 rounded-full bg-gradient-to-tr from-pink-500 to-rose-600 text-white shadow-lg hover:scale-110 transition-transform"
-            >
-              <i className="fab fa-instagram text-lg"></i>
-            </a>
-            <a
-              href="https://x.com/heyDailyDo"
-              className="p-3 rounded-full bg-gradient-to-tr from-sky-400 to-sky-600 text-white shadow-lg hover:scale-110 transition-transform"
-            >
-              <i className="fab fa-twitter text-lg"></i>
-            </a>
-          </div>
+        {/* Social Media Icons */}
+        <div className="mt-10 flex justify-center space-x-6">
+          <a
+            href="https://www.linkhttps://www.linkedin.com/company/heydailydo"
+            className="p-3 rounded-full bg-gradient-to-tr from-blue-500 to-blue-600 text-white shadow-lg hover:scale-110 transition-transform"
+          >
+            <i className="fab fa-linkedin-in text-lg"></i>
+          </a>
+          <a
+            href="https://www.instagram.com/heydailydo/"
+            className="p-3 rounded-full bg-gradient-to-tr from-pink-500 to-rose-600 text-white shadow-lg hover:scale-110 transition-transform"
+          >
+            <i className="fab fa-instagram text-lg"></i>
+          </a>
+          <a
+            href="https://x.com/heyDailyDo"
+            className="p-3 rounded-full bg-gradient-to-tr from-sky-400 to-sky-600 text-white shadow-lg hover:scale-110 transition-transform"
+          >
+            <i className="fab fa-twitter text-lg"></i>
+          </a>
+        </div>
       </header>
 
       {/* Features */}
       <section className="py-24 px-6 bg-gradient-to-b from-white to-indigo-50">
-        <h2 className="text-4xl font-bold text-center text-gray-900 mb-14">
-          Why Choose DailyDo?
-        </h2>
+        <h2 className="text-4xl font-bold text-center text-gray-900 mb-14">Why Choose DailyDo?</h2>
         <div className="grid gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 max-w-7xl mx-auto">
           <FeatureCard
             icon={<CheckCircle className="text-indigo-600 w-8 h-8" />}
@@ -142,7 +133,7 @@ function FeatureCard({ icon, title, description }) {
     <motion.div
       className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg p-8 flex flex-col items-center text-center border border-gray-100 hover:shadow-2xl transition"
       whileHover={{ y: -5, scale: 1.03 }}
-      transition={{ type: "spring", stiffness: 200 }}
+      transition={{ type: 'spring', stiffness: 200 }}
     >
       <div className="p-4 bg-indigo-100 rounded-full">{icon}</div>
       <h3 className="mt-6 text-lg font-semibold text-gray-800">{title}</h3>

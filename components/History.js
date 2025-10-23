@@ -1,8 +1,8 @@
-import { useMemo, useState } from "react";
-import TaskTable from "./TaskTable";
-import TaskOverview from "./TaskOverview";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../lib/firebase";
+import { useMemo, useState } from 'react';
+import TaskTable from './TaskTable';
+import TaskOverview from './TaskOverview';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 import { deleteDoc } from 'firebase/firestore';
 
 export default function History({
@@ -15,33 +15,27 @@ export default function History({
   onEdit = true,
   setActivePage,
 }) {
-
   // change status
-    const changeStatus = async (task, next) => {
-      await updateDoc(doc(db, "tasks", task.id), { status: next });
-    };
+  const changeStatus = async (task, next) => {
+    await updateDoc(doc(db, 'tasks', task.id), { status: next });
+  };
 
-   //delete task
+  //delete task
 
   const deleteTask = async (task) => {
-    await deleteDoc(doc(db, "tasks", task.id));
+    await deleteDoc(doc(db, 'tasks', task.id));
   };
 
   // ✅ Filter completed tasks only
-  const completedTasks = useMemo(
-    () => tasks.filter((t) => t.status === "Completed"),
-    [tasks]
-  );
+  const completedTasks = useMemo(() => tasks.filter((t) => t.status === 'Completed'), [tasks]);
 
   // ✅ Compute task stats for overview
   const completed = completedTasks.length;
-  const inProgress = tasks.filter((t) => t.status === "In Progress").length;
-  const pending = tasks.filter((t) => t.status === "Pending").length;
+  const inProgress = tasks.filter((t) => t.status === 'In Progress').length;
+  const pending = tasks.filter((t) => t.status === 'Pending').length;
 
   return (
     <div className="mx-auto max-w-6xl flex flex-col gap-6">
-
-
       {/* Main Content */}
       <div className="flex bg-white dark:bg-gray-900 rounded-md overflow-hidden shadow">
         {/* Left: Task Table */}
@@ -56,13 +50,12 @@ export default function History({
             onProjectClick={(projectId) => {
               const project = projects.find((p) => p.id === projectId);
               if (project) {
-                setActivePage("projectDetail");
+                setActivePage('projectDetail');
               }
             }}
             hideProjectTag={false}
           />
         </div>
-
       </div>
 
       {/* Empty State */}

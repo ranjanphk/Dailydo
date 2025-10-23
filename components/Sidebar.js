@@ -1,11 +1,18 @@
-import { LucideBookTemplate, LucideBriefcase, LucideChartBar, LucideClipboardCheck, LucideFolder, LucideHistory, LucideHome, LucideNotebook, LucidePlus } from 'lucide-react';
+import {
+  LucideBookTemplate,
+  LucideBriefcase,
+  LucideChartBar,
+  LucideClipboardCheck,
+  LucideFolder,
+  LucideHistory,
+  LucideHome,
+  LucideNotebook,
+  LucidePlus,
+} from 'lucide-react';
 
-const Sidebar = ({activePage, onTasksClick, onProjectsClick, onOverviewClick, onHistoryClick }) => {
-  
+const Sidebar = ({ activePage, onTasksClick, onProjectsClick, onOverviewClick, onHistoryClick }) => {
   return (
     <aside className="w-24 h-auto py-6 fixed bg-white dark:bg-gray-900 shadow-lg flex flex-col items-center justify-center gap-8 rounded-xl p-4">
-
-
       {/* Daily Task */}
       <button
         onClick={onTasksClick}
@@ -15,7 +22,7 @@ const Sidebar = ({activePage, onTasksClick, onProjectsClick, onOverviewClick, on
         <LucideClipboardCheck size={16} />
         <span className="text-xs mt-1">Today</span>
       </button>
-       {/* Projects */}
+      {/* Projects */}
       <button
         onClick={onProjectsClick}
         className={`text-gray-600 dark:text-gray-300 hover:text-indigo-600 flex flex-col items-center w-8 cursor-pointer
@@ -24,8 +31,7 @@ const Sidebar = ({activePage, onTasksClick, onProjectsClick, onOverviewClick, on
         <LucideBriefcase size={16} />
         <span className="text-xs mt-1">Projects</span>
       </button>
-    
-    
+
       {/* Overview */}
 
       <button
@@ -37,7 +43,6 @@ const Sidebar = ({activePage, onTasksClick, onProjectsClick, onOverviewClick, on
         <span className="text-xs mt-1">Overview</span>
       </button>
 
-          
       {/* Overview */}
 
       <button
@@ -48,8 +53,6 @@ const Sidebar = ({activePage, onTasksClick, onProjectsClick, onOverviewClick, on
         <LucideHistory size={16} />
         <span className="text-xs mt-1">Trash</span>
       </button>
-
-      
     </aside>
   );
 };

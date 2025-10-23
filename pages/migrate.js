@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import { db } from "../lib/firebase";
-import { collection, getDocs, writeBatch, doc } from "firebase/firestore";
-import { useAuth } from "../context/AuthContext";
+import { useEffect } from 'react';
+import { db } from '../lib/firebase';
+import { collection, getDocs, writeBatch, doc } from 'firebase/firestore';
+import { useAuth } from '../context/AuthContext';
 
 export default function Migrate() {
   const { user } = useAuth();
@@ -10,14 +10,14 @@ export default function Migrate() {
     if (!user) return;
 
     const migrateOrders = async () => {
-      const snap = await getDocs(collection(db, "tasks"));
+      const snap = await getDocs(collection(db, 'tasks'));
       const batch = writeBatch(db);
 
       let index = 0;
       snap.forEach((d) => {
         const data = d.data();
         if (data.userId === user.uid) {
-          const ref = doc(db, "tasks", d.id);
+          const ref = doc(db, 'tasks', d.id);
           batch.update(ref, { order: index });
           index++;
         }
@@ -27,7 +27,7 @@ export default function Migrate() {
         await batch.commit();
         console.log(`✅ Migration done: set order for ${index} tasks`);
       } else {
-        console.log("ℹ️ No tasks found for this user");
+        console.log('ℹ️ No tasks found for this user');
       }
     };
 

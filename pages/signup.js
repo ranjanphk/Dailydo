@@ -1,24 +1,24 @@
 // pages/signup.js
-import { useState } from "react";
-import { useRouter } from "next/router";
-import { signupWithEmail, loginWithGoogle } from "../lib/auth";
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { signupWithEmail, loginWithGoogle } from '../lib/auth';
 
 export default function SignupPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const submit = async (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
     setLoading(true);
 
     try {
       await signupWithEmail(email, password, name);
-      router.push("/"); // ✅ redirect after signup
+      router.push('/'); // ✅ redirect after signup
     } catch (err) {
       setError(err.message);
     } finally {
@@ -29,7 +29,7 @@ export default function SignupPage() {
   const handleGoogleSignup = async () => {
     try {
       await loginWithGoogle();
-      router.push("/"); // ✅ redirect after google signup
+      router.push('/'); // ✅ redirect after google signup
     } catch (err) {
       setError(err.message);
     }
@@ -37,28 +37,18 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white to-indigo-50 px-4 flex-col gap-8">
-      <h1
-        className="text-5xl font-extrabold text-indigo-700 cursor-pointer"
-        onClick={() => router.push("/")}
-      >
+      <h1 className="text-5xl font-extrabold text-indigo-700 cursor-pointer" onClick={() => router.push('/')}>
         DailyDo
       </h1>
 
       <div className="bg-white dark:bg-gray-900 shadow-md rounded-lg p-8 max-w-md w-full">
-        <button
-          onClick={() => router.back()}
-          className="mb-4 text-indigo-600 hover:underline text-sm"
-        >
+        <button onClick={() => router.back()} className="mb-4 text-indigo-600 hover:underline text-sm">
           ← Back
         </button>
 
-        <h2 className="text-2xl font-bold text-indigo-700 mb-6 text-center">
-          Sign Up
-        </h2>
+        <h2 className="text-2xl font-bold text-indigo-700 mb-6 text-center">Sign Up</h2>
 
-        {error && (
-          <div className="mb-4 text-red-600 text-sm text-center">{error}</div>
-        )}
+        {error && <div className="mb-4 text-red-600 text-sm text-center">{error}</div>}
 
         <form onSubmit={submit} className="space-y-4">
           <input
@@ -90,7 +80,7 @@ export default function SignupPage() {
             disabled={loading}
             className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition"
           >
-            {loading ? "Signing up..." : "Sign Up"}
+            {loading ? 'Signing up...' : 'Sign Up'}
           </button>
         </form>
 

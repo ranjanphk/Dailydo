@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useRef } from "react";
-import { Search, Bell } from "lucide-react";
-import { useTheme } from "next-themes";
+import { useState, useEffect, useRef } from 'react';
+import { Search, Bell } from 'lucide-react';
+import { useTheme } from 'next-themes';
 
 const Topbar = ({ user, onProfileClick, logout, projects, tasks = [], onSelectItem }) => {
   const { theme, setTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
   const [mounted, setMounted] = useState(false);
   const menuRef = useRef(null);
@@ -23,9 +23,9 @@ const Topbar = ({ user, onProfileClick, logout, projects, tasks = [], onSelectIt
         setMenuOpen(false);
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -38,11 +38,11 @@ const Topbar = ({ user, onProfileClick, logout, projects, tasks = [], onSelectIt
 
     const projectMatches = projects
       .filter((p) => p.title?.toLowerCase().includes(search.toLowerCase()))
-      .map((p) => ({ id: p.id, label: p.title, type: "project" }));
+      .map((p) => ({ id: p.id, label: p.title, type: 'project' }));
 
     const taskMatches = tasks
       .filter((t) => t.title?.toLowerCase().includes(search.toLowerCase()))
-      .map((t) => ({ id: t.id, label: t.title, type: "task", projectId: t.projectId }));
+      .map((t) => ({ id: t.id, label: t.title, type: 'task', projectId: t.projectId }));
 
     setResults([...projectMatches, ...taskMatches]);
   }, [search, projects, tasks]);
@@ -53,7 +53,7 @@ const Topbar = ({ user, onProfileClick, logout, projects, tasks = [], onSelectIt
         className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-transparent bg-clip-text cursor-pointer leading-4"
         onClick={() => window.location.reload()}
       >
-        DailyDo <br/>
+        DailyDo <br />
         <span className="text-xs font-normal text-gray-500 dark:text-gray-400 ml-2">v1.0</span>
       </h1>
 
@@ -77,10 +77,10 @@ const Topbar = ({ user, onProfileClick, logout, projects, tasks = [], onSelectIt
                   className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                   onClick={() => {
                     onSelectItem(r);
-                    setSearch(""); // clear search
+                    setSearch(''); // clear search
                   }}
                 >
-                  {r.type === "project" ? "📁 Project: " : "✅ Task: "} {r.label}
+                  {r.type === 'project' ? '📁 Project: ' : '✅ Task: '} {r.label}
                 </button>
               ))}
             </div>
@@ -90,10 +90,10 @@ const Topbar = ({ user, onProfileClick, logout, projects, tasks = [], onSelectIt
         {/* Theme Toggle */}
         {mounted && (
           <button
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             className="px-3 py-1 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
           >
-            {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
+            {theme === 'dark' ? '🌙 Dark' : '☀️ Light'}
           </button>
         )}
 
@@ -107,7 +107,7 @@ const Topbar = ({ user, onProfileClick, logout, projects, tasks = [], onSelectIt
             onClick={() => setMenuOpen((prev) => !prev)}
             className="w-9 h-9 flex items-center justify-center rounded-full bg-purple-500 text-white font-semibold"
           >
-            {user?.email?.charAt(0).toUpperCase() || "U"}
+            {user?.email?.charAt(0).toUpperCase() || 'U'}
           </button>
 
           {menuOpen && (

@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef } from "react";
-import { useRouter } from "next/router";
+import { useEffect, useState, useRef } from 'react';
+import { useRouter } from 'next/router';
 
 export default function TaskComposer({
   user,
@@ -9,32 +9,32 @@ export default function TaskComposer({
   setEditingTask,
   currentProject,
   projects,
-  type = "task",
+  type = 'task',
 }) {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
   const textareaRef = useRef(null);
   const router = useRouter();
 
   // Prefill input when editing or in a project
- useEffect(() => {
-  if (editingTask) {
-    setValue(editingTask.title);
-  } else {
-    setValue(""); // ✅ no #project prefill
-  }
-}, [editingTask, currentProject]);
+  useEffect(() => {
+    if (editingTask) {
+      setValue(editingTask.title);
+    } else {
+      setValue(''); // ✅ no #project prefill
+    }
+  }, [editingTask, currentProject]);
 
-// Clear task input when leaving a project view
-useEffect(() => {
-  if (!currentProject) {
-    setValue("");  // reset the composer input
-  }
-}, [currentProject]);
+  // Clear task input when leaving a project view
+  useEffect(() => {
+    if (!currentProject) {
+      setValue(''); // reset the composer input
+    }
+  }, [currentProject]);
 
   // Auto-height
   useEffect(() => {
     if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = 'auto';
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
   }, [value]);
@@ -42,67 +42,64 @@ useEffect(() => {
   // Clear when navigating away
   useEffect(() => {
     const handleRouteChange = () => {
-      setValue("");
+      setValue('');
       setEditingTask?.(null);
     };
-    router.events.on("routeChangeStart", handleRouteChange);
+    router.events.on('routeChangeStart', handleRouteChange);
     return () => {
-      router.events.off("routeChangeStart", handleRouteChange);
+      router.events.off('routeChangeStart', handleRouteChange);
     };
   }, [router, setEditingTask]);
 
   if (!user) return null;
 
-const send = () => {
-  const text = value.trim();
-  if (!text) return;
+  const send = () => {
+    const text = value.trim();
+    if (!text) return;
 
-  // 1. Update existing
-  if (editingTask) {
-    onUpdate?.({ ...editingTask, title: text });
-    setEditingTask?.(null);
-    setValue("");
-    return;
-  }
+    // 1. Update existing
+    if (editingTask) {
+      onUpdate?.({ ...editingTask, title: text });
+      setEditingTask?.(null);
+      setValue('');
+      return;
+    }
 
-  // 2. Create Project with /p
-  if (text.startsWith("/p ")) {
-    const projectTitle = text.slice(3).trim();
-    if (projectTitle) onCreate?.({ type: "project", title: projectTitle });
-    setValue("");
-    return;
-  }
+    // 2. Create Project with /p
+    if (text.startsWith('/p ')) {
+      const projectTitle = text.slice(3).trim();
+      if (projectTitle) onCreate?.({ type: 'project', title: projectTitle });
+      setValue('');
+      return;
+    }
 
-  // 3. If inside a project → force projectId
-  if (currentProject) {
-    onCreate?.({ type, title: text.replace(/^#\w+\s+/, ""), projectId: currentProject.id });
-    setValue("");
-    return;
-  }
+    // 3. If inside a project → force projectId
+    if (currentProject) {
+      onCreate?.({ type, title: text.replace(/^#\w+\s+/, ''), projectId: currentProject.id });
+      setValue('');
+      return;
+    }
 
-  // 4. If outside project → parse #Project
-  const match = text.match(/^#(\w+)\s+(.*)$/);
-  if (match) {
-    const [, projectName, taskText] = match;
-    const project = projects?.find(
-      (p) => p.title.toLowerCase() === projectName.toLowerCase()
-    );
-    onCreate?.({
-      type,
-      title: taskText,
-      projectId: project?.id || null,
-    });
-  } else {
-    // General task
-    onCreate?.({ type, title: text, projectId: null });
-  }
+    // 4. If outside project → parse #Project
+    const match = text.match(/^#(\w+)\s+(.*)$/);
+    if (match) {
+      const [, projectName, taskText] = match;
+      const project = projects?.find((p) => p.title.toLowerCase() === projectName.toLowerCase());
+      onCreate?.({
+        type,
+        title: taskText,
+        projectId: project?.id || null,
+      });
+    } else {
+      // General task
+      onCreate?.({ type, title: text, projectId: null });
+    }
 
-  setValue("");
-};
-
+    setValue('');
+  };
 
   const onKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       send();
     }
@@ -119,9 +116,9 @@ const send = () => {
             onChange={(e) => setValue(e.target.value)}
             onKeyDown={onKeyDown}
             placeholder={
-              type === "project"
-                ? "Type a Project Name and press Enter… (Shift+Enter for newline)"
-                : "Type a Task and press Enter…"
+              type === 'project'
+                ? 'Type a Project Name and press Enter… (Shift+Enter for newline)'
+                : 'Type a Task and press Enter…'
             }
             className={`
                   w-full px-4 py-4 pr-32 rounded-xl border border-gray-100 dark:border-gray-800
@@ -129,22 +126,28 @@ const send = () => {
                   focus:outline-none focus:ring-2 focus:ring-indigo-400
                   text-gray-900 dark:text-gray-100
                   flex
-                  ${editingTask ? "pr-48" : "pr-32"}  /* adjust right padding based on buttons */
+                  ${editingTask ? 'pr-48' : 'pr-32'}  /* adjust right padding based on buttons */
                 `}
-          >
+          ></textarea>
 
-          </textarea>
-                    
-              {/* ✅ Hints go here */}
-              <div className="absolute left-2 -bottom-7 text-xs text-gray-500 dark:text-gray-400 items-center">
-                {value.startsWith("/p") ? (
-                  <span>💡 Press Enter to create a new project</span>
-                ) : value.startsWith("#") ? (
-                  <span>💡 Type a project name after <code>#</code> to assign task</span>
-                ) : (
-                  <span>💡 Hint: Use <code>/p</code> <b>ProjectTitle</b> to create a project, or <code><b>#Project</b> Task</code> to assign</span>
-                )}
-              </div>
+          {/* ✅ Hints go here */}
+          <div className="absolute left-2 -bottom-7 text-xs text-gray-500 dark:text-gray-400 items-center">
+            {value.startsWith('/p') ? (
+              <span>💡 Press Enter to create a new project</span>
+            ) : value.startsWith('#') ? (
+              <span>
+                💡 Type a project name after <code>#</code> to assign task
+              </span>
+            ) : (
+              <span>
+                💡 Hint: Use <code>/p</code> <b>ProjectTitle</b> to create a project, or{' '}
+                <code>
+                  <b>#Project</b> Task
+                </code>{' '}
+                to assign
+              </span>
+            )}
+          </div>
 
           {/* Buttons */}
           <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-2 z-20">
@@ -159,18 +162,18 @@ const send = () => {
                   "
                 >
                   Update
-                 <i class="fa-solid fa-arrow-up px-1"></i>
+                  <i class="fa-solid fa-arrow-up px-1"></i>
                 </button>
                 <button
                   onClick={() => {
                     setEditingTask(null);
-                    setValue(currentProject ? `#${currentProject.title} ` : "");
+                    setValue(currentProject ? `#${currentProject.title} ` : '');
                   }}
                   className="bg-gray-600 text-gray-100 dark:text-gray-100 rounded-lg px-5 py-2 text-sm"
                 >
                   Cancel
                 </button>
-              </> 
+              </>
             ) : (
               <button
                 onClick={send}
@@ -180,13 +183,12 @@ const send = () => {
                     focus:ring-indigo-300 dark:focus:ring-indigo-800 flex items-center gap-1
                 "
               >
-                {type === "project" ? "Create Project" : "Add"}
+                {type === 'project' ? 'Create Project' : 'Add'}
                 <i class="fa-solid fa-plus px-2"></i>
               </button>
             )}
           </div>
         </div>
-        
       </div>
     </div>
   );

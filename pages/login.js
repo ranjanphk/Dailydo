@@ -1,38 +1,38 @@
-import { use, useState } from "react";
-import { useRouter } from "next/router";
-import { loginWithEmail, loginWithGoogle } from "../lib/auth"; // adjust your auth imports
-import { motion } from "framer-motion";
-import { useTheme } from "next-themes";
-import { useEffect } from "react";
+import { use, useState } from 'react';
+import { useRouter } from 'next/router';
+import { loginWithEmail, loginWithGoogle } from '../lib/auth'; // adjust your auth imports
+import { motion } from 'framer-motion';
+import { useTheme } from 'next-themes';
+import { useEffect } from 'react';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const { setTheme } = useTheme();
 
   const router = useRouter();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
     try {
       await loginWithEmail(email, password);
-      router.push("/dashboard");
+      router.push('/dashboard');
     } catch (err) {
       setError(err.message);
     }
   };
 
-    useEffect(() => {
-    setTheme("light"); // force light mode
+  useEffect(() => {
+    setTheme('light'); // force light mode
   }, [setTheme]);
 
   const handleGoogleLogin = async () => {
-    setError("");
+    setError('');
     try {
       await loginWithGoogle();
-      router.push("/dashboard");
+      router.push('/dashboard');
     } catch (err) {
       setError(err.message);
     }
@@ -50,20 +50,13 @@ export default function LoginPage() {
       </motion.h1>
 
       <div className="bg-white dark:bg-gray-900 shadow-md rounded-lg p-8 max-w-md w-full">
-        <button
-          onClick={() => router.back()}
-          className="mb-4 text-indigo-600 hover:underline text-sm"
-        >
+        <button onClick={() => router.back()} className="mb-4 text-indigo-600 hover:underline text-sm">
           ← Back
         </button>
 
-        <h2 className="text-2xl font-bold text-indigo-700 mb-6 text-center">
-          Welcome Back
-        </h2>
+        <h2 className="text-2xl font-bold text-indigo-700 mb-6 text-center">Welcome Back</h2>
 
-        {error && (
-          <div className="mb-4 text-red-600 text-sm text-center">{error}</div>
-        )}
+        {error && <div className="mb-4 text-red-600 text-sm text-center">{error}</div>}
 
         <form onSubmit={handleLogin} className="space-y-4">
           <input
@@ -110,11 +103,8 @@ export default function LoginPage() {
         </button>
 
         <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-300">
-          Don’t have an account?{" "}
-          <a
-            href="/signup"
-            className="text-indigo-600 hover:underline font-medium"
-          >
+          Don’t have an account?{' '}
+          <a href="/signup" className="text-indigo-600 hover:underline font-medium">
             Sign Up
           </a>
         </p>
