@@ -208,7 +208,7 @@ export default function Dashboard() {
       status: 'Pending',
       userId: user.uid,
       createdAt: serverTimestamp(),
-      workDate: workDate,
+      workDate:null,
       order: maxOrder + 1,
       projectId: projectId || null,
     });
