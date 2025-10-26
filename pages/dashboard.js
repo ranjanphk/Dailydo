@@ -151,6 +151,21 @@ export default function Dashboard() {
     [tasks],
   );
 
+  // Completed tasks in last 24 hours
+const completedLast24h = useMemo(() => {
+  const now = new Date();
+  const yesterday = new Date(now);
+  yesterday.setHours(now.getHours() - 24);
+
+  return tasks.filter(
+    (t) =>
+      t.status === 'Completed' &&
+      t.createdAt &&
+      t.createdAt >= yesterday &&
+      t.createdAt <= now
+  ).length;
+}, [tasks]);
+
   // Reorder
   const handleReorder = async (newTasks) => {
     setTasks(newTasks);
@@ -338,6 +353,7 @@ export default function Dashboard() {
               <TaskOverview
                 completed={completed}
                 inProgress={inProgress}
+                completedLast24h={completedLast24h}
                 pending={pending}
                 name={name}
                 user={user}
@@ -393,15 +409,18 @@ export default function Dashboard() {
             </div>
           )}
 
-          {activePage === 'history' && (
-            <div className="mx-auto max-w-6xl">
-              <History
-                tasks={tasks.filter((t) => t.status === 'Completed')} // ✅ only completed tasks
-                setActivePage={setActivePage} // ✅ allows navigation back
-                projects={projects}
-              />
-            </div>
-          )}
+                  {activePage === 'history' && (
+                    <div className="mx-auto max-w-6xl">
+                      <History
+                        user={user}
+                        tasks={tasks.filter((t) => t.status === 'Completed')}
+                        projects={projects}
+                        onReorder={handleReorder}
+                        setActivePage={setActivePage}
+                        setActiveProject={setActiveProject} // ✅ important
+                      />
+                    </div>
+                  )}
         </main>
 
         {/* TaskComposer */}
