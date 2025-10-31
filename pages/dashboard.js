@@ -73,24 +73,29 @@ export default function Dashboard() {
     return unsub;
   }, [user]);
 
-  useEffect(() => {
-    if (!user) return;
+ useEffect(() => {
+  if (!user) return;
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // ignore time
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-    tasks.forEach(async (task) => {
-      if (task.status === 'Later' && task.workDate) {
-        const taskDate = new Date(task.workDate);
-        taskDate.setHours(0, 0, 0, 0);
+  const updateExpiredLaterTasks = async () => {
+    const updates = tasks
+      .filter(
+        (task) =>
+          task.status === 'Later' &&
+          task.workDate &&
+          new Date(task.workDate).setHours(0, 0, 0, 0) <= today
+      );
 
-        if (taskDate <= today) {
-          // Update task to Pending
-          await updateDoc(doc(db, 'tasks', task.id), { status: 'Pending' });
-        }
-      }
-    });
-  }, [tasks, user]);
+    for (const task of updates) {
+      await updateDoc(doc(db, 'tasks', task.id), { status: 'Pending' });
+    }
+  };
+
+  updateExpiredLaterTasks();
+}, [user, tasks]);
+
 
   // chart Data
   const chartData = useMemo(() => {
