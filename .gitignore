@@ -37,3 +37,10 @@ yarn-error.log*
 
 # Firebase credentials
 serviceAccountKey.json
+exportEmails.js
+.gitignore
+firebase-service-account.json
+package-lock.json
+package.json
+package-lock.json
+package.json
