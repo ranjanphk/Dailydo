@@ -451,7 +451,7 @@ const handleChangeStatus = async (task, newStatus) => {
                 onCreateTask={addTask}
                 onUpdateTask={updateTask}
                 onDeleteTask={deleteTask}
-                onChangeStatus={changeStatus}
+                onChangeStatus={handleChangeStatus}
                 onReorder={handleReorder}
                 editingTask={editingTask}
                 handleEditTask={handleEditTask}
