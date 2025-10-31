@@ -238,13 +238,22 @@ export default function TaskTable({
                                   </span>
                                   <CalendarIcon
                                     className="w-4 h-4 text-orange-500 cursor-pointer hover:text-orange-600"
-                                    onClick={() => {
-                                      setSelectedTask(t);
-                                      setSelectedDate(
-                                        t.workDate ? new Date(t.workDate).toISOString().split('T')[0] : ''
-                                      );
-                                      setShowDateModal(true);
-                                    }}
+                                   onClick={() => {
+                                          setSelectedTask(t);
+                                          try {
+                                            const date =
+                                              t.workDate instanceof Date
+                                                ? t.workDate
+                                                : t.workDate?.toDate?.() || new Date(t.workDate);
+                                            setSelectedDate(
+                                              date && !isNaN(date) ? date.toISOString().split('T')[0] : ''
+                                            );
+                                          } catch (err) {
+                                            console.warn('Invalid workDate:', t.workDate);
+                                            setSelectedDate('');
+                                          }
+                                          setShowDateModal(true);
+                                        }}
                                   />
                                 </div>
                               ) : t.createdAt ? (
