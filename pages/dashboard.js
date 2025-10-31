@@ -73,28 +73,41 @@ export default function Dashboard() {
     return unsub;
   }, [user]);
 
- useEffect(() => {
+ // ✅ Update only "Later" tasks that have expired
+// ✅ Auto-update only "Later" tasks that have expired (safe version)
+// ✅ Auto-update only "Later" tasks that have expired (safe version)
+useEffect(() => {
   if (!user) return;
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
   const updateExpiredLaterTasks = async () => {
-    const updates = tasks
-      .filter(
-        (task) =>
-          task.status === 'Later' &&
-          task.workDate &&
-          new Date(task.workDate).setHours(0, 0, 0, 0) <= today
-      );
+    try {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
 
-    for (const task of updates) {
-      await updateDoc(doc(db, 'tasks', task.id), { status: 'Pending' });
+      // Filter only Later tasks (read-only)
+      const laterTasks = tasks.filter((t) => t.status === 'Later' && t.workDate);
+
+      for (const task of laterTasks) {
+        const workDate = new Date(task.workDate);
+        workDate.setHours(0, 0, 0, 0);
+
+        // ✅ Only update if workDate is before today
+        if (workDate < today) {
+          console.log(`⏰ Auto-updating "${task.title}" from Later → Pending`);
+          await updateDoc(doc(db, 'tasks', task.id), { status: 'Pending' });
+        }
+      }
+    } catch (err) {
+      console.error('Error auto-updating Later tasks:', err);
     }
   };
 
-  updateExpiredLaterTasks();
-}, [user, tasks]);
+  // Run once after tasks load
+  if (tasks.length > 0) updateExpiredLaterTasks();
+  // ⚠️ Depend on tasks but throttle updates safely
+  // Only run when "Later" tasks change
+}, [tasks.map(t => `${t.id}-${t.status}-${t.workDate}`).join(','), user]);
+
 
 
   // chart Data
@@ -234,6 +247,31 @@ const completedLast24h = useMemo(() => {
     });
   };
 
+
+  // Listen to tasks
+useEffect(() => {
+  if (!user) return;
+
+  const q = query(
+    collection(db, 'tasks'),
+    where('userId', '==', user.uid),
+    orderBy('createdAt', 'desc')
+  );
+
+  const unsub = onSnapshot(q, (snap) => {
+    setTasks(
+      snap.docs.map((d) => ({
+        id: d.id,
+        ...d.data(),
+        createdAt: d.data().createdAt?.toDate?.() || new Date(), // ensure Date object
+      }))
+    );
+  });
+
+  return unsub;
+}, [user]);
+
+
   // Add project
   const addProject = async (title) => {
     if (!user) return;
@@ -245,10 +283,20 @@ const completedLast24h = useMemo(() => {
       completedtasks: 0,
     });
   };
+const handleChangeStatus = async (task, newStatus) => {
+  try {
+    // Skip "Later" because TaskTable handles it
+    if (newStatus === 'Later') return;
 
-  const changeStatus = async (task, next) => {
-    await updateDoc(doc(db, 'tasks', task.id), { status: next });
-  };
+    await updateDoc(doc(db, 'tasks', task.id), {
+      status: newStatus,
+      updatedAt: new Date(),
+    });
+  } catch (error) {
+    console.error('Error updating status:', error);
+  }
+};
+
 
   const deleteTask = async (task) => {
     await deleteDoc(doc(db, 'tasks', task.id));
@@ -340,9 +388,8 @@ const completedLast24h = useMemo(() => {
                   setTasks={setTasks}
                   projects={projects} // ✅ pass projects
                   onDelete={deleteTask}
-                  onChangeStatus={(task, newStatus) => {
-                    setTasks((prev) => prev.map((t) => (t.id === task.id ? { ...t, status: newStatus } : t)));
-                  }}
+                  onChangeStatus={handleChangeStatus}
+                
                   onReorder={handleReorder}
                   onEdit={handleEditTask}
                   onProjectClick={(projectId) => {
