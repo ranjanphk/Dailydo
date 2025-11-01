@@ -229,7 +229,7 @@ export default function TaskTable({
                             <td className="py-3 px-3 text-gray-800 dark:text-gray-400">
                               {t.status === 'Later' && t.workDate ? (
                                 <div className="flex items-center gap-1 justify-center">
-                                  <span className="whitespace-nowrap text-orange-500">
+                                  <span className="whitespace-nowrap">
                                     {new Date(t.workDate).toLocaleDateString('en-IN', {
                                       day: '2-digit',
                                       month: 'short',
@@ -238,22 +238,13 @@ export default function TaskTable({
                                   </span>
                                   <CalendarIcon
                                     className="w-4 h-4 text-orange-500 cursor-pointer hover:text-orange-600"
-                                   onClick={() => {
-                                          setSelectedTask(t);
-                                          try {
-                                            const date =
-                                              t.workDate instanceof Date
-                                                ? t.workDate
-                                                : t.workDate?.toDate?.() || new Date(t.workDate);
-                                            setSelectedDate(
-                                              date && !isNaN(date) ? date.toISOString().split('T')[0] : ''
-                                            );
-                                          } catch (err) {
-                                            console.warn('Invalid workDate:', t.workDate);
-                                            setSelectedDate('');
-                                          }
-                                          setShowDateModal(true);
-                                        }}
+                                    onClick={() => {
+                                      setSelectedTask(t);
+                                      setSelectedDate(
+                                        t.workDate ? new Date(t.workDate).toISOString().split('T')[0] : ''
+                                      );
+                                      setShowDateModal(true);
+                                    }}
                                   />
                                 </div>
                               ) : t.createdAt ? (

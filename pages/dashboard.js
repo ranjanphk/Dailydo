@@ -73,42 +73,24 @@ export default function Dashboard() {
     return unsub;
   }, [user]);
 
- // ✅ Update only "Later" tasks that have expired
-// ✅ Auto-update only "Later" tasks that have expired (safe version)
-// ✅ Auto-update only "Later" tasks that have expired (safe version)
-useEffect(() => {
-  if (!user) return;
+  useEffect(() => {
+    if (!user) return;
 
-  const updateExpiredLaterTasks = async () => {
-    try {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // ignore time
 
-      // Filter only Later tasks (read-only)
-      const laterTasks = tasks.filter((t) => t.status === 'Later' && t.workDate);
+    tasks.forEach(async (task) => {
+      if (task.status === 'Later' && task.workDate) {
+        const taskDate = new Date(task.workDate);
+        taskDate.setHours(0, 0, 0, 0);
 
-      for (const task of laterTasks) {
-        const workDate = new Date(task.workDate);
-        workDate.setHours(0, 0, 0, 0);
-
-        // ✅ Only update if workDate is before today
-        if (workDate < today) {
-          console.log(`⏰ Auto-updating "${task.title}" from Later → Pending`);
+        if (taskDate <= today) {
+          // Update task to Pending
           await updateDoc(doc(db, 'tasks', task.id), { status: 'Pending' });
         }
       }
-    } catch (err) {
-      console.error('Error auto-updating Later tasks:', err);
-    }
-  };
-
-  // Run once after tasks load
-  if (tasks.length > 0) updateExpiredLaterTasks();
-  // ⚠️ Depend on tasks but throttle updates safely
-  // Only run when "Later" tasks change
-}, [tasks.map(t => `${t.id}-${t.status}-${t.workDate}`).join(','), user]);
-
-
+    });
+  }, [tasks, user]);
 
   // chart Data
   const chartData = useMemo(() => {
@@ -168,21 +150,6 @@ useEffect(() => {
     }),
     [tasks],
   );
-
-  // Completed tasks in last 24 hours
-const completedLast24h = useMemo(() => {
-  const now = new Date();
-  const yesterday = new Date(now);
-  yesterday.setHours(now.getHours() - 24);
-
-  return tasks.filter(
-    (t) =>
-      t.status === 'Completed' &&
-      t.createdAt &&
-      t.createdAt >= yesterday &&
-      t.createdAt <= now
-  ).length;
-}, [tasks]);
 
   // Reorder
   const handleReorder = async (newTasks) => {
@@ -247,31 +214,6 @@ const completedLast24h = useMemo(() => {
     });
   };
 
-
-  // Listen to tasks
-useEffect(() => {
-  if (!user) return;
-
-  const q = query(
-    collection(db, 'tasks'),
-    where('userId', '==', user.uid),
-    orderBy('createdAt', 'desc')
-  );
-
-  const unsub = onSnapshot(q, (snap) => {
-    setTasks(
-      snap.docs.map((d) => ({
-        id: d.id,
-        ...d.data(),
-        createdAt: d.data().createdAt?.toDate?.() || new Date(), // ensure Date object
-      }))
-    );
-  });
-
-  return unsub;
-}, [user]);
-
-
   // Add project
   const addProject = async (title) => {
     if (!user) return;
@@ -283,20 +225,10 @@ useEffect(() => {
       completedtasks: 0,
     });
   };
-const handleChangeStatus = async (task, newStatus) => {
-  try {
-    // Skip "Later" because TaskTable handles it
-    if (newStatus === 'Later') return;
 
-    await updateDoc(doc(db, 'tasks', task.id), {
-      status: newStatus,
-      updatedAt: new Date(),
-    });
-  } catch (error) {
-    console.error('Error updating status:', error);
-  }
-};
-
+  const changeStatus = async (task, next) => {
+    await updateDoc(doc(db, 'tasks', task.id), { status: next });
+  };
 
   const deleteTask = async (task) => {
     await deleteDoc(doc(db, 'tasks', task.id));
@@ -388,8 +320,16 @@ const handleChangeStatus = async (task, newStatus) => {
                   setTasks={setTasks}
                   projects={projects} // ✅ pass projects
                   onDelete={deleteTask}
-                  onChangeStatus={handleChangeStatus}
-                
+                  onChangeStatus={async (task, newStatus) => {
+                    // 1️⃣ Update local state immediately for instant UI feedback
+                    setTasks(prev =>
+                      prev.map(t => (t.id === task.id ? { ...t, status: newStatus } : t))
+                    );
+
+                    // 2️⃣ Update Firestore in background
+                    await changeStatus(task, newStatus);
+                  }}
+
                   onReorder={handleReorder}
                   onEdit={handleEditTask}
                   onProjectClick={(projectId) => {
@@ -405,7 +345,6 @@ const handleChangeStatus = async (task, newStatus) => {
               <TaskOverview
                 completed={completed}
                 inProgress={inProgress}
-                completedLast24h={completedLast24h}
                 pending={pending}
                 name={name}
                 user={user}
@@ -451,7 +390,7 @@ const handleChangeStatus = async (task, newStatus) => {
                 onCreateTask={addTask}
                 onUpdateTask={updateTask}
                 onDeleteTask={deleteTask}
-                onChangeStatus={handleChangeStatus}
+                onChangeStatus={changeStatus}
                 onReorder={handleReorder}
                 editingTask={editingTask}
                 handleEditTask={handleEditTask}
@@ -461,18 +400,15 @@ const handleChangeStatus = async (task, newStatus) => {
             </div>
           )}
 
-                  {activePage === 'history' && (
-                    <div className="mx-auto max-w-6xl">
-                      <History
-                        user={user}
-                        tasks={tasks.filter((t) => t.status === 'Completed')}
-                        projects={projects}
-                        onReorder={handleReorder}
-                        setActivePage={setActivePage}
-                        setActiveProject={setActiveProject} // ✅ important
-                      />
-                    </div>
-                  )}
+          {activePage === 'history' && (
+            <div className="mx-auto max-w-6xl">
+              <History
+                tasks={tasks.filter((t) => t.status === 'Completed')} // ✅ only completed tasks
+                setActivePage={setActivePage} // ✅ allows navigation back
+                projects={projects}
+              />
+            </div>
+          )}
         </main>
 
         {/* TaskComposer */}
