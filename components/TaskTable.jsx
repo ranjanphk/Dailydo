@@ -234,6 +234,7 @@ export default function TaskTable({
                                       day: '2-digit',
                                       month: 'short',
                                       year: 'numeric',
+                                      className: 'mr-2 text-orange-500',
                                     })}
                                   </span>
                                   <CalendarIcon
