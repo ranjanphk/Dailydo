@@ -7,43 +7,49 @@ import Overview from '../components/Overview';
 import TaskOverview from '../components/TaskOverview';
 import TaskComposer from '../components/TaskComposer';
 import Profile from '../components/Profile';
-import Projects from '../components/Projects';  
+import Projects from '../components/Projects';
 import ProjectDetail from '../components/ProjectDetail';
 import History from '../components/History';
 
 // Function Import
 
-import { useAuth } from "../context/AuthContext";
-import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
-import { db } from "../lib/firebase";
-import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp, updateDoc, doc, deleteDoc, writeBatch, where } from "firebase/firestore";
-
+import { useAuth } from '../context/AuthContext';
+import { useRouter } from 'next/router';
+import { useEffect, useMemo, useState } from 'react';
+import { db } from '../lib/firebase';
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  serverTimestamp,
+  updateDoc,
+  doc,
+  deleteDoc,
+  writeBatch,
+  where,
+} from 'firebase/firestore';
 
 export default function Dashboard() {
   const { user, loading, logout } = useAuth();
   const router = useRouter();
   const [tasks, setTasks] = useState([]);
-  const [activePage, setActivePage] = useState("tasks"); 
+  const [activePage, setActivePage] = useState('tasks');
   const [editingTask, setEditingTask] = useState(null);
   const [projects, setProjects] = useState([]);
   const [activeProject, setActiveProject] = useState(null);
   const { name } = user || {};
-  const [history] = useState([]);
 
   useEffect(() => {
-    if (!loading && !user) router.push("/login");
+    if (!loading && !user) router.push('/login');
   }, [user, loading, router]);
 
   // Listen to tasks
   useEffect(() => {
     if (!user) return;
 
-    const q = query(
-      collection(db, "tasks"),
-      where("userId", "==", user.uid),
-      orderBy("order", "desc")
-    );
+    const q = query(collection(db, 'tasks'), where('userId', '==', user.uid), orderBy('order', 'desc'));
 
     const unsub = onSnapshot(q, (snap) => {
       setTasks(
@@ -51,70 +57,84 @@ export default function Dashboard() {
           const data = d.data();
           return {
             id: d.id,
-            title: data.title || "",
-            status: data.status || "In Progress",
+            title: data.title || '',
+            status: data.status || 'In Progress',
             userId: data.userId,
             createdAt: data.createdAt?.toDate?.() || new Date(),
+            workDate: data.workDate?.toDate?.() || null,
             avatarUrl: data.avatarUrl || null,
             order: data.order ?? 0,
             projectId: data.projectId || null,
           };
-        })
+        }),
       );
     });
 
     return unsub;
   }, [user]);
 
+  useEffect(() => {
+    if (!user) return;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // ignore time
+
+    tasks.forEach(async (task) => {
+      if (task.status === 'Later' && task.workDate) {
+        const taskDate = new Date(task.workDate);
+        taskDate.setHours(0, 0, 0, 0);
+
+        if (taskDate <= today) {
+          // Update task to Pending
+          await updateDoc(doc(db, 'tasks', task.id), { status: 'Pending' });
+        }
+      }
+    });
+  }, [tasks, user]);
 
   // chart Data
   const chartData = useMemo(() => {
-  const grouped = {};
+    const grouped = {};
 
-  tasks.forEach(task => {
-    if (!task.createdAt) return;
+    tasks.forEach((task) => {
+      if (!task.createdAt) return;
 
-    const dateKey = task.createdAt.toISOString().split("T")[0]; // YYYY-MM-DD
+      const dateKey = task.createdAt.toISOString().split('T')[0]; // YYYY-MM-DD
 
-    if (!grouped[dateKey]) {
-      grouped[dateKey] = { 
-        date: dateKey, 
-        completed: 0, 
-        inProgress: 0, 
-        pending: 0 
-      };
-    }
+      if (!grouped[dateKey]) {
+        grouped[dateKey] = {
+          date: dateKey,
+          completed: 0,
+          inProgress: 0,
+          pending: 0,
+        };
+      }
 
-    if (task.status === "Completed") grouped[dateKey].completed += 1;
-    else if (task.status === "In Progress") grouped[dateKey].inProgress += 1;
-    else if (task.status === "Pending") grouped[dateKey].pending += 1;
-    else if (task.status === "No Status") grouped[dateKey].nostatus += 1;
-  });
+      if (task.status === 'Completed') grouped[dateKey].completed += 1;
+      else if (task.status === 'In Progress') grouped[dateKey].inProgress += 1;
+      else if (task.status === 'Pending') grouped[dateKey].pending += 1;
+      else if (task.status === 'No Status') grouped[dateKey].nostatus += 1;
+      else if (task.status === 'Later') grouped[dateKey].later += 1;
+    });
 
-  // return array sorted by date
-  return Object.values(grouped).sort((a, b) => new Date(a.date) - new Date(b.date));
-}, [tasks]);
+    // return array sorted by date
+    return Object.values(grouped).sort((a, b) => new Date(a.date) - new Date(b.date));
+  }, [tasks]);
 
-// projjectTag
-
- 
+  // projjectTag
 
   // Listen to projects
   useEffect(() => {
     if (!user) return;
 
-    const q = query(
-      collection(db, "projects"),
-      where("userId", "==", user.uid),
-      orderBy("createdAt", "desc")
-    );
+    const q = query(collection(db, 'projects'), where('userId', '==', user.uid), orderBy('createdAt', 'desc'));
 
     const unsub = onSnapshot(q, (snap) => {
       setProjects(
         snap.docs.map((d) => ({
           id: d.id,
           ...d.data(),
-        }))
+        })),
       );
     });
 
@@ -122,57 +142,58 @@ export default function Dashboard() {
   }, [user]);
 
   // Task counts
-  const { completed, inProgress, pending } = useMemo(() => ({
-    completed: tasks.filter(t => t.status === "Completed").length,
-    inProgress: tasks.filter(t => t.status === "In Progress").length,
-    pending: tasks.filter(t => t.status === "Pending").length,
-  }), [tasks]);
+  const { completed, inProgress, pending } = useMemo(
+    () => ({
+      completed: tasks.filter((t) => t.status === 'Completed').length,
+      inProgress: tasks.filter((t) => t.status === 'In Progress').length,
+      pending: tasks.filter((t) => t.status === 'Pending').length,
+    }),
+    [tasks],
+  );
 
   // Reorder
-const handleReorder = async (newTasks) => {
-  setTasks(newTasks);
+  const handleReorder = async (newTasks) => {
+    setTasks(newTasks);
 
-  const batch = writeBatch(db);
-  const total = newTasks.length;
+    const batch = writeBatch(db);
+    const total = newTasks.length;
 
-  newTasks.forEach((task, index) => {
-    const newOrder = total - index;
-    if (task.order !== newOrder) {
-      batch.update(doc(db, "tasks", task.id), { order: newOrder });
-    }
-  });
+    newTasks.forEach((task, index) => {
+      const newOrder = total - index;
+      if (task.order !== newOrder) {
+        batch.update(doc(db, 'tasks', task.id), { order: newOrder });
+      }
+    });
 
-  await batch.commit();
-};
-
+    await batch.commit();
+  };
 
   // handle projectclick
-      const handleProjectClick = (project) => {
-        console.log("Project clicked:", project);
-        setActiveProject(project);          // ✅ actually set the project
-        setActivePage("projectDetail");     // ✅ navigate to project detail
-      };
-
+  const handleProjectClick = (project) => {
+    console.log('Project clicked:', project);
+    setActiveProject(project); // ✅ actually set the project
+    setActivePage('projectDetail'); // ✅ navigate to project detail
+  };
 
   // handleprojectdelete
 
   const handleDeleteProject = async (projectId, projectTasks) => {
-  if (projectTasks.length > 0) {
-    alert("Cannot delete a project with tasks!");
-    return;
-  }
+    if (projectTasks.length > 0) {
+      alert('Cannot delete a project with tasks!');
+      return;
+    }
 
-  try {
-    // Delete project document
-    await deleteDoc(doc(db, "projects", projectId));
+    try {
+      // Delete project document
+      await deleteDoc(doc(db, 'projects', projectId));
 
-    // Update local state
-    setProjects(prev => prev.filter(p => p.id !== projectId));
-  } catch (error) {
-    console.error("Error deleting project:", error);
-    alert("Failed to delete project");
-  }
-};
+      // Update local state
+      setProjects((prev) => prev.filter((p) => p.id !== projectId));
+    } catch (error) {
+      console.error('Error deleting project:', error);
+      alert('Failed to delete project');
+    }
+  };
   // Edit task
 
   const handleEditTask = (task) => setEditingTask(task);
@@ -180,13 +201,14 @@ const handleReorder = async (newTasks) => {
   // Add task
   const addTask = async (text, projectId = null) => {
     if (!user) return;
-    const maxOrder = tasks.length > 0 ? Math.max(...tasks.map(t => t.order ?? 0)) : -1;
+    const maxOrder = tasks.length > 0 ? Math.max(...tasks.map((t) => t.order ?? 0)) : -1;
 
-    await addDoc(collection(db, "tasks"), {
+    await addDoc(collection(db, 'tasks'), {
       title: text,
-      status: "Pending",
+      status: 'Pending',
       userId: user.uid,
       createdAt: serverTimestamp(),
+      workDate:null,
       order: maxOrder + 1,
       projectId: projectId || null,
     });
@@ -195,7 +217,7 @@ const handleReorder = async (newTasks) => {
   // Add project
   const addProject = async (title) => {
     if (!user) return;
-    await addDoc(collection(db, "projects"), {
+    await addDoc(collection(db, 'projects'), {
       title,
       userId: user.uid,
       createdAt: serverTimestamp(),
@@ -205,17 +227,17 @@ const handleReorder = async (newTasks) => {
   };
 
   const changeStatus = async (task, next) => {
-    await updateDoc(doc(db, "tasks", task.id), { status: next });
+    await updateDoc(doc(db, 'tasks', task.id), { status: next });
   };
 
   const deleteTask = async (task) => {
-    await deleteDoc(doc(db, "tasks", task.id));
+    await deleteDoc(doc(db, 'tasks', task.id));
   };
 
   const updateTask = async (task) => {
     if (!user) return;
-    const maxOrder = tasks.length > 0 ? Math.max(...tasks.map(t => t.order ?? 0)) : 0;
-    await updateDoc(doc(db, "tasks", task.id), { 
+    const maxOrder = tasks.length > 0 ? Math.max(...tasks.map((t) => t.order ?? 0)) : 0;
+    await updateDoc(doc(db, 'tasks', task.id), {
       title: task.title,
       createdAt: serverTimestamp(),
       order: maxOrder + 1,
@@ -224,45 +246,40 @@ const handleReorder = async (newTasks) => {
   };
 
   // Sidebar click handlers
-  const handleProfileClick = () => setActivePage("profile");
+  const handleProfileClick = () => setActivePage('profile');
 
   const handleProjectsClick = () => {
-  setActiveProject(null);
-  setActivePage("projects");
-  
-    };
+    setActiveProject(null);
+    setActivePage('projects');
+  };
   const handleOverviewClick = () => {
-      setActiveProject(null);
-      setActivePage("overview");
-    };
+    setActiveProject(null);
+    setActivePage('overview');
+  };
   const handleTasksClick = () => {
-      setActiveProject(null); // ✅ clears current project
-      setActivePage("tasks");
-    };
+    setActiveProject(null); // ✅ clears current project
+    setActivePage('tasks');
+  };
 
-    const handleHistoryClick = () => {
-      setActiveProject(null); // goes to completed Page
-      setActivePage("history"); // navigate to history
-    };
+  const handleHistoryClick = () => {
+    setActiveProject(null); // goes to completed Page
+    setActivePage('history'); // navigate to history
+  };
 
-// Save function
+  // Save function
 
   const handleProfileSave = (updatedUser) => {
-    console.log("Profile saved:", updatedUser);
-    setActivePage("tasks");
+    console.log('Profile saved:', updatedUser);
+    setActivePage('tasks');
   };
-  
-
-  
-
 
   return (
     <div className="flex h-screen bg-gray-100 dark:bg-gray-800 w-screen">
       <div className="w-24 flex flex-col items-center justify-center bg-slate-500 text-white absolute top-1/2 left-8">
-        <Sidebar 
+        <Sidebar
           activePage={activePage}
           onTasksClick={handleTasksClick}
-          onProjectsClick={handleProjectsClick} 
+          onProjectsClick={handleProjectsClick}
           onOverviewClick={handleOverviewClick}
           onHistoryClick={handleHistoryClick}
         />
@@ -270,51 +287,60 @@ const handleReorder = async (newTasks) => {
 
       <div className="flex-1 flex flex-col w-screen">
         <Topbar
-              user={user}
-              onProfileClick={() => setActivePage("profile")}
-              logout={logout}
-              tasks={tasks}
-              projects={projects}
-              onSelectItem={(item) => {
-                  if (item.type === "project") {
-                    const project = projects.find(p => p.id === item.id);
-                    setActiveProject(null); // ✅ clear first to avoid stale ID
-                    setTimeout(() => {
-                      setActiveProject(project);
-                      setActivePage("projectDetail");
-                    }, 0);
-                  } else if (item.type === "task") {
-                    const taskProject = projects.find(p => p.id === item.projectId);
-                    setActiveProject(taskProject || null);
-                    setActivePage("projectDetail");
-                    setEditingTask(tasks.find(t => t.id === item.id));
-                  }
-                }}
-            />
+          user={user}
+          onProfileClick={() => setActivePage('profile')}
+          logout={logout}
+          tasks={tasks}
+          projects={projects}
+          onSelectItem={(item) => {
+            if (item.type === 'project') {
+              const project = projects.find((p) => p.id === item.id);
+              setActiveProject(null); // ✅ clear first to avoid stale ID
+              setTimeout(() => {
+                setActiveProject(project);
+                setActivePage('projectDetail');
+              }, 0);
+            } else if (item.type === 'task') {
+              const taskProject = projects.find((p) => p.id === item.projectId);
+              setActiveProject(taskProject || null);
+              setActivePage('projectDetail');
+              setEditingTask(tasks.find((t) => t.id === item.id));
+            }
+          }}
+        />
 
         <main className="flex-1 overflow-y-auto p-6 pb-32">
- 
-          {activePage === "tasks" && (
+          {activePage === 'tasks' && (
             <div className="mx-auto max-w-6xl flex bg-white dark:bg-gray-900 rounded-md overflow-hidden shadow">
               <div className="flex-1">
-                      <TaskTable
-                        tasks={tasks.filter(
-                            (t) => t.status !== "No Status" && t.status !== "Completed" // ✅ hide completed too
-                          )}
-                        projects={projects}          // ✅ pass projects
-                        onDelete={deleteTask}
-                        onChangeStatus={changeStatus}
-                        onReorder={handleReorder}
-                        onEdit={handleEditTask}
-                        onProjectClick={(projectId) => {
-                          const project = projects.find(p => p.id === projectId);
-                          if (project) {
-                            setActiveProject(project);
-                            setActivePage("projectDetail");
-                          }
-                        }}
-                        hideProjectTag={false}
-                      />
+                <TaskTable
+                  tasks={tasks.filter(
+                    (t) => t.status !== 'No Status' && t.status !== 'Completed' && t.status !== 'Later', // ✅ hide completed too
+                  )}
+                  setTasks={setTasks}
+                  projects={projects} // ✅ pass projects
+                  onDelete={deleteTask}
+                    onChangeStatus={async (task, newStatus) => {
+                      // 1️⃣ Update local state immediately for instant UI feedback
+                      setTasks(prev =>
+                        prev.map(t => (t.id === task.id ? { ...t, status: newStatus } : t))
+                      );
+
+                      // 2️⃣ Update Firestore in background
+                      await changeStatus(task, newStatus);
+                    }}
+
+                  onReorder={handleReorder}
+                  onEdit={handleEditTask}
+                  onProjectClick={(projectId) => {
+                    const project = projects.find((p) => p.id === projectId);
+                    if (project) {
+                      setActiveProject(project);
+                      setActivePage('projectDetail');
+                    }
+                  }}
+                  hideProjectTag={false}
+                />
               </div>
               <TaskOverview
                 completed={completed}
@@ -327,79 +353,62 @@ const handleReorder = async (newTasks) => {
             </div>
           )}
 
-          {activePage === "profile" && (
+          {activePage === 'profile' && (
             <div className="mx-auto max-w-2xl">
-              <Profile 
-              user={user} 
-              name={user?.name}
-              onSave={handleProfileSave} />
+              <Profile user={user} name={user?.name} onSave={handleProfileSave} />
             </div>
           )}
 
-          {activePage === "projects" && (
+          {activePage === 'projects' && (
             <div className="mx-auto max-w-6xl">
-              <Projects 
-                projects={projects} 
-                setActiveProject={setActiveProject} 
-                setActivePage={setActivePage}  
+              <Projects
+                projects={projects}
+                setActiveProject={setActiveProject}
+                setActivePage={setActivePage}
                 tasks={tasks}
                 setProjects={setProjects}
                 onDelete={(projectId, projectTasks) => handleDeleteProject(projectId, projectTasks)}
                 onProjectClick={handleProjectClick}
-              />  
-            </div>
-          )}
-
-          {/* Overview Page */}
-          {activePage === "overview" && (
-            <div className="mx-auto max-w-6xl">
-              <Overview
-              setActivePage={setActivePage}
-              Overview={Overview}
-              chartData={chartData}
-              tasks={tasks}     
               />
             </div>
           )}
 
-            {activePage === "projectDetail" && activeProject && (
-              <div className="mx-auto max-w-6xl">
-                <ProjectDetail
-                  key={activeProject.id}   // ✅ Force re-mount on project change
-                  project={activeProject}
-                  user={user}
-                  tasks={tasks.filter(t => t.projectId === activeProject.id)} // show only tasks of active project
-                  onCreateTask={addTask}
-                  onUpdateTask={updateTask}
-                  onDeleteTask={deleteTask}
-                  onChangeStatus={changeStatus}
-                  onReorder={handleReorder}
-                  editingTask={editingTask}
-                  handleEditTask={handleEditTask}
-                  hideProjectTag={true}
-                  projects={projects}
+          {/* Overview Page */}
+          {activePage === 'overview' && (
+            <div className="mx-auto max-w-6xl">
+              <Overview setActivePage={setActivePage} Overview={Overview} chartData={chartData} tasks={tasks} />
+            </div>
+          )}
 
+          {activePage === 'projectDetail' && activeProject && (
+            <div className="mx-auto max-w-6xl">
+              <ProjectDetail
+                key={activeProject.id} // ✅ Force re-mount on project change
+                project={activeProject}
+                user={user}
+                tasks={tasks.filter((t) => t.projectId === activeProject.id)} // show only tasks of active project
+                onCreateTask={addTask}
+                onUpdateTask={updateTask}
+                onDeleteTask={deleteTask}
+                onChangeStatus={changeStatus}
+                onReorder={handleReorder}
+                editingTask={editingTask}
+                handleEditTask={handleEditTask}
+                hideProjectTag={true}
+                projects={projects}
+              />
+            </div>
+          )}
 
-                />
-              </div>
-            )}
-
-              {activePage === "history" && (
-              <div className="mx-auto max-w-6xl">
-                <History
-                  tasks={tasks.filter(t => t.status === "Completed")} // ✅ only completed tasks
-                  setActivePage={setActivePage} // ✅ allows navigation back
-                  projects={projects}
-                />
-              </div>
-            )}
-
-
-
-
-
-          
-
+          {activePage === 'history' && (
+            <div className="mx-auto max-w-6xl">
+              <History
+                tasks={tasks.filter((t) => t.status === 'Completed')} // ✅ only completed tasks
+                setActivePage={setActivePage} // ✅ allows navigation back
+                projects={projects}
+              />
+            </div>
+          )}
         </main>
 
         {/* TaskComposer */}
@@ -408,7 +417,7 @@ const handleReorder = async (newTasks) => {
             user={user}
             currentProject={activeProject} // ✅ pass current project
             onCreate={(newItem) => {
-              if (newItem.type === "project") {
+              if (newItem.type === 'project') {
                 addProject(newItem.title);
               } else {
                 addTask(newItem.title, activeProject?.id || newItem.projectId);
