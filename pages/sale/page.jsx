@@ -25,7 +25,7 @@ export default function SalePage() {
           whileHover={{ scale: 1.05 }}
           className="inline-block bg-blue-600 text-white px-6 py-3 rounded-full font-medium hover:bg-blue-700 transition"
         >
-          Contact to Buy – $5,000 Offer
+          Contact to investment – Offer
         </motion.a>
       </section>
       <section>
@@ -111,11 +111,7 @@ export default function SalePage() {
 
       {/* OFFER SECTION */}
       <section className="max-w-3xl mx-auto text-center py-16 px-6">
-        <h2 className="text-3xl font-bold mb-4">Ownership Offer – $5,000</h2>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">
-          Includes full source code, domain transfer, and 1-day post-sale setup support. Available for a{' '}
-          <strong>48-hour limited sale</strong> – first come, first served.
-        </p>
+        <h2 className="text-3xl font-bold mb-4">Investment Opportunity</h2>
         <motion.a
           href="#contact"
           whileHover={{ scale: 1.05 }}
@@ -143,8 +139,8 @@ export default function SalePage() {
 
       {/* CONTACT SECTION */}
       <section id="contact" className="bg-gray-900 text-white text-center py-16 px-6 rounded-t-3xl">
-        <h2 className="text-3xl font-bold mb-4">Interested in Buying?</h2>
-        <p className="mb-4 text-gray-300">Contact me directly to discuss the transfer and see the live demo.</p>
+        <h2 className="text-3xl font-bold mb-4">Interested in investing?</h2>
+        <p className="mb-4 text-gray-300">Contact me directly to discuss the see the live demo.</p>
         <div className="space-y-2">
           <p>
             📧{' '}

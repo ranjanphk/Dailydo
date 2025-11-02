@@ -120,7 +120,7 @@ export default function Home() {
             <span className="hover:text-white cursor-pointer">Contact</span>
           </Link>
           <Link href="/sale/page">
-            <span className="hover:text-white cursor-pointer">Buy DailyDo</span>
+            <span className="hover:text-white cursor-pointer">Partner with DailyDo</span>
           </Link>
         </div>
       </footer>
