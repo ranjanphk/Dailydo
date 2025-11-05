@@ -1,33 +1,68 @@
 'use client';
-
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { Download, Printer, CheckCircle, XCircle } from 'lucide-react';
+import { useRef } from 'react';
 
 export default function SalePage() {
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black text-gray-800 dark:text-gray-100">
-      {/* HERO SECTION */}
+  const pageRef = useRef();
 
+  const handlePrint = () => {
+    window.print();
+  };
+
+  const handleDownload = () => {
+    import('html2pdf.js').then((html2pdf) => {
+      const element = pageRef.current;
+      html2pdf.default().from(element).save('DailyDo_Investor_Pitch.pdf');
+    });
+  };
+
+  return (
+    <div
+      ref={pageRef}
+      className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-black text-gray-800 dark:text-gray-100"
+    >
+      {/* HERO SECTION */}
       <section className="text-center py-20 px-4">
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-4xl md:text-5xl font-bold mb-4"
         >
-          DailyDo — Fully Functional Productivity App for Sale
+          DailyDo — Smart Productivity & Performance Platform
         </motion.h1>
         <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-          A complete task & performance management app with <strong>140 active global users</strong>. Includes full
-          codebase, domain, and concept.
+          A complete task, trading & performance management app with{' '}
+          <strong>221 users</strong> and <strong>50 active weekly users</strong>. Now open for{' '}
+          <strong>investment and scaling</strong>.
         </p>
-        <motion.a
-          href="#contact"
-          whileHover={{ scale: 1.05 }}
-          className="inline-block bg-blue-600 text-white px-6 py-3 rounded-full font-medium hover:bg-blue-700 transition"
-        >
-          Contact to investment – Offer
-        </motion.a>
+
+        <div className="flex justify-center gap-4 flex-wrap">
+          <motion.a
+            href="#contact"
+            whileHover={{ scale: 1.05 }}
+            className="inline-block bg-blue-600 text-white px-6 py-3 rounded-full font-medium hover:bg-blue-700 transition"
+          >
+            Contact to Invest
+          </motion.a>
+
+          <button
+            onClick={handleDownload}
+            className="bg-white text-gray-800 px-6 py-3 rounded-full font-medium shadow flex items-center gap-2 hover:bg-gray-100 transition"
+          >
+            <Download size={18} /> Download PDF
+          </button>
+
+          <button
+            onClick={handlePrint}
+            className="bg-gray-200 dark:bg-gray-700 px-6 py-3 rounded-full font-medium shadow flex items-center gap-2 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+          >
+            <Printer size={18} /> Print
+          </button>
+        </div>
       </section>
+
       <section>
         <Image
           src="/screens/cover.png"
@@ -42,8 +77,9 @@ export default function SalePage() {
       <section className="max-w-5xl mx-auto py-12 px-6 text-center">
         <h2 className="text-2xl font-semibold mb-4">About DailyDo</h2>
         <p className="text-gray-600 dark:text-gray-400 mb-6">
-          DailyDo is an independent productivity platform for managing tasks, tracking performance, and boosting
-          personal or team efficiency. Built with modern technologies and ready for immediate deployment.
+          DailyDo is a fast, easy productivity platform that helps freelancers, teams, and traders
+          manage their tasks, track performance, and stay consistent. Version 1 is live and fully
+          functional with AI integration and trading task templates in development.
         </p>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -73,74 +109,103 @@ export default function SalePage() {
 
       {/* FEATURES */}
       <section className="max-w-4xl mx-auto py-12 px-6">
-        <h2 className="text-2xl font-semibold mb-4 text-center">Key Features</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-center">Key Highlights</h2>
         <ul className="grid md:grid-cols-2 gap-4 text-gray-700 dark:text-gray-300">
           <li>✅ Task creation, management & completion tracking</li>
-          <li>📅 Daily and weekly productivity overview</li>
-          <li>📈 Performance analytics dashboard</li>
-          <li>🧩 Fully independent module (plug & play)</li>
-          <li>🌍 140 active global users</li>
-          <li>💻 Built with Next.js, React, Tailwind, Firebase</li>
+          <li>📊 Performance analytics dashboard</li>
+          <li>💹 Trading Analysis & Tracking (upcoming paid feature)</li>
+          <li>🤖 AI-powered insights (in progress)</li>
+          <li>🌍 221 total users | 50 active weekly users</li>
+          <li>⚡ Fast, modern & intuitive (Next.js + Firebase)</li>
         </ul>
       </section>
 
-      {/* TRACTION */}
-      <section className="bg-gray-100 dark:bg-gray-800 py-12 text-center">
-        <h2 className="text-2xl font-semibold mb-4">User Traction</h2>
-        <p className="text-gray-600 dark:text-gray-300 mb-4">
-          DailyDo currently serves <strong>140 users across 20+ countries</strong>, proving global appeal and consistent
-          engagement.
+      {/* COMPETITION SECTION */}
+      <section className="max-w-6xl mx-auto py-16 px-6">
+        <h2 className="text-2xl font-semibold mb-8 text-center">Competitive Landscape</h2>
+        <p className="text-center text-gray-600 dark:text-gray-300 mb-8">
+          DailyDo stands out from complex tools like Odoo and Asana by focusing on simplicity,
+          speed, and purpose-built design for freelancers and small teams.
         </p>
-        <div className="flex justify-center items-center gap-2 flex-wrap">
-          <Image
-            src="/screens/analytics.png"
-            alt="User Analytics"
-            width={500}
-            height={280}
-            className="rounded-xl border border-gray-300 dark:border-gray-700"
-          />
-          <Image
-            src="/screens/map.png"
-            alt="Worldside Users"
-            width={500}
-            height={280}
-            className="rounded-xl border border-gray-300 dark:border-gray-700"
-          />
+
+        <div className="overflow-x-auto">
+          <table className="min-w-full border-collapse border border-gray-300 text-center text-sm md:text-base">
+            <thead className="bg-gray-100 dark:bg-gray-800">
+              <tr>
+                <th className="border border-gray-300 p-3 text-left">Features</th>
+                <th className="border border-gray-300 p-3">Odoo</th>
+                <th className="border border-gray-300 p-3">Asana</th>
+                <th className="border border-gray-300 p-3">DailyDo</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ['Simple & Fast Interface', false, true, true],
+                ['Built for Freelancers', false, true, true],
+                ['AI Insights', false, false, true],
+                ['Trading Task Templates', false, false, true],
+                ['Performance Analytics', true, true, true],
+                ['Easy Customization', false, false, true],
+                ['Lightweight & Fast', false, false, true],
+              ].map(([feature, odoo, asana, dailydo], idx) => (
+                <tr key={idx} className="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-900 dark:even:bg-gray-800">
+                  <td className="border border-gray-300 p-3 text-left">{feature}</td>
+                  {[odoo, asana, dailydo].map((val, i) => (
+                    <td key={i} className="border border-gray-300 p-3">
+                      {val ? (
+                        <CheckCircle className="text-green-500 mx-auto" size={18} />
+                      ) : (
+                        <XCircle className="text-red-400 mx-auto" size={18} />
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </section>
 
-      {/* OFFER SECTION */}
-      <section className="max-w-3xl mx-auto text-center py-16 px-6">
-        <h2 className="text-3xl font-bold mb-4">Investment Opportunity</h2>
-        <motion.a
-          href="#contact"
-          whileHover={{ scale: 1.05 }}
-          className="inline-block bg-green-600 text-white px-8 py-3 rounded-full font-medium hover:bg-green-700 transition"
-        >
-          Buy DailyDo Now
-        </motion.a>
+      {/* ROADMAP SECTION */}
+      <section className="max-w-5xl mx-auto py-16 px-6 bg-gray-100 dark:bg-gray-800 rounded-2xl">
+        <h2 className="text-2xl font-semibold mb-8 text-center">Next 6 Months Roadmap</h2>
+        <div className="grid md:grid-cols-2 gap-6 text-gray-700 dark:text-gray-300 text-lg">
+          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl shadow">💼 Paid Team Plan</div>
+          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl shadow">
+            📊 Paid Trading Template Tasks
+          </div>
+          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl shadow">📱 Mobile Application</div>
+          <div className="p-4 bg-white dark:bg-gray-900 rounded-xl shadow">🧩 Paid Project Plan</div>
+        </div>
       </section>
-      <section className="bg-gray-100  mx-auto py-12 px-6 text-center items-center flex-col">
-        <h2 className="text-2xl py-2">
-          <strong>How to Use DailyDo – </strong>The Best Productivity & Task Management App
-        </h2>
-        <p className="py-2 mb-6 w-9/12 flex items-center mx-auto">
-          DailyDo is designed to help you organize your tasks, track progress, and boost productivity—all in one clean
-          and intuitive interface. With 140 active users across the globe, it’s a proven tool for staying on top of your
-          goals.
+
+      {/* ABOUT FOUNDER */}
+      <section className="max-w-4xl mx-auto py-16 px-6 text-center">
+        <h2 className="text-2xl font-semibold mb-4">About the Founder</h2>
+        <Image
+          src="/images/founder.png"
+          alt="Founder"
+          width={160}
+          height={160}
+          className="rounded-full mx-auto mb-6 border border-gray-300 dark:border-gray-600"
+        />
+        <p className="text-gray-600 dark:text-gray-300 mb-3">
+          <strong>Ranjan Pathak</strong> — Designer, Strategist, and Founder of DailyDo.  
+          Passionate about simplifying productivity systems for professionals and freelancers
+          worldwide.
         </p>
-        <iframe
-          src="https://www.youtube.com/embed/oD71KPH2olE?si=Tjs1F1W1Xjy_Jm4j"
-          title="DailyDo Demo"
-          allowFullScreen
-          className="w-9/12 h-[480px] rounded-lg items-center mx-auto"
-        ></iframe>
+        <p className="text-gray-600 dark:text-gray-300">
+          On a mission to scale DailyDo into a global platform for performance tracking, project
+          collaboration, and AI-assisted productivity.
+        </p>
       </section>
 
       {/* CONTACT SECTION */}
       <section id="contact" className="bg-gray-900 text-white text-center py-16 px-6 rounded-t-3xl">
-        <h2 className="text-3xl font-bold mb-4">Interested in investing?</h2>
-        <p className="mb-4 text-gray-300">Contact me directly to discuss the see the live demo.</p>
+        <h2 className="text-3xl font-bold mb-4">Interested in Investing?</h2>
+        <p className="mb-4 text-gray-300">
+          Contact me directly to discuss the opportunity and view the live demo.
+        </p>
         <div className="space-y-2">
           <p>
             📧{' '}
